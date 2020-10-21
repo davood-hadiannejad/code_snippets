@@ -5,6 +5,7 @@ import './screens/signup_screen.dart';
 import './screens/splash_screen.dart';
 import './providers/auth.dart';
 import './screens/dashboard_screen.dart';
+import './screens/booking_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,9 +22,9 @@ class MyApp extends StatelessWidget {
         builder: (ctx, auth, _) => MaterialApp(
           title: 'Visoon Forecasting',
           theme: ThemeData(
-            primaryColor: Color.fromRGBO(25, 89, 201, 1),
-            accentColor: Color.fromRGBO(108, 208, 155, 1),
-            fontFamily: 'Roboto',
+            primaryColor: const Color(0xff1e1e1e),
+            accentColor: const Color(0xffe20644),
+            fontFamily: 'Futura',
           ),
           home: auth.isAuth
               ? DashboardScreen()
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
                 : SignUpScreen(),
           ),
           routes: {
+            BookingScreen.routeName: (ctx) => BookingScreen(),
           },
         ),
       ),

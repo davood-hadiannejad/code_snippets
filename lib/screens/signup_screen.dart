@@ -8,13 +8,23 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
-        child: SizedBox(
-          width: 400,
-          child: Card(
-            child: SignUpForm(),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 50,
+              child: Image.asset('assets/images/visoon_logo.png'),
+            ),
+            SizedBox(height: 10,),
+            SizedBox(
+              width: 400,
+              child: Card(
+                child: SignUpForm(),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -98,7 +108,10 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LinearProgressIndicator(value: _formProgress),
+          LinearProgressIndicator(
+            value: _formProgress,
+            backgroundColor: Theme.of(context).accentColor,
+          ),
           SizedBox(
             height: 12,
           ),
@@ -143,7 +156,7 @@ class _SignUpFormState extends State<SignUpForm> {
             CircularProgressIndicator()
           else
             FlatButton(
-              color: Colors.blue,
+              color: Theme.of(context).accentColor,
               textColor: Colors.white,
               onPressed: _submit,
               child: Text(

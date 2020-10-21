@@ -30,10 +30,9 @@ dependencies:
   cupertino_icons: ^1.0.0
   provider: ^4.3.2+2
   http: ^0.12.2
-  shared_preferences: ^0.5.10
-  fl_chart: ^0.11.1
+  shared_preferences: ^0.5.12+2
+  charts_flutter: ^0.9.0
   jwt_decode: ^0.1.0
-  table_calendar: ^2.2.3
   intl: ^0.16.1
 
 dev_dependencies:
@@ -52,8 +51,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/visoon_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -67,17 +66,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    #   - family: Schyler
+    #     fonts:
+    #       - asset: fonts/Schyler-Regular.ttf
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
+    - family: Futura
+      fonts:
+        - asset: assets/fonts/Futura_Std_Medium.otf
+        - asset: assets/fonts/Futura_Std_Bold.otf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

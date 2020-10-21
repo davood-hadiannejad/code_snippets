@@ -28,6 +28,7 @@ class MainDrawer extends StatelessWidget {
             leading: Icon(Icons.format_list_bulleted),
             title: Text('Buchungen'),
             onTap: () {
+              Navigator.of(context).pushReplacementNamed('/booking');
             },
           ),
           Divider(),
