@@ -11,7 +11,7 @@ class DashboardChart extends StatelessWidget {
     return new DashboardChart(
       createSampleData(),
       // Disable animations for image tests.
-      animate: true,
+      animate: false,
     );
   }
 

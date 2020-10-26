@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/summary_list.dart';
+import '../providers/detail.dart';
 import '../widgets/dashboard_filter.dart';
 import '../widgets/dashboard_item.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
 import '../widgets/main_drawer.dart';
 
-final tabList = ['Mandant', 'Kunde', 'Agentur', 'Konzern', 'Brand', 'Agenturnetzwerk'];
+final tabList = ['Goal und Forecast', 'Detailansicht'];
 
+class DetailScreen extends StatelessWidget {
+  static const routeName = '/detail';
 
-class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -21,11 +23,15 @@ class DashboardScreen extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             onTap: (selectedTab) {
-              Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
+              //Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
             },
-            tabs: tabList.map((e) => Tab(text: e,)).toList(),
+            tabs: tabList
+                .map((e) => Tab(
+                      text: e,
+                    ))
+                .toList(),
           ),
-          title: Text('Visoon Forecasting'),
+          title: Text('Detailansicht'),
           actions: <Widget>[
             UserSelect(),
             SizedBox(
@@ -48,7 +54,8 @@ class DashboardScreen extends StatelessWidget {
           child: (Row(
             children: [
               FutureBuilder(
-                future: Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList('Mandant', init: true),
+                future: Provider.of<Detail>(context, listen: false)
+                    .fetchAndSetDetail(init: true),
                 builder: (ctx, dataSnapshot) {
                   if (dataSnapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -61,17 +68,14 @@ class DashboardScreen extends StatelessWidget {
                           width: 1250,
                           child: Center(
                             child: Text(
-                                'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung....'),
+                                'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
                           ));
                     } else {
                       return Container(
                         width: 1250,
-                        child: Consumer<SummaryList>(
-                          builder: (ctx, summaryData, child) =>
-                              ListView.builder(
-                            itemCount: summaryData.items.length,
-                            itemBuilder: (ctx, i) =>
-                                DashboardItem(summaryData.items[i]),
+                        child: Consumer<Detail>(
+                          builder: (ctx, detailData, child) => Center(
+                            child: Text(detailData.name),
                           ),
                         ),
                       );

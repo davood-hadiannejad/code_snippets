@@ -58,7 +58,7 @@ class _SignUpFormState extends State<SignUpForm> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Oooops...'),
+        title: Text('Achtung...'),
         content: Text(message),
         actions: <Widget>[
           FlatButton(
@@ -92,7 +92,7 @@ class _SignUpFormState extends State<SignUpForm> {
       _showErrorDialog(errorMessage);
     } catch (error) {
       const errorMessage =
-          'Could not authenticate you. Please try again later.';
+          'Wir konnten dich nicht anmelden. Bitte überprüfe deine Verbindung.';
       _showErrorDialog(errorMessage);
     }
 

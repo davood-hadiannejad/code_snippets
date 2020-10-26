@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:visoonfrontend/providers/summary.dart';
+import 'package:visoonfrontend/screens/detail_screen.dart';
 
 import './dashboard_chart.dart';
 
 class DashboardItem extends StatelessWidget {
+  final Summary summaryItem;
+
+  DashboardItem(this.summaryItem);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -15,7 +21,7 @@ class DashboardItem extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  'Viacom',
+                  summaryItem.name,
                   style: Theme.of(context).textTheme.headline3,
                 ),
                 SizedBox(height: 20),
@@ -212,7 +218,11 @@ class DashboardItem extends StatelessWidget {
                 FlatButton(
                   color: Theme.of(context).accentColor,
                   textColor: Colors.white,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      DetailScreen.routeName,
+                    );
+                  },
                   child: Text(
                     'Monatsübersicht',
                     style: TextStyle(fontSize: 12),
@@ -234,7 +244,8 @@ class DashboardItem extends StatelessWidget {
                   Container(
                     width: 280,
                     child: Table(
-                      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                      defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
                       defaultColumnWidth: IntrinsicColumnWidth(),
                       border: TableBorder.all(color: Colors.grey, width: 1),
                       children: [
@@ -258,8 +269,8 @@ class DashboardItem extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                                 child: Text('2020 IST ',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold))),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
                           )),
                           TableCell(
                             child: Center(child: Text('Value')),

@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './providers/detail.dart';
+import './providers/summary_list.dart';
 import './screens/signup_screen.dart';
 import './screens/splash_screen.dart';
 import './providers/auth.dart';
 import './screens/dashboard_screen.dart';
 import './screens/booking_screen.dart';
+import './screens/detail_screen.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(VisoonApp());
 
-class MyApp extends StatelessWidget {
+class VisoonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, SummaryList>(
+          update: (ctx, auth, previousSummaryList) => SummaryList(
+            auth.token,
+            previousSummaryList == null ? [] : previousSummaryList.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, Detail>(
+          update: (ctx, auth, previousDetail) => Detail(
+            auth.token,
+            previousDetail == null ? '' : previousDetail.name,
+          ),
         ),
       ],
       child: Consumer<Auth>(
@@ -38,6 +53,7 @@ class MyApp extends StatelessWidget {
           ),
           routes: {
             BookingScreen.routeName: (ctx) => BookingScreen(),
+            DetailScreen.routeName: (ctx) => DetailScreen(),
           },
         ),
       ),

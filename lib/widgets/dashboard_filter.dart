@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/summary_list.dart';
 
 class DashboardFilter extends StatefulWidget {
   @override
@@ -35,6 +38,9 @@ class _DashboardFilterState extends State<DashboardFilter> {
                 height: 20,
               ),
               TextField(
+                onChanged: (text) {
+                  Provider.of<SummaryList>(context, listen: false).searchByName(text);
+                },
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Suche...',
