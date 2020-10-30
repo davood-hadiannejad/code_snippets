@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:visoonfrontend/providers/summary.dart';
 import 'package:visoonfrontend/screens/detail_screen.dart';
 
+import './table_item.dart';
 import './monthly_chart.dart';
 
 class MandantItem extends StatelessWidget {
@@ -15,12 +16,17 @@ class MandantItem extends StatelessWidget {
           height: double.infinity,
           child: ListView(
             children: [
-              FlatButton.icon(
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/');
-                },
-                label: Text('Zurück'),
-                icon: Icon(Icons.arrow_back_ios),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  FlatButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('/');
+                    },
+                    label: Text('Zurück'),
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -46,68 +52,7 @@ class MandantItem extends StatelessWidget {
               SizedBox(height: 50),
               Container(
                 width: 1200,
-                child: Table(
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  defaultColumnWidth: IntrinsicColumnWidth(),
-                  border: TableBorder.all(color: Colors.grey, width: 1),
-                  children: [
-                    TableRow(children: [
-                      TableCell(
-                        child: Center(
-                            child: Text(
-                          'Brand',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                      TableCell(
-                        child: Center(
-                            child: Text(
-                          'Goal',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                      TableCell(
-                          child: Center(
-                              child: Text('IST Stichtag',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)))),
-                      TableCell(
-                          child: Center(
-                              child: Text(
-                        'Kunden Forecast',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))),
-                      TableCell(
-                          child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                            child: Text('Projekt Forecast',
-                                style: TextStyle(fontWeight: FontWeight.bold))),
-                      )),
-                      TableCell(
-                          child: Center(
-                              child: Text(
-                        'IST + Forecast',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))),
-                      TableCell(
-                          child: Center(
-                              child: Text(
-                        'Status',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))),
-                    ]),
-                    TableRow(children: [
-                      TableCell(child: Center(child: Text('MTV'))),
-                      TableCell(child: Center(child: Text('Value'))),
-                      TableCell(child: Center(child: Text('Value'))),
-                      TableCell(child: Center(child: Text('Value'))),
-                      TableCell(child: Center(child: Text('Value'))),
-                      TableCell(child: Center(child: Text('Value'))),
-                      TableCell(child: Center(child: Text('Value'))),
-                    ]),
-                  ],
-                ),
+                child: TableItem()
               ),
               SizedBox(
                 height: 20,

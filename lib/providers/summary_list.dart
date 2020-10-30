@@ -43,7 +43,7 @@ class SummaryList with ChangeNotifier {
 
   Future<void> fetchAndSetSummaryList(String kind, {bool init=false}) async {
     var searchType = kind.toLowerCase();
-    var url = 'http://127.0.0.1:8002/api/dashboard/$searchType/?filter_gattung=TV';
+    var url = 'http://127.0.0.1:8002/api/dashboard/$searchType/?filter_gattung=TV&email=magdalena.idziak@visoon.de';
     try {
       final response = await http.get(
         url,
