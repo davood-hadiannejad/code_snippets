@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:visoonfrontend/providers/summary.dart';
 import 'package:visoonfrontend/screens/detail_screen.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:intl/intl.dart';
 
 import './dashboard_chart.dart';
+
+final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits:0);
+final currentYear = new DateTime.now().year.toString();
+final lastYear = (DateTime.now().year - 1).toString();
 
 class DashboardItem extends StatelessWidget {
   final Summary summaryItem;
@@ -20,9 +26,15 @@ class DashboardItem extends StatelessWidget {
           children: [
             Column(
               children: [
-                Text(
-                  summaryItem.name,
-                  style: Theme.of(context).textTheme.headline3,
+                Container(
+                  padding: EdgeInsets.only(left: 10),
+                  width: 490,
+                  height: 40,
+                  child: AutoSizeText(
+                    summaryItem.name,
+                    style: Theme.of(context).textTheme.headline4,
+                    maxLines: 1,
+                  ),
                 ),
                 SizedBox(height: 20),
                 Container(
@@ -41,13 +53,13 @@ class DashboardItem extends StatelessWidget {
                         TableCell(
                           child: Center(
                               child: Text(
-                            '2020',
+                            currentYear,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )),
                         ),
                         TableCell(
                             child: Center(
-                                child: Text('2019',
+                                child: Text(lastYear,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold)))),
                         TableCell(
@@ -67,9 +79,9 @@ class DashboardItem extends StatelessWidget {
                                       TextStyle(fontWeight: FontWeight.bold))),
                         )),
                         TableCell(
-                          child: Center(child: Text('Value')),
+                          child: Center(child: Text(summaryItem.goal[currentYear] != null ? formatter.format(summaryItem.goal[currentYear]) : '')),
                         ),
-                        TableCell(child: Center(child: Text('Value'))),
+                        TableCell(child: Center(child: Text(summaryItem.goal[lastYear] != null ? summaryItem.goal[lastYear].toString() : ''))),
                         TableCell(child: Center(child: Text('Value'))),
                       ]),
                       TableRow(
@@ -221,6 +233,7 @@ class DashboardItem extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pushNamed(
                       DetailScreen.routeName,
+                      arguments: {'pageType': 'mandant'}
                     );
                   },
                   child: Text(

@@ -42,19 +42,14 @@ class SummaryList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetSummaryList(String kind, {bool init=false}) async {
-    var url = '/api/dashboard/$kind/';
-    var extractedData;
+    var searchType = kind.toLowerCase();
+    var url = 'http://127.0.0.1:8002/api/dashboard/$searchType/?filter_gattung=TV';
     try {
-//      final response = await http.get(
-//        url,
-//        headers: {"Authorization": "Bearer $authToken"},
-//      );
-      //final extractedData = json.decode(response.body) as List<dynamic>;
-      if (kind == 'Mandant') {
-        extractedData = json.decode(dummyDataMandant) as List<dynamic>;
-      } else {
-        extractedData = json.decode(dummyData) as List<dynamic>;
-      }
+      final response = await http.get(
+        url,
+        headers: {"Authorization": "Bearer $authToken"},
+      );
+      final extractedData = json.decode(response.body) as List<dynamic>;
 
       if (extractedData == null) {
         return;
@@ -66,9 +61,10 @@ class SummaryList with ChangeNotifier {
           Summary(
             id: summary['id'],
             name: summary['name'],
-            stichtag: summary['stichtag'],
+            stichtag: summary['ist_stichtag'],
             forecast: summary['forecast'],
             gobalrate: summary['gobalrate'],
+            goal: summary['goal'],
           ),
         );
       });

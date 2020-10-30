@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:visoonfrontend/widgets/mandant_item.dart';
 
-import '../providers/summary_list.dart';
 import '../providers/detail.dart';
-import '../widgets/dashboard_filter.dart';
+import '../widgets/detail_filter.dart';
 import '../widgets/dashboard_item.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
@@ -16,12 +16,14 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> args = ModalRoute.of(context).settings.arguments;
+    print(args);
     return DefaultTabController(
       length: tabList.length,
       child: Scaffold(
         drawer: MainDrawer(),
         appBar: AppBar(
-          bottom: TabBar(
+          bottom: (args != null && args['pageType'] == 'customer') ? TabBar(
             onTap: (selectedTab) {
               //Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
             },
@@ -30,7 +32,7 @@ class DetailScreen extends StatelessWidget {
                       text: e,
                     ))
                 .toList(),
-          ),
+          ) : null,
           title: Text('Detailansicht'),
           actions: <Widget>[
             UserSelect(),
@@ -75,7 +77,7 @@ class DetailScreen extends StatelessWidget {
                         width: 1250,
                         child: Consumer<Detail>(
                           builder: (ctx, detailData, child) => Center(
-                            child: Text(detailData.name),
+                            child: MandantItem(),
                           ),
                         ),
                       );
@@ -83,7 +85,7 @@ class DetailScreen extends StatelessWidget {
                   }
                 },
               ),
-              DashboardFilter(),
+              DetailFilter(),
             ],
           )),
         ),

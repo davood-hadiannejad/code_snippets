@@ -32,7 +32,7 @@ class Detail with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
-      print(extractedData);
+
       name = extractedData['name'];
 
       if (init != true) {
