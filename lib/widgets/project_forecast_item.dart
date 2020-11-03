@@ -41,8 +41,63 @@ class ProjectForecastItem extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-
+              Container(
+                width: 1000,
+                child: DataTable(
+                  columns: const <DataColumn>[
+                    DataColumn(
+                      label: Text(
+                        'Medium',
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Brand',
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Goal (MN3)',
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Offene Projekte (MN3 bewertet)',
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Gebuchte Projekte (MN3)',
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Differenz',
+                      ),
+                    ),
+                  ],
+                  rows: <DataRow>[
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(Text('TV')),
+                        DataCell(Text('MTV')),
+                        DataCell(Text('600.000')),
+                        DataCell(Text('500.000')),
+                        DataCell(Text('50.000')),
+                        DataCell(Text('50.000')),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Projekte',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
               Container(
                 width: 1200,
                 child: DataTable(
