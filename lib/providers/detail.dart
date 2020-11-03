@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/http_exception.dart';
 
 
-String dummyData = '{"id": 1, "name" : "Volkswagen"}';
+String dummyData = '{"id": "vw", "name" : "Volkswagen"}';
 
 
 
@@ -19,7 +19,7 @@ class Detail with ChangeNotifier {
     this.name,
   );
 
-  Future<void> fetchAndSetDetail({init=false}) async {
+  Future<void> fetchAndSetDetail(String id, {init=false}) async {
     var url = '................../api/detail/{}/';
     try {
       final response = await http.get(

@@ -8,10 +8,17 @@ import '../widgets/user_select.dart';
 import '../providers/auth.dart';
 import '../widgets/main_drawer.dart';
 
-final tabList = ['Mandant', 'Kunde', 'Agentur', 'Konzern', 'Brand', 'Agenturnetzwerk'];
-
+final tabList = [
+  'Mandant',
+  'Kunde',
+  'Agentur',
+  'Konzern',
+  'Brand',
+  'Agenturnetzwerk'
+];
 
 class DashboardScreen extends StatelessWidget {
+  String activeTab = 'Mandant';
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -21,9 +28,15 @@ class DashboardScreen extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             onTap: (selectedTab) {
-              Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
+              Provider.of<SummaryList>(context, listen: false)
+                  .fetchAndSetSummaryList(tabList[selectedTab]);
+              activeTab = tabList[selectedTab];
             },
-            tabs: tabList.map((e) => Tab(text: e,)).toList(),
+            tabs: tabList
+                .map((e) => Tab(
+                      text: e,
+                    ))
+                .toList(),
           ),
           title: Text('Visoon Forecasting'),
           actions: <Widget>[
@@ -48,10 +61,14 @@ class DashboardScreen extends StatelessWidget {
           child: (Row(
             children: [
               FutureBuilder(
-                future: Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList('Mandant', init: true),
+                future: Provider.of<SummaryList>(context, listen: false)
+                    .fetchAndSetSummaryList('Mandant', init: true),
                 builder: (ctx, dataSnapshot) {
                   if (dataSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return Container(
+                      width: 1250,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   } else {
                     if (dataSnapshot.error != null) {
                       // ...
@@ -71,7 +88,7 @@ class DashboardScreen extends StatelessWidget {
                               ListView.builder(
                             itemCount: summaryData.items.length,
                             itemBuilder: (ctx, i) =>
-                                DashboardItem(summaryData.items[i]),
+                                DashboardItem(summaryData.items[i], activeTab),
                           ),
                         ),
                       );

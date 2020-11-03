@@ -29,16 +29,14 @@ class _BrandSelectState extends State<BrandSelect> {
             iconSize: 24,
             elevation: 16,
             onChanged: (String newValue) {
-              setState(() {
-                if (newValue == 'Filter Brand...') {
-                  return;
-                } else {
-                  setState(() {
-                    dropdownList.remove(newValue);
-                    filterList.add(newValue);
-                  });
-                }
-              });
+              if (newValue == 'Filter Brand...') {
+                return;
+              } else {
+                setState(() {
+                  dropdownList.remove(newValue);
+                  filterList.add(newValue);
+                });
+              }
             },
             items: dropdownList.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(

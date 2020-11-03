@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import './brand_select.dart';
 
-
 class DetailFilter extends StatefulWidget {
   @override
   _DetailFilterState createState() => _DetailFilterState();
@@ -49,9 +48,11 @@ class _DetailFilterState extends State<DetailFilter> {
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
-                    setState(() {
-                      isSelected = 'Gesamt';
-                    });
+                    if (this.mounted) {
+                      setState(() {
+                        isSelected = 'Gesamt';
+                      });
+                    }
                   },
                   child: Text(
                     'Gesamt',
@@ -67,9 +68,11 @@ class _DetailFilterState extends State<DetailFilter> {
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
-                    setState(() {
-                      isSelected = 'TV';
-                    });
+                    if (this.mounted) {
+                      setState(() {
+                        isSelected = 'TV';
+                      });
+                    }
                   },
                   child: Text(
                     'TV',
@@ -85,9 +88,11 @@ class _DetailFilterState extends State<DetailFilter> {
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
-                    setState(() {
-                      isSelected = 'Online';
-                    });
+                    if (this.mounted) {
+                      setState(() {
+                        isSelected = 'Online';
+                      });
+                    }
                   },
                   child: Text(
                     'Online',

@@ -9,6 +9,7 @@ import './providers/auth.dart';
 import './screens/dashboard_screen.dart';
 import './screens/booking_screen.dart';
 import './screens/detail_screen.dart';
+import './screens/project_forecast_screen.dart';
 
 void main() => runApp(VisoonApp());
 
@@ -54,6 +55,7 @@ class VisoonApp extends StatelessWidget {
           routes: {
             BookingScreen.routeName: (ctx) => BookingScreen(),
             DetailScreen.routeName: (ctx) => DetailScreen(),
+            ProjectForecastScreen.routeName: (ctx) => ProjectForecastScreen(),
           },
         ),
       ),

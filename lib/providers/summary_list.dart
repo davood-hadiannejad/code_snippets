@@ -7,18 +7,6 @@ import '../models/http_exception.dart';
 import './summary.dart';
 
 
-String dummyDataMandant = '[{"id": 1, "name" : "Viacom", "stichtag" : {"2020": 123.000, "2019": 123.000} , '
-    '"forecast" : {"2020": 123.000, "2019": 123.000} , "gobalrate" : {"2020": 123.000, "2019": 123.000}}, '
-    '{"id": 2, "name" : "Welt", "stichtag" : {"2020": 123.000, "2019": 123.000} , "forecast" : {"2020": 123.000, "2019": 123.000} , "gobalrate" : {"2020": 123.000, "2019": 123.000}},'
-    '{"id": 3, "name" : "Drittanbieter", "stichtag" : {"2020": 123.000, "2019": 123.000} , "forecast" : {"2020": 123.000, "2019": 123.000} , "gobalrate" : {"2020": 123.000, "2019": 123.000}}]';
-
-
-String dummyData = '[{"id": 1, "name" : "Volkswagen", "stichtag" : {"2020": 123.000, "2019": 123.000} , '
-    '"forecast" : {"2020": 123.000, "2019": 123.000} , "gobalrate" : {"2020": 123.000, "2019": 123.000}}, '
-    '{"id": 2, "name" : "Audi", "stichtag" : {"2020": 123.000, "2019": 123.000} , "forecast" : {"2020": 123.000, "2019": 123.000} , "gobalrate" : {"2020": 123.000, "2019": 123.000}},'
-    '{"id": 3, "name" : "BMW", "stichtag" : {"2020": 123.000, "2019": 123.000} , "forecast" : {"2020": 123.000, "2019": 123.000} , "gobalrate" : {"2020": 123.000, "2019": 123.000}}]';
-
-
 class SummaryList with ChangeNotifier {
   List<Summary> _items = [];
   List<Summary> _activeItems = [];
@@ -32,7 +20,7 @@ class SummaryList with ChangeNotifier {
     return [..._activeItems];
   }
 
-  Summary findById(int id) {
+  Summary findById(String id) {
     return _items.firstWhere((summary) => summary.id == id);
   }
 

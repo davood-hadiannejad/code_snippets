@@ -17,22 +17,12 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
-    print(args);
     return DefaultTabController(
       length: tabList.length,
       child: Scaffold(
         drawer: MainDrawer(),
         appBar: AppBar(
-          bottom: (args != null && args['pageType'] == 'customer') ? TabBar(
-            onTap: (selectedTab) {
-              //Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
-            },
-            tabs: tabList
-                .map((e) => Tab(
-                      text: e,
-                    ))
-                .toList(),
-          ) : null,
+          bottom: buildTabBar(args),
           title: Text('Detailansicht'),
           actions: <Widget>[
             UserSelect(),
@@ -57,10 +47,13 @@ class DetailScreen extends StatelessWidget {
             children: [
               FutureBuilder(
                 future: Provider.of<Detail>(context, listen: false)
-                    .fetchAndSetDetail(init: true),
+                    .fetchAndSetDetail(args['id'], init: true),
                 builder: (ctx, dataSnapshot) {
                   if (dataSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return Container(
+                      width: 1250,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   } else {
                     if (dataSnapshot.error != null) {
                       // ...
@@ -77,7 +70,7 @@ class DetailScreen extends StatelessWidget {
                         width: 1250,
                         child: Consumer<Detail>(
                           builder: (ctx, detailData, child) => Center(
-                            child: MandantItem(),
+                            child: MandantItem(detailData),
                           ),
                         ),
                       );
@@ -91,5 +84,82 @@ class DetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  TabBar buildTabBar(args) {
+    var pageType;
+    if (args == null) {
+      return null;
+    } else {
+      pageType = args['pageType'];
+    }
+
+    switch (pageType) {
+      case "Kunde":
+        {
+          return TabBar(
+            onTap: (selectedTab) {
+              //Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
+            },
+            tabs: tabList
+                .map((e) => Tab(
+                      text: e,
+                    ))
+                .toList(),
+          );
+        }
+        break;
+
+      case "Agentur":
+        {
+          return TabBar(
+            onTap: (selectedTab) {
+              //Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
+            },
+            tabs: tabList
+                .map((e) => Tab(
+                      text: e,
+                    ))
+                .toList(),
+          );
+        }
+        break;
+
+      case "Konzern":
+        {
+          return TabBar(
+            onTap: (selectedTab) {
+              //Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
+            },
+            tabs: tabList
+                .map((e) => Tab(
+                      text: e,
+                    ))
+                .toList(),
+          );
+        }
+        break;
+
+      case "Agenturnetzwerk":
+        {
+          return TabBar(
+            onTap: (selectedTab) {
+              //Provider.of<SummaryList>(context, listen: false).fetchAndSetSummaryList(tabList[selectedTab]);
+            },
+            tabs: tabList
+                .map((e) => Tab(
+                      text: e,
+                    ))
+                .toList(),
+          );
+        }
+        break;
+
+      default:
+        {
+          return null;
+        }
+        break;
+    }
   }
 }

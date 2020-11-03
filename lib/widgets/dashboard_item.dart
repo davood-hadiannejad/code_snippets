@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:visoonfrontend/providers/summary.dart';
-import 'package:visoonfrontend/screens/detail_screen.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 
+import '../screens/project_forecast_screen.dart';
+import '../providers/summary.dart';
+import '../screens/detail_screen.dart';
 import './dashboard_chart.dart';
 
-final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits:0);
+final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 final currentYear = new DateTime.now().year.toString();
 final lastYear = (DateTime.now().year - 1).toString();
 
 class DashboardItem extends StatelessWidget {
   final Summary summaryItem;
+  final String activeTab;
 
-  DashboardItem(this.summaryItem);
+  DashboardItem(this.summaryItem, this.activeTab);
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +81,17 @@ class DashboardItem extends StatelessWidget {
                                       TextStyle(fontWeight: FontWeight.bold))),
                         )),
                         TableCell(
-                          child: Center(child: Text(summaryItem.goal[currentYear] != null ? formatter.format(summaryItem.goal[currentYear]) : '')),
+                          child: Center(
+                              child: Text(summaryItem.goal[currentYear] != null
+                                  ? formatter
+                                      .format(summaryItem.goal[currentYear])
+                                  : '')),
                         ),
-                        TableCell(child: Center(child: Text(summaryItem.goal[lastYear] != null ? summaryItem.goal[lastYear].toString() : ''))),
+                        TableCell(
+                            child: Center(
+                                child: Text(summaryItem.goal[lastYear] != null
+                                    ? summaryItem.goal[lastYear].toString()
+                                    : ''))),
                         TableCell(child: Center(child: Text('Value'))),
                       ]),
                       TableRow(
@@ -200,7 +210,14 @@ class DashboardItem extends StatelessWidget {
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
                             minWidth: 120,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  ProjectForecastScreen.routeName,
+                                  arguments: {
+                                    'pageType': activeTab,
+                                    'id': summaryItem.id,
+                                  });
+                            },
                             child: Text(
                               'Projektforecast',
                               style: TextStyle(fontSize: 12),
@@ -231,10 +248,11 @@ class DashboardItem extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                   textColor: Colors.white,
                   onPressed: () {
-                    Navigator.of(context).pushNamed(
-                      DetailScreen.routeName,
-                      arguments: {'pageType': 'mandant'}
-                    );
+                    Navigator.of(context)
+                        .pushNamed(DetailScreen.routeName, arguments: {
+                      'pageType': activeTab,
+                      'id': summaryItem.id,
+                    });
                   },
                   child: Text(
                     'Monatsübersicht',
