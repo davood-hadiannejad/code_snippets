@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/project_forecast_item.dart';
-import '../providers/detail.dart';
+import '../providers/project_forecast.dart';
 import '../widgets/project_forecast_side_item.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
@@ -40,8 +40,8 @@ class ProjectForecastScreen extends StatelessWidget {
         child: (Row(
           children: [
             FutureBuilder(
-              future: Provider.of<Detail>(context, listen: false)
-                  .fetchAndSetDetail(args['id'], init: true),
+              future: Provider.of<ProjectForecast>(context, listen: false)
+                  .fetchAndSetDetail(init: true),
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(
@@ -62,7 +62,7 @@ class ProjectForecastScreen extends StatelessWidget {
                   } else {
                     return Container(
                       width: 1250,
-                      child: Consumer<Detail>(
+                      child: Consumer<ProjectForecast>(
                         builder: (ctx, forecastData, child) => Center(
                           child: ProjectForecastItem(forecastData),
                         ),

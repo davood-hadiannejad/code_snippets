@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
+import '../screens/project_forecast_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -15,7 +15,6 @@ class MainDrawer extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           Divider(),
-
           ListTile(
             leading: Icon(Icons.dashboard),
             title: Text('Dashboard'),
@@ -25,10 +24,20 @@ class MainDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.format_list_bulleted),
-            title: Text('Buchungen'),
+            leading: Icon(Icons.people),
+            title: Text('Kunden Forecast'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed('/booking');
+              Navigator.of(context)
+                  .pushNamed(ProjectForecastScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.remove_red_eye),
+            title: Text('Projekt Forecast'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamed(ProjectForecastScreen.routeName);
             },
           ),
           Divider(),

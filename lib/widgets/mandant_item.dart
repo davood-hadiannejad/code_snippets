@@ -26,7 +26,7 @@ class MandantItem extends StatelessWidget {
                 children: [
                   FlatButton.icon(
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/');
+                      Navigator.of(context).pop();
                     },
                     label: Text('Zurück'),
                     icon: Icon(Icons.arrow_back_ios),

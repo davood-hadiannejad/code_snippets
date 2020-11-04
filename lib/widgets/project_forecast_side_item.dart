@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import './brand_select.dart';
+import './new_project_forecast_dialog.dart';
 
-enum AddAction { CANCEL, ACCEPT }
 
 class ProjectForecastSideItem extends StatefulWidget {
   @override
@@ -13,47 +13,7 @@ class ProjectForecastSideItem extends StatefulWidget {
 
 class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
   String isSelected = 'offen';
-  Future<void> _asyncAddDialog() async {
-    return showDialog<AddAction>(
-      context: context,
-      barrierDismissible: false, // user must tap button for close dialog!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Neues Projekt hinzufügen'),
-          content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextField(
-                    onChanged: (text) {
-                      //Provider.of<SummaryList>(context, listen: false)
-                      //    .searchByName(text);
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Projekt Name',
-                    ),
-                  ),
-                ],
-              )),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text('Abbrechen'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            RaisedButton(
-              child: const Text('Speichern'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              color: Theme.of(context).primaryColor,
-            )
-          ],
-        );
-      },
-    );
-  }
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,7 +35,7 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
               SizedBox(height: 20,),
               Center(
                 child: RaisedButton.icon(
-                  onPressed: _asyncAddDialog,
+                  onPressed: () => newProjectForecastDialog(context),
                   label: Text('Neues Projekt'),
                   icon: Icon(Icons.add),
                 ),

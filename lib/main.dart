@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './providers/detail.dart';
+import './providers/project_forecast.dart';
 import './providers/summary_list.dart';
 import './screens/signup_screen.dart';
 import './screens/splash_screen.dart';
 import './providers/auth.dart';
 import './screens/dashboard_screen.dart';
-import './screens/booking_screen.dart';
 import './screens/detail_screen.dart';
 import './screens/project_forecast_screen.dart';
 
@@ -33,6 +33,12 @@ class VisoonApp extends StatelessWidget {
             previousDetail == null ? '' : previousDetail.name,
           ),
         ),
+        ChangeNotifierProxyProvider<Auth, ProjectForecast>(
+          update: (ctx, auth, previousProjectForecast) => ProjectForecast(
+            auth.token,
+            previousProjectForecast == null ? '' : previousProjectForecast.name,
+          ),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -53,7 +59,6 @@ class VisoonApp extends StatelessWidget {
                 : SignUpScreen(),
           ),
           routes: {
-            BookingScreen.routeName: (ctx) => BookingScreen(),
             DetailScreen.routeName: (ctx) => DetailScreen(),
             ProjectForecastScreen.routeName: (ctx) => ProjectForecastScreen(),
           },

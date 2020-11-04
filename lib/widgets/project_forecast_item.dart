@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../providers/detail.dart';
-import './monthly_chart.dart';
+import '../providers/project_forecast.dart';
+
 
 class ProjectForecastItem extends StatelessWidget {
-  final Detail forecastData;
+  final ProjectForecast forecastData;
 
   ProjectForecastItem(this.forecastData);
 
@@ -24,7 +24,7 @@ class ProjectForecastItem extends StatelessWidget {
               children: [
                 FlatButton.icon(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/');
+                    Navigator.of(context).pop();
                   },
                   label: Text('Zurück'),
                   icon: Icon(Icons.arrow_back_ios),
