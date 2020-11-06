@@ -22,12 +22,19 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   String statusDropdownValue;
 
   int mN3;
-  int cashRabatt;
-  int naturalRabatt;
-  var _cashRabattController = TextEditingController();
-  var _naturalRabattController = TextEditingController();
+  int cashRabattPercent;
+  int naturalRabattPercent;
+  var _cashRabattPercentController = TextEditingController();
+  var _naturalRabattPercentController = TextEditingController();
   var _mN3Controller = TextEditingController();
   var _dateController = TextEditingController();
+  num mN2;
+  num mN1;
+  num cashRabatt;
+  num mB1;
+  num naturalRabatt;
+  num mB3;
+  num globalRate;
 
   _addMN3() {
     setState(() {
@@ -39,30 +46,30 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     });
   }
 
-  _addCashRabatt() {
+  _addcashRabattPercent() {
     setState(() {
-      if (_cashRabattController.text != '') {
-        cashRabatt = num.parse(_cashRabattController.text);
+      if (_cashRabattPercentController.text != '') {
+        cashRabattPercent = num.parse(_cashRabattPercentController.text);
       } else {
-        cashRabatt = null;
+        cashRabattPercent = null;
       }
     });
   }
 
-  _addNaturalRabatt() {
+  _addnaturalRabattPercent() {
     setState(() {
-      if (_naturalRabattController.text != '') {
-        naturalRabatt = num.parse(_naturalRabattController.text);
+      if (_naturalRabattPercentController.text != '') {
+        naturalRabattPercent = num.parse(_naturalRabattPercentController.text);
       } else {
-        naturalRabatt = null;
+        naturalRabattPercent = null;
       }
     });
   }
 
   @override
   void dispose() {
-    _cashRabattController.dispose();
-    _naturalRabattController.dispose();
+    _cashRabattPercentController.dispose();
+    _naturalRabattPercentController.dispose();
     _mN3Controller.dispose();
     _dateController.dispose();
     super.dispose();
@@ -72,8 +79,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   void initState() {
     super.initState();
     _mN3Controller.addListener(_addMN3);
-    _cashRabattController.addListener(_addCashRabatt);
-    _naturalRabattController.addListener(_addNaturalRabatt);
+    _cashRabattPercentController.addListener(_addcashRabattPercent);
+    _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
   }
 
   bool enableNeukunde = false;
@@ -252,6 +259,17 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
 
   @override
   Widget build(BuildContext context) {
+    if (mN3 != null && cashRabattPercent != null && naturalRabattPercent != null) {
+      mN2 = mN3 / 0.99;  // wg. 1% Skonto
+      mN1 = mN2 / 0.85; // wg. 15% Agenturrabatt
+      mB1 = mN1 / (1 - cashRabattPercent/100);
+      cashRabatt = mB1 - mN1;
+      mB3 = mB1 *  (1 + naturalRabattPercent/100);
+      naturalRabatt = mB3 - mB1;
+      globalRate = (1 - (mN3 / mB3)) * 100;
+    }
+
+
     return SingleChildScrollView(
         child: Row(
       children: [
@@ -442,10 +460,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
             Container(
               width: 250,
               child: TextField(
-                controller: _naturalRabattController,
+                controller: _naturalRabattPercentController,
                 decoration: InputDecoration(
                   hintText: 'Natural Rabatt',
-                  helperText: (naturalRabatt != null) ? 'Natural Rabatt' : null,
+                  helperText: (naturalRabattPercent != null) ? 'Natural Rabatt' : null,
                   suffixText: '%',
                 ),
                 keyboardType: TextInputType.number,
@@ -455,10 +473,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
             Container(
               width: 250,
               child: TextField(
-                controller: _cashRabattController,
+                controller: _cashRabattPercentController,
                 decoration: InputDecoration(
                   hintText: 'Cash Rabatt',
-                  helperText: (cashRabatt != null) ? 'Cash Rabatt' : null,
+                  helperText: (cashRabattPercent != null) ? 'Cash Rabatt' : null,
                   suffixText: '%',
                 ),
                 keyboardType: TextInputType.number,
@@ -559,14 +577,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       TableCell(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text((mN3 != null &&
-                                  cashRabatt != null &&
-                                  naturalRabatt != null)
-                              ? formatter.format(mN3 +
-                                  (mN3 * cashRabatt / 100) +
-                                  ((mN3 + (mN3 * cashRabatt / 100)) *
-                                      naturalRabatt /
-                                      100))
+                          child: Text((mB3 != null )
+                              ? formatter.format(mB3)
                               : ''),
                         ),
                       ),
@@ -582,13 +594,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       TableCell(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text((mN3 != null &&
-                                  cashRabatt != null &&
-                                  naturalRabatt != null)
-                              ? formatter.format(
-                                  (mN3 + (mN3 * cashRabatt / 100)) *
-                                      naturalRabatt /
-                                      100)
+                          child: Text((naturalRabatt != null)
+                              ? formatter.format(naturalRabatt)
                               : ''),
                         ),
                       ),
@@ -605,9 +612,9 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                         TableCell(
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text((mN3 != null && cashRabatt != null)
+                              child: Text((mB1 != null)
                                   ? formatter
-                                      .format(mN3 + (mN3 * cashRabatt / 100))
+                                      .format(mB1)
                                   : '')),
                         ),
                       ],
@@ -624,8 +631,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                         TableCell(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text((mN3 != null && cashRabatt != null)
-                                ? formatter.format(mN3 * cashRabatt / 100)
+                            child: Text((cashRabatt != null)
+                                ? formatter.format(cashRabatt)
                                 : ''),
                           ),
                         ),
@@ -660,25 +667,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                         TableCell(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text((mN3 != null &&
-                                    cashRabatt != null &&
-                                    naturalRabatt != null)
-                                ? ((1 -
-                                                (mN3 /
-                                                    (mN3 +
-                                                        (mN3 *
-                                                            cashRabatt /
-                                                            100) +
-                                                        ((mN3 +
-                                                                (mN3 *
-                                                                    cashRabatt /
-                                                                    100)) *
-                                                            naturalRabatt /
-                                                            100)))) *
-                                            100)
-                                        .toInt()
-                                        .toString() +
-                                    '%'
+                            child: Text((globalRate != null)
+                                ? globalRate.toStringAsFixed(1) + '%'
                                 : ''),
                           ),
                         ),
