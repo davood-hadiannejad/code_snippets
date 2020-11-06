@@ -1,6 +1,9 @@
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
+
+final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 
 class ProjectForecastForm extends StatefulWidget {
   ProjectForecastForm({Key key}) : super(key: key);
@@ -18,7 +21,60 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   String bewertungDropdownValue;
   String statusDropdownValue;
 
+  int mN3;
+  int cashRabatt;
+  int naturalRabatt;
+  var _cashRabattController = TextEditingController();
+  var _naturalRabattController = TextEditingController();
+  var _mN3Controller = TextEditingController();
   var _dateController = TextEditingController();
+
+  _addMN3() {
+    setState(() {
+      if (_mN3Controller.text != '') {
+        mN3 = num.parse(_mN3Controller.text);
+      } else {
+        mN3 = null;
+      }
+    });
+  }
+
+  _addCashRabatt() {
+    setState(() {
+      if (_cashRabattController.text != '') {
+        cashRabatt = num.parse(_cashRabattController.text);
+      } else {
+        cashRabatt = null;
+      }
+    });
+  }
+
+  _addNaturalRabatt() {
+    setState(() {
+      if (_naturalRabattController.text != '') {
+        naturalRabatt = num.parse(_naturalRabattController.text);
+      } else {
+        naturalRabatt = null;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _cashRabattController.dispose();
+    _naturalRabattController.dispose();
+    _mN3Controller.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _mN3Controller.addListener(_addMN3);
+    _cashRabattController.addListener(_addCashRabatt);
+    _naturalRabattController.addListener(_addNaturalRabatt);
+  }
 
   bool enableNeukunde = false;
 
@@ -195,13 +251,6 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   }
 
   @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    _dateController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Row(
@@ -353,7 +402,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                (bewertungDropdownValue != null) ? Container(width: 100,child: Text('Bewertung')) : SizedBox(width: 100,),
+                SizedBox(width: 20,),
                 Container(
                   width: 100,
                   child: DropdownButton<String>(
@@ -390,40 +442,40 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
             Container(
               width: 250,
               child: TextField(
-                onChanged: (text) {
-                  //Provider.of<ProjectForecast>(context, listen: false)
-                  //    .searchByName(text);
-                },
+                controller: _naturalRabattController,
                 decoration: InputDecoration(
-                  hintText: 'MN3 €',
+                  hintText: 'Natural Rabatt',
+                  helperText: (naturalRabatt != null) ? 'Natural Rabatt' : null,
+                  suffixText: '%',
                 ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
             ),
             Container(
               width: 250,
               child: TextField(
-                onChanged: (text) {
-                  //Provider.of<ProjectForecast>(context, listen: false)
-                  //    .searchByName(text);
-                },
+                controller: _cashRabattController,
                 decoration: InputDecoration(
-                  hintText: 'Natural Rabatt in %',
+                  hintText: 'Cash Rabatt',
+                  helperText: (cashRabatt != null) ? 'Cash Rabatt' : null,
+                  suffixText: '%',
                 ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
-            ),
-            SizedBox(
-              height: 10,
             ),
             Container(
               width: 250,
               child: TextField(
-                onChanged: (text) {
-                  //Provider.of<ProjectForecast>(context, listen: false)
-                  //    .searchByName(text);
-                },
+                controller: _mN3Controller,
                 decoration: InputDecoration(
-                  hintText: 'Cash Rabatt in %',
+                  hintText: 'MN 3',
+                  helperText: (mN3 != null) ? 'MN 3' : null,
+                  suffixText: '€',
                 ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
             ),
             Row(
@@ -481,6 +533,185 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               ),
             ),
           ],
+        ),
+        Container(
+          height: 440,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(height: 20),
+              Container(
+                width: 250,
+                child: Table(
+                  columnWidths: {
+                    0: FixedColumnWidth(100.0),
+                    1: FixedColumnWidth(150.0)
+                  },
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  border: TableBorder.all(color: Colors.grey, width: 1),
+                  children: [
+                    TableRow(children: [
+                      TableCell(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('MB 3'),
+                      )),
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text((mN3 != null &&
+                                  cashRabatt != null &&
+                                  naturalRabatt != null)
+                              ? formatter.format(mN3 +
+                                  (mN3 * cashRabatt / 100) +
+                                  ((mN3 + (mN3 * cashRabatt / 100)) *
+                                      naturalRabatt /
+                                      100))
+                              : ''),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      TableCell(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Natural Rabatt',
+                        ),
+                      )),
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text((mN3 != null &&
+                                  cashRabatt != null &&
+                                  naturalRabatt != null)
+                              ? formatter.format(
+                                  (mN3 + (mN3 * cashRabatt / 100)) *
+                                      naturalRabatt /
+                                      100)
+                              : ''),
+                        ),
+                      ),
+                    ]),
+                    TableRow(
+                      children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'MB 1',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text((mN3 != null && cashRabatt != null)
+                                  ? formatter
+                                      .format(mN3 + (mN3 * cashRabatt / 100))
+                                  : '')),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Cash Rabatt',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text((mN3 != null && cashRabatt != null)
+                                ? formatter.format(mN3 * cashRabatt / 100)
+                                : ''),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'MN 3',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  mN3 != null ? formatter.format(mN3) : '')),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Global Rate',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text((mN3 != null &&
+                                    cashRabatt != null &&
+                                    naturalRabatt != null)
+                                ? ((1 -
+                                                (mN3 /
+                                                    (mN3 +
+                                                        (mN3 *
+                                                            cashRabatt /
+                                                            100) +
+                                                        ((mN3 +
+                                                                (mN3 *
+                                                                    cashRabatt /
+                                                                    100)) *
+                                                            naturalRabatt /
+                                                            100)))) *
+                                            100)
+                                        .toInt()
+                                        .toString() +
+                                    '%'
+                                : ''),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'MN 3 bewertet',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                (mN3 != null && bewertungDropdownValue != null)
+                                    ? formatter.format(mN3 *
+                                        int.parse(bewertungDropdownValue) /
+                                        100)
+                                    : ''),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ],
     ));

@@ -8,9 +8,7 @@ class BrandSelect extends StatefulWidget {
 }
 
 class _BrandSelectState extends State<BrandSelect> {
-  String dropdownValue;
   List<String> dropdownList = [
-    'Filter Brand...',
     'Nickelodeon',
     'MTV',
     'NTV',
@@ -24,19 +22,17 @@ class _BrandSelectState extends State<BrandSelect> {
         Container(
           width: 200,
           child: DropdownButton<String>(
-            value: 'Filter Brand...',
+            value: null,
+            hint: Text('Filter Brand...'),
             //icon: Icon(Icons.arrow_downward),
             iconSize: 24,
             elevation: 16,
             onChanged: (String newValue) {
-              if (newValue == 'Filter Brand...') {
-                return;
-              } else {
-                setState(() {
-                  dropdownList.remove(newValue);
-                  filterList.add(newValue);
-                });
-              }
+              setState(() {
+                dropdownList.remove(newValue);
+                filterList.add(newValue);
+              });
+
             },
             items: dropdownList.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
