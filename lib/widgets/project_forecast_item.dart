@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../providers/project_list.dart';
 import './project_forecast_dialog.dart';
+import './aob_item.dart';
 
 class ProjectForecastItem extends StatefulWidget {
   final ProjectList forecastData;
@@ -47,55 +47,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
               ),
             ),
             SizedBox(height: 20),
-            Container(
-              width: 1000,
-              child: DataTable(
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'Medium',
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Brand',
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Goal (MN3)',
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Offene Projekte (MN3 bewertet)',
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Gebuchte Projekte (MN3)',
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Differenz',
-                    ),
-                  ),
-                ],
-                rows: <DataRow>[
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text('TV')),
-                      DataCell(Text('MTV')),
-                      DataCell(Text('600.000')),
-                      DataCell(Text('500.000')),
-                      DataCell(Text('50.000')),
-                      DataCell(Text('50.000')),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            AobItem(),
             SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.all(8.0),

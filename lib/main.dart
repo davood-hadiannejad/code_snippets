@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './providers/aob_list.dart';
 import './providers/detail.dart';
 import './providers/project_list.dart';
 import './providers/summary_list.dart';
@@ -37,6 +38,12 @@ class VisoonApp extends StatelessWidget {
           update: (ctx, auth, previousProjectList) => ProjectList(
             auth.token,
             previousProjectList == null ? [] : previousProjectList.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, AOBList>(
+          update: (ctx, auth, previousAOBList) => AOBList(
+            auth.token,
+            previousAOBList == null ? [] : previousAOBList.items,
           ),
         ),
       ],
