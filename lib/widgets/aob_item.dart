@@ -10,7 +10,7 @@ class AobItem extends StatefulWidget {
 }
 
 class _AobItemState extends State<AobItem> {
-  List<AOB> aob_list;
+  List<AOB> myAobList;
 
   @override
   void initState() {
@@ -20,7 +20,7 @@ class _AobItemState extends State<AobItem> {
 
   @override
   Widget build(BuildContext context) {
-    aob_list = Provider.of<AOBList>(context).items;
+    myAobList = Provider.of<AOBList>(context).items;
     return Container(
       width: 1000,
       child: DataTable(
@@ -56,7 +56,7 @@ class _AobItemState extends State<AobItem> {
             ),
           ),
         ],
-        rows: aob_list
+        rows: myAobList
             .map((aob) => DataRow(cells: [
                   DataCell(Text(aob.medium)),
                   DataCell(Text(aob.brand)),
