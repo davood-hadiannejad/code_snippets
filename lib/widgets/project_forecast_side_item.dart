@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import './brand_select.dart';
-import './new_project_forecast_dialog.dart';
+import './project_forecast_dialog.dart';
 
 
 class ProjectForecastSideItem extends StatefulWidget {
@@ -35,7 +35,7 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
               SizedBox(height: 20,),
               Center(
                 child: RaisedButton.icon(
-                  onPressed: () => newProjectForecastDialog(context),
+                  onPressed: () => projectForecastDialog(context),
                   label: Text('Neues Projekt'),
                   icon: Icon(Icons.add),
                 ),

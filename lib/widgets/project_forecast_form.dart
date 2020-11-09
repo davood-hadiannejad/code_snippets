@@ -1,12 +1,19 @@
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
+import '../providers/project_list.dart';
+import '../providers/project.dart';
 
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 
 class ProjectForecastForm extends StatefulWidget {
-  ProjectForecastForm({Key key}) : super(key: key);
+
+  final int projectId;
+
+  ProjectForecastForm({this.projectId});
 
   @override
   _ProjectForecastFormState createState() => _ProjectForecastFormState();
@@ -26,6 +33,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   int naturalRabattPercent;
   var _cashRabattPercentController = TextEditingController();
   var _naturalRabattPercentController = TextEditingController();
+  var _projectNameController = TextEditingController();
+  var _commentController = TextEditingController();
   var _mN3Controller = TextEditingController();
   var _dateController = TextEditingController();
   num mN2;
@@ -81,6 +90,22 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     _mN3Controller.addListener(_addMN3);
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
+    if (widget.projectId != null) {
+      Project project = Provider.of<ProjectList>(context, listen: false).findById(widget.projectId);
+      _mN3Controller.text = project.mn3.toString();
+      _naturalRabattPercentController.text = project.naturalRabatt.toString();
+      _cashRabattPercentController.text = project.cashRabatt.toString();
+      _projectNameController.text = project.name;
+      _commentController.text = project.comment;
+      _dateController.text = project.dueDate;
+      bewertungDropdownValue = project.bewertung.toString();
+
+      customerDropdownValue = project.customer.toString();
+      agencyDropdownValue = project.agency.toString();
+      brandDropdownValue = project.brand.toString();
+      mediumDropdownValue = project.medium.toString();
+      statusDropdownValue = project.status.toString();
+    }
   }
 
   bool enableNeukunde = false;
@@ -279,10 +304,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
             Container(
               width: 250,
               child: TextField(
-                onChanged: (text) {
-                  //Provider.of<ProjectForecast>(context, listen: false)
-                  //    .searchByName(text);
-                },
+                controller: _projectNameController,
                 decoration: InputDecoration(
                   hintText: 'Projekt Name',
                 ),
@@ -409,6 +431,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                     items: <String>[
                       'MTV',
                       'NTV',
+                      'Nick',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -545,6 +568,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               width: 250,
               height: 70,
               child: TextField(
+                controller: _commentController,
                 decoration: InputDecoration(hintText: 'Kommentar'),
                 minLines: 2,
                 maxLines: 2,

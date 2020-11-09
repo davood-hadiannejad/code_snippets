@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './providers/detail.dart';
-import './providers/project_forecast.dart';
+import './providers/project_list.dart';
 import './providers/summary_list.dart';
 import './screens/signup_screen.dart';
 import './screens/splash_screen.dart';
@@ -33,10 +33,10 @@ class VisoonApp extends StatelessWidget {
             previousDetail == null ? '' : previousDetail.name,
           ),
         ),
-        ChangeNotifierProxyProvider<Auth, ProjectForecast>(
-          update: (ctx, auth, previousProjectForecast) => ProjectForecast(
+        ChangeNotifierProxyProvider<Auth, ProjectList>(
+          update: (ctx, auth, previousProjectList) => ProjectList(
             auth.token,
-            previousProjectForecast == null ? '' : previousProjectForecast.name,
+            previousProjectList == null ? [] : previousProjectList.items,
           ),
         ),
       ],
