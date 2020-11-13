@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+
+final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 
 class MonthlyChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -7,11 +10,11 @@ class MonthlyChart extends StatelessWidget {
 
   MonthlyChart(this.seriesList, {this.animate});
 
-  factory MonthlyChart.withSampleData() {
+  factory MonthlyChart.withData(goalData, istData, kundenData, projektData) {
     return new MonthlyChart(
-      createSampleData(),
+      createData(goalData, istData, kundenData, projektData),
       // Disable animations for image tests.
-      animate: false,
+      animate: true,
     );
   }
 
@@ -38,11 +41,11 @@ class MonthlyChart extends StatelessWidget {
           cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
           // Set show measures to true to display measures in series legend,
           // when the datum is selected.
-          showMeasures: false,
+          showMeasures: true,
           // Optionally provide a measure formatter to format the measure value.
           // If none is specified the value is formatted as a decimal.
           measureFormatter: (num value) {
-            return value == null ? '-' : '${value}k';
+            return value == null ? '-' : formatter.format(value);
           },
         ),
       ],
@@ -50,20 +53,20 @@ class MonthlyChart extends StatelessWidget {
   }
 
   /// Create series list with multiple series
-  static List<charts.Series<OrdinalSales, String>> createSampleData() {
+  static List<charts.Series<OrdinalSales, String>> createData(goalData, istData, kundenData, projektData) {
     final zielData = [
-      new OrdinalSales('Januar', 200),
-      new OrdinalSales('Februar', 200),
-      new OrdinalSales('März', 200),
-      new OrdinalSales('April', 200),
-      new OrdinalSales('Mai', 200),
-      new OrdinalSales('Juni', 200),
-      new OrdinalSales('Juli', 200),
-      new OrdinalSales('August', 200),
-      new OrdinalSales('September', 200),
-      new OrdinalSales('Oktober', 200),
-      new OrdinalSales('November', 200),
-      new OrdinalSales('Dezember', 200),
+      new OrdinalSales('Januar', goalData['m1']),
+      new OrdinalSales('Februar', goalData['m2']),
+      new OrdinalSales('März', goalData['m3']),
+      new OrdinalSales('April', goalData['m4']),
+      new OrdinalSales('Mai', goalData['m5']),
+      new OrdinalSales('Juni', goalData['m6']),
+      new OrdinalSales('Juli', goalData['m7']),
+      new OrdinalSales('August', goalData['m8']),
+      new OrdinalSales('September', goalData['m9']),
+      new OrdinalSales('Oktober', goalData['m10']),
+      new OrdinalSales('November', goalData['m11']),
+      new OrdinalSales('Dezember', goalData['m12']),
     ];
 
     final kundenforecastDataB = [
@@ -97,25 +100,25 @@ class MonthlyChart extends StatelessWidget {
     ];
 
     final stichtagDataB = [
-      new OrdinalSales('Januar', 45),
-      new OrdinalSales('Februar', 54),
-      new OrdinalSales('März', 55),
-      new OrdinalSales('April', 68),
-      new OrdinalSales('Mai', 41),
-      new OrdinalSales('Juni', 25),
-      new OrdinalSales('Juli', 88),
-      new OrdinalSales('August', 54),
-      new OrdinalSales('September', 31),
-      new OrdinalSales('Oktober', 12),
-      new OrdinalSales('November', 78),
-      new OrdinalSales('Dezember', 88),
+      new OrdinalSales('Januar', istData['m1']),
+      new OrdinalSales('Februar', istData['m2']),
+      new OrdinalSales('März', istData['m3']),
+      new OrdinalSales('April', istData['m4']),
+      new OrdinalSales('Mai', istData['m5']),
+      new OrdinalSales('Juni', istData['m6']),
+      new OrdinalSales('Juli', istData['m7']),
+      new OrdinalSales('August', istData['m8']),
+      new OrdinalSales('September', istData['m9']),
+      new OrdinalSales('Oktober', istData['m10']),
+      new OrdinalSales('November', istData['m11']),
+      new OrdinalSales('Dezember', istData['m12']),
     ];
 
     return [
       new charts.Series<OrdinalSales, String>(
         id: 'Ziel',
         seriesCategory: 'A',
-        domainFn: (OrdinalSales sales, _) => sales.year,
+        domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: zielData,
         colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xff007cba)),
@@ -123,7 +126,7 @@ class MonthlyChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
         id: 'Kundenforecast',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
+        domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: kundenforecastDataB,
         colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.3)),
@@ -131,7 +134,7 @@ class MonthlyChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
         id: 'Projektforecast',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
+        domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: projektforecastDataB,
         colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.6)),
@@ -139,7 +142,7 @@ class MonthlyChart extends StatelessWidget {
       new charts.Series<OrdinalSales, String>(
         id: 'Ist Stichtag',
         seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
+        domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: stichtagDataB,
         colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xffe20644)),
@@ -148,10 +151,10 @@ class MonthlyChart extends StatelessWidget {
   }
 }
 
-/// Sample ordinal data type.
+/// sales data type.
 class OrdinalSales {
-  final String year;
-  final int sales;
+  final String month;
+  final double sales;
 
-  OrdinalSales(this.year, this.sales);
+  OrdinalSales(this.month, this.sales);
 }

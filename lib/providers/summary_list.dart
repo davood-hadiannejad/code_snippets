@@ -47,7 +47,7 @@ class SummaryList with ChangeNotifier {
       extractedData.forEach((summary) {
         loadedSummaryList.add(
           Summary(
-            id: summary['id'],
+            id: summary['name_slug'],
             name: summary['name'],
             stichtag: summary['ist_stichtag'],
             forecast: summary['forecast'],

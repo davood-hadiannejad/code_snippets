@@ -4,7 +4,6 @@ import 'package:visoonfrontend/widgets/mandant_item.dart';
 
 import '../providers/detail.dart';
 import '../widgets/detail_filter.dart';
-import '../widgets/dashboard_item.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
 import '../widgets/main_drawer.dart';
@@ -14,76 +13,92 @@ final tabList = ['Goal und Forecast', 'Detailansicht'];
 class DetailScreen extends StatelessWidget {
   static const routeName = '/detail';
 
+  void gotoDashboard(BuildContext context) async {
+    await Navigator.of(context).pushReplacementNamed('/');
+  }
+
+  void loadDashboard(BuildContext context) {
+    Future.microtask(() {
+      gotoDashboard(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
-    return DefaultTabController(
-      length: tabList.length,
-      child: Scaffold(
-        drawer: MainDrawer(),
-        appBar: AppBar(
-          bottom: buildTabBar(args),
-          title: Text('Detailansicht'),
-          actions: <Widget>[
-            UserSelect(),
-            SizedBox(
-              width: 30,
-            ),
-            IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/');
-                Provider.of<Auth>(context, listen: false).logout();
-              },
-            ),
-            SizedBox(
-              width: 30,
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: (Row(
-            children: [
-              FutureBuilder(
-                future: Provider.of<Detail>(context, listen: false)
-                    .fetchAndSetDetail(args['id'], init: true),
-                builder: (ctx, dataSnapshot) {
-                  if (dataSnapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      width: 1250,
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  } else {
-                    if (dataSnapshot.error != null) {
-                      // ...
-                      // Do error handling stuff
-                      print(dataSnapshot.error);
-                      return Container(
-                          width: 1250,
-                          child: Center(
-                            child: Text(
-                                'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
-                          ));
-                    } else {
-                      return Container(
-                        width: 1250,
-                        child: Consumer<Detail>(
-                          builder: (ctx, detailData, child) => Center(
-                            child: MandantItem(detailData),
-                          ),
-                        ),
-                      );
-                    }
-                  }
+    if (args == null) {
+      loadDashboard(context);
+    } else {
+      return DefaultTabController(
+        length: tabList.length,
+        child: Scaffold(
+          drawer: MainDrawer(),
+          appBar: AppBar(
+            bottom: buildTabBar(args),
+            title: Text('Detailansicht'),
+            actions: <Widget>[
+              UserSelect(),
+              SizedBox(
+                width: 30,
+              ),
+              IconButton(
+                icon: Icon(Icons.exit_to_app),
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed('/');
+                  Provider.of<Auth>(context, listen: false).logout();
                 },
               ),
-              DetailFilter(),
+              SizedBox(
+                width: 30,
+              ),
             ],
-          )),
+          ),
+          body: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: (Row(
+              children: [
+                FutureBuilder(
+                  future: Provider.of<Detail>(context, listen: false)
+                      .fetchAndSetDetail(args['pageType'], args['id'],
+                          init: true),
+                  builder: (ctx, dataSnapshot) {
+                    if (dataSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Container(
+                        width: 1250,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    } else {
+                      if (dataSnapshot.error != null) {
+                        // ...
+                        // Do error handling stuff
+                        print(dataSnapshot.error);
+                        return Container(
+                            width: 1250,
+                            child: Center(
+                              child: Text(
+                                  'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
+                            ));
+                      } else {
+                        return Container(
+                          width: 1250,
+                          child: Consumer<Detail>(
+                            builder: (ctx, detailData, child) => Center(
+                              child: MandantItem(detailData),
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                ),
+                DetailFilter(),
+              ],
+            )),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   TabBar buildTabBar(args) {
