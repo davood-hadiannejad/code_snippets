@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Project with ChangeNotifier {
-  final int id;
+  final String id;
   final String name;
   final String customer;
   final String medium;

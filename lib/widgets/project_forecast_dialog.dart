@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './project_forecast_form.dart';
+import '../providers/project_list.dart';
 
 enum AddAction { CANCEL, ACCEPT }
 
@@ -12,21 +14,6 @@ Future<void> projectForecastDialog(context, {projectId}) async {
       return AlertDialog(
         title: (projectId != null) ? Text('Projekt bearbeiten') : Text('Neues Projekt hinzufügen'),
         content: ProjectForecastForm(projectId: projectId,),
-        actions: <Widget>[
-          FlatButton(
-            child: const Text('Abbrechen'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          RaisedButton(
-            child: const Text('Speichern'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            color: Theme.of(context).primaryColor,
-          )
-        ],
       );
     },
   );

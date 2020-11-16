@@ -81,8 +81,7 @@ class ProjectList with ChangeNotifier {
         url,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      //final extractedData = json.decode(response.body) as List<dynamic>;
-      final extractedData = json.decode(dummyData) as List<dynamic>;
+      final extractedData = json.decode(response.body) as List<dynamic>;
 
       if (extractedData == null) {
         return;
@@ -115,6 +114,64 @@ class ProjectList with ChangeNotifier {
       }
     } catch (error) {
       throw (error);
+    }
+  }
+
+  Future<void> addProject(
+    String name,
+    String customer,
+    String medium,
+    String brand,
+    String agency,
+    double mn3,
+    double cashRabatt,
+    double naturalRabatt,
+    int bewertung,
+    String comment,
+    String dueDate,
+    String status,
+  ) async {
+    var url = 'http://127.0.0.1:8002/api/projects/';
+    try {
+      final response = await http.post(url, headers: {
+        "Authorization": "Bearer $authToken"
+      }, body: {
+        'name': name,
+        'name_slug': name,
+        'kunde': customer,
+        'verkaeufer': 'magdalena.idziak@visoon.de',
+        'medium': medium,
+        'brand': brand,
+        'agentur': agency,
+        'mn3': mn3.toString(),
+        'cashRabatt': cashRabatt.toString(),
+        'naturalRabatt': naturalRabatt.toString(),
+        'bewertung': bewertung.toString(),
+        'comment': comment,
+        'dueDate': dueDate,
+        'status': status,
+      });
+      final extractedData = json.decode(response.body) as dynamic;
+      print(response.body);
+      _items.add(Project(
+        id: extractedData['id'],
+        name: name,
+        customer: customer,
+        medium: medium,
+        brand: brand,
+        agency: agency,
+        mn3: mn3,
+        cashRabatt: cashRabatt,
+        naturalRabatt: naturalRabatt,
+        bewertung: bewertung,
+        comment: comment,
+        dueDate: dueDate,
+        status: status,
+      ));
+
+      notifyListeners();
+    } catch (error) {
+      throw error;
     }
   }
 }
