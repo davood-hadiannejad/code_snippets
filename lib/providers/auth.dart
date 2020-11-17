@@ -29,7 +29,7 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
       String email, String password) async {
     final url =
-        'http://127.0.0.1:8002/api/token/';
+        'http://hammbwdsc02:96/api/token/';
     try {
       final response = await http.post(
         url,

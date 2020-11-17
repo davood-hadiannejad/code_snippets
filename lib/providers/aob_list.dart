@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/http_exception.dart';
 import './aob.dart';
 
 String dummyData = '[{"medium": "TV", "brand": "Nick", "goal": 600000, "offen": 500000, "gebucht": 5000}, {"medium": "TV", "brand": "MTV", "goal": 800000, "offen": 500000, "gebucht": 10000}]';
@@ -20,7 +19,7 @@ class AOBList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetAOBList({bool init = false}) async {
-    var url = 'http://127.0.0.1:8002/api/aob/';
+    var url = 'http://hammbwdsc02:96/api/aob/';
     try {
       final response = await http.get(
         url,

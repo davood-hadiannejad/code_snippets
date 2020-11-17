@@ -75,7 +75,7 @@ class ProjectList with ChangeNotifier {
 
   Future<void> fetchAndSetProjectList({bool init = false}) async {
     var url =
-        'http://127.0.0.1:8002/api/projects/?filter_gattung=TV&email=magdalena.idziak@visoon.de';
+        'http://hammbwdsc02:96/api/projects/?filter_gattung=TV&email=magdalena.idziak@visoon.de';
     try {
       final response = await http.get(
         url,

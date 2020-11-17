@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
+
 import '../providers/project_list.dart';
 import '../providers/project.dart';
 

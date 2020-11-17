@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import './providers/aob_list.dart';
 import './providers/detail.dart';
 import './providers/project_list.dart';
+import './providers/customer_forecast_list.dart';
 import './providers/summary_list.dart';
 import './screens/signup_screen.dart';
 import './screens/splash_screen.dart';
@@ -11,6 +12,7 @@ import './providers/auth.dart';
 import './screens/dashboard_screen.dart';
 import './screens/detail_screen.dart';
 import './screens/project_forecast_screen.dart';
+import './screens/customer_forecast_screen.dart';
 
 void main() => runApp(VisoonApp());
 
@@ -40,6 +42,12 @@ class VisoonApp extends StatelessWidget {
             previousProjectList == null ? [] : previousProjectList.items,
           ),
         ),
+        ChangeNotifierProxyProvider<Auth, CustomerForecastList>(
+          update: (ctx, auth, previousCustomerForecastList) => CustomerForecastList(
+            auth.token,
+            previousCustomerForecastList == null ? [] : previousCustomerForecastList.items,
+          ),
+        ),
         ChangeNotifierProxyProvider<Auth, AOBList>(
           update: (ctx, auth, previousAOBList) => AOBList(
             auth.token,
@@ -67,6 +75,7 @@ class VisoonApp extends StatelessWidget {
           ),
           routes: {
             DetailScreen.routeName: (ctx) => DetailScreen(),
+            CustomerForecastScreen.routeName: (ctx) => CustomerForecastScreen(),
             ProjectForecastScreen.routeName: (ctx) => ProjectForecastScreen(),
           },
         ),

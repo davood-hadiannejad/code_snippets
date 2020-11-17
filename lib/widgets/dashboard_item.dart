@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
+import 'package:visoonfrontend/screens/customer_forecast_screen.dart';
 
 import '../screens/project_forecast_screen.dart';
 import '../providers/summary.dart';
@@ -193,7 +194,14 @@ class DashboardItem extends StatelessWidget {
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
                             minWidth: 120,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  CustomerForecastScreen.routeName,
+                                  arguments: {
+                                    'pageType': activeTab,
+                                    'id': summaryItem.id,
+                                  });
+                            },
                             child: Text(
                               'Kundenforecast',
                               style: TextStyle(fontSize: 12),

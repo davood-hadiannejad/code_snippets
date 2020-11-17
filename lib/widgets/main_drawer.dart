@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/customer_forecast_screen.dart';
 import '../providers/auth.dart';
 import '../screens/project_forecast_screen.dart';
 
@@ -28,7 +29,7 @@ class MainDrawer extends StatelessWidget {
             title: Text('Kunden Forecast'),
             onTap: () {
               Navigator.of(context)
-                  .pushNamed(ProjectForecastScreen.routeName);
+                  .pushNamed(CustomerForecastScreen.routeName);
             },
           ),
           Divider(),
