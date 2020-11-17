@@ -39,6 +39,7 @@ class VerkaeuferList with ChangeNotifier {
               name: verkaeufer['name_advendio'],
               email: verkaeufer['email'],
               selected: verkaeufer['is_current_user'],
+              isCurrentUser: verkaeufer['is_current_user'],
             ),
           );
         }
