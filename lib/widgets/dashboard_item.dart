@@ -9,8 +9,10 @@ import '../screens/detail_screen.dart';
 import './dashboard_chart.dart';
 
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
-final currentYear = new DateTime.now().year.toString();
-final lastYear = (DateTime.now().year - 1).toString();
+final formatterPercent =
+    new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
+final currentYear = '2020';
+final lastYear = '2019';
 
 class DashboardItem extends StatelessWidget {
   final Summary summaryItem;
@@ -83,16 +85,16 @@ class DashboardItem extends StatelessWidget {
                         )),
                         TableCell(
                           child: Center(
-                              child: Text(summaryItem.goal[currentYear] != null
-                                  ? formatter
-                                      .format(summaryItem.goal[currentYear])
-                                  : '')),
+                              child: Text(
+                            formatter.format(summaryItem.goal['goal']),
+                          )),
                         ),
                         TableCell(
                             child: Center(
-                                child: Text(summaryItem.goal[lastYear] != null
-                                    ? summaryItem.goal[lastYear].toString()
-                                    : ''))),
+                                child: Text(
+                          formatter
+                              .format(summaryItem.goal['goal_letztes_jahr']),
+                        ))),
                         TableCell(child: Center(child: Text('Value'))),
                       ]),
                       TableRow(
@@ -106,9 +108,16 @@ class DashboardItem extends StatelessWidget {
                                         fontWeight: FontWeight.bold))),
                           )),
                           TableCell(
-                            child: Center(child: Text('Value')),
+                            child: Center(
+                                child: Text(formatter
+                                    .format(summaryItem.stichtag['ist']))),
                           ),
-                          TableCell(child: Center(child: Text('Value'))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(
+                            formatter.format(
+                                summaryItem.stichtag['ist_letztes_jahr']),
+                          ))),
                           TableCell(child: Center(child: Text('Value'))),
                         ],
                       ),
@@ -153,9 +162,18 @@ class DashboardItem extends StatelessWidget {
                             )),
                           )),
                           TableCell(
-                            child: Center(child: Text('Value')),
+                            child: Center(
+                                child: Text(
+                              formatter.format(summaryItem.forecast['kunde'] +
+                                  summaryItem.forecast['projekt']),
+                            )),
                           ),
-                          TableCell(child: Center(child: Text('Value'))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(
+                            formatter
+                                .format(summaryItem.forecast['letztes_jahr']),
+                          ))),
                           TableCell(child: Center(child: Text('Value'))),
                         ],
                       ),
@@ -171,9 +189,20 @@ class DashboardItem extends StatelessWidget {
                             )),
                           )),
                           TableCell(
-                            child: Center(child: Text('Value')),
+                            child: Center(
+                                child: Text(
+                              formatter.format(summaryItem.forecast['kunde'] +
+                                  summaryItem.forecast['projekt'] +
+                                  summaryItem.stichtag['ist']),
+                            )),
                           ),
-                          TableCell(child: Center(child: Text('Value'))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(
+                            formatter.format(
+                                summaryItem.forecast['letztes_jahr'] +
+                                    summaryItem.stichtag['ist_letztes_jahr']),
+                          ))),
                           TableCell(child: Center(child: Text('Value'))),
                         ],
                       )
@@ -208,7 +237,7 @@ class DashboardItem extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 20),
-                          Text('€ 300.000'),
+                          Text(formatter.format(summaryItem.forecast['kunde'])),
                         ],
                       ),
                       Row(
@@ -232,7 +261,8 @@ class DashboardItem extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 20),
-                          Text('€ 100.000'),
+                          Text(formatter
+                              .format(summaryItem.forecast['projekt'])),
                         ],
                       ),
                     ],
@@ -307,12 +337,16 @@ class DashboardItem extends StatelessWidget {
                               child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
-                                child: Text('2020 IST ',
+                                child: Text('$currentYear IST ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold))),
                           )),
                           TableCell(
-                            child: Center(child: Text('Value')),
+                            child: Center(
+                                child: (summaryItem.gobalrate['rate'] != null)
+                                    ? Text(formatterPercent
+                                        .format(summaryItem.gobalrate['rate'] / 100))
+                                    : Text('N/A')),
                           ),
                         ]),
                         TableRow(
@@ -321,12 +355,17 @@ class DashboardItem extends StatelessWidget {
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
-                                  child: Text('2020 Forecast',
+                                  child: Text('$currentYear Forecast',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold))),
                             )),
                             TableCell(
-                              child: Center(child: Text('Value')),
+                              child: Center(
+                                  child: (summaryItem.gobalrate['forecast'] !=
+                                          null)
+                                      ? Text(formatterPercent.format(
+                                          summaryItem.gobalrate['forecast'] /  100))
+                                      : Text('N/A')),
                             ),
                           ],
                         ),
@@ -337,13 +376,13 @@ class DashboardItem extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
                                   child: Text(
-                                '2020 Gesamt',
+                                '$currentYear Gesamt',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               )),
                             )),
                             TableCell(
-                              child: Center(child: Text('Value')),
-                            ),
+                              child: Center(child: Text('value gesamt')),
+                            )
                           ],
                         ),
                         TableRow(
@@ -353,14 +392,20 @@ class DashboardItem extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
                                   child: Text(
-                                '2019 IST',
+                                '$lastYear IST',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               )),
                             )),
                             TableCell(
-                              child: Center(child: Text('Value')),
+                              child: Center(
+                                  child: (summaryItem
+                                              .gobalrate['rate_letztes_jahr'] !=
+                                          null)
+                                      ? Text(formatterPercent.format(summaryItem
+                                          .gobalrate['rate_letztes_jahr'] / 100))
+                                      : Text('N/A')),
                             ),
                           ],
                         ),
