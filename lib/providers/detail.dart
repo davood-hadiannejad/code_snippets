@@ -28,7 +28,7 @@ class Detail with ChangeNotifier {
   Future<void> fetchAndSetDetail(String kind, String id, {init=false}) async {
     print('load $kind $id');
     var searchType = kind.toLowerCase();
-    var url = 'http://hammbwdsc02:96/api/detail/$searchType/$id/?email=magdalena.idziak@visoon.de';
+    var url = 'http://hammbwdsc02:96/api/detail/$searchType/$id/';
     try {
       final response = await http.get(
         url,
