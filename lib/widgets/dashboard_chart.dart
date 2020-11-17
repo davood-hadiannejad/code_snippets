@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+
+final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 
 class DashboardChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -7,9 +10,9 @@ class DashboardChart extends StatelessWidget {
 
   DashboardChart(this.seriesList, {this.animate});
 
-  factory DashboardChart.withSampleData() {
+  factory DashboardChart.withData(summaryData) {
     return new DashboardChart(
-      createSampleData(),
+      createData(summaryData),
       // Disable animations for image tests.
       animate: false,
     );
@@ -38,11 +41,11 @@ class DashboardChart extends StatelessWidget {
           cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
           // Set show measures to true to display measures in series legend,
           // when the datum is selected.
-          showMeasures: false,
+          showMeasures: true,
           // Optionally provide a measure formatter to format the measure value.
           // If none is specified the value is formatted as a decimal.
           measureFormatter: (num value) {
-            return value == null ? '-' : '${value}k';
+            return value == null ? '-' : formatter.format(value);
           },
         ),
       ],
@@ -50,21 +53,21 @@ class DashboardChart extends StatelessWidget {
   }
 
   /// Create series list with multiple series
-  static List<charts.Series<OrdinalSales, String>> createSampleData() {
+  static List<charts.Series<OrdinalSales, String>> createData(summaryData) {
     final zielData = [
-      new OrdinalSales('2020', 200),
+      new OrdinalSales('2020', summaryData.goal['goal']),
     ];
 
     final kundenforecastDataB = [
-      new OrdinalSales('2020', 75),
+      new OrdinalSales('2020', summaryData.forecast['kunde']),
     ];
 
     final projektforecastDataB = [
-      new OrdinalSales('2020', 20),
+      new OrdinalSales('2020', summaryData.forecast['projekt']),
     ];
 
     final stichtagDataB = [
-      new OrdinalSales('2020', 45),
+      new OrdinalSales('2020', summaryData.stichtag['ist']),
     ];
 
     return [
@@ -107,7 +110,7 @@ class DashboardChart extends StatelessWidget {
 /// Sample ordinal data type.
 class OrdinalSales {
   final String year;
-  final int sales;
+  final double sales;
 
   OrdinalSales(this.year, this.sales);
 }
