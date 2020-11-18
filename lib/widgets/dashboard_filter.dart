@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/verkaeufer.dart';
 import '../providers/summary_list.dart';
 
 class DashboardFilter extends StatefulWidget {
+  final String activeTab;
+  final Verkaeufer selectedUser;
+
+  DashboardFilter(this.activeTab, this.selectedUser);
+
   @override
   _DashboardFilterState createState() => _DashboardFilterState();
 }
@@ -61,6 +67,8 @@ class _DashboardFilterState extends State<DashboardFilter> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'Gesamt';
+                        Provider.of<SummaryList>(context, listen: false)
+                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser);
                       });
                     }
                   },
@@ -81,6 +89,8 @@ class _DashboardFilterState extends State<DashboardFilter> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'TV';
+                        Provider.of<SummaryList>(context, listen: false)
+                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'TV');
                       });
                     }
                   },
@@ -101,6 +111,8 @@ class _DashboardFilterState extends State<DashboardFilter> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'Online';
+                        Provider.of<SummaryList>(context, listen: false)
+                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'Online');
                       });
                     }
                   },

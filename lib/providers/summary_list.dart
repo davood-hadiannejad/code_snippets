@@ -30,18 +30,24 @@ class SummaryList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetSummaryList(String kind, {bool init=false, Verkaeufer verkaeufer}) async {
+  Future<void> fetchAndSetSummaryList(String kind, {bool init=false, Verkaeufer verkaeufer, String medium}) async {
     var searchType = kind.toLowerCase();
-    var url = 'http://hammbwdsc02:96/api/dashboard/$searchType/';
-
+    Map<String, String> uriQuery = {};
     if (verkaeufer != null) {
-      url = url + '?email=' + verkaeufer.email;
+      uriQuery['email'] = verkaeufer.email;
     }
-    print(url);
+
+    if (medium != null) {
+      uriQuery['filter_gattung'] = medium;
+    }
+
+    var uri = Uri.http('hammbwdsc02:96', '/api/dashboard/$searchType/', uriQuery);
+
+    print(uri);
 
     try {
       final response = await http.get(
-        url,
+        uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
       final extractedData = json.decode(response.body) as List<dynamic>;

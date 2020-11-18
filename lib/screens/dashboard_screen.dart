@@ -19,7 +19,12 @@ final tabList = [
   'Agenturnetzwerk'
 ];
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   Verkaeufer selectedVerkaufer;
   String activeTab = 'Mandant';
 
@@ -33,9 +38,11 @@ class DashboardScreen extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             onTap: (selectedTab) {
+              setState(() {
+                activeTab = tabList[selectedTab];
+              });
               Provider.of<SummaryList>(context, listen: false)
-                  .fetchAndSetSummaryList(tabList[selectedTab], verkaeufer: selectedVerkaufer);
-              activeTab = tabList[selectedTab];
+                  .fetchAndSetSummaryList(activeTab, verkaeufer: selectedVerkaufer);
             },
             tabs: tabList
                 .map((e) =>
@@ -68,7 +75,7 @@ class DashboardScreen extends StatelessWidget {
             children: [
               FutureBuilder(
                 future: Provider.of<SummaryList>(context, listen: false)
-                    .fetchAndSetSummaryList('Mandant', init: true, verkaeufer: selectedVerkaufer),
+                    .fetchAndSetSummaryList(activeTab, init: true, verkaeufer: selectedVerkaufer),
                 builder: (ctx, dataSnapshot) {
                   if (dataSnapshot.connectionState == ConnectionState.waiting) {
                     return Container(
@@ -103,7 +110,7 @@ class DashboardScreen extends StatelessWidget {
                   }
                 },
               ),
-              DashboardFilter(),
+              DashboardFilter(activeTab, selectedVerkaufer),
             ],
           )),
         ),
