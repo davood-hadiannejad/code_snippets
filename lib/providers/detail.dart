@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/http_exception.dart';
+import './verkaeufer.dart';
 
 
 
@@ -25,7 +25,7 @@ class Detail with ChangeNotifier {
     this.name,
   );
 
-  Future<void> fetchAndSetDetail(String kind, String id, {init=false}) async {
+  Future<void> fetchAndSetDetail(String kind, String id, {init=false, Verkaeufer verkaeufer}) async {
     print('load $kind $id');
     var searchType = kind.toLowerCase();
     var url = 'http://hammbwdsc02:96/api/detail/$searchType/$id/';

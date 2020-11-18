@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/http_exception.dart';
+import './verkaeufer.dart';
 import './project.dart';
 
 String dummyData =
@@ -73,7 +73,7 @@ class ProjectList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetProjectList({bool init = false}) async {
+  Future<void> fetchAndSetProjectList({bool init = false, Verkaeufer verkaeufer}) async {
     var url =
         'http://hammbwdsc02:96/api/projects/?filter_gattung=TV&email=magdalena.idziak@visoon.de';
     try {

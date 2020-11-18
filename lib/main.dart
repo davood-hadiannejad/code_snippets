@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:visoonfrontend/providers/verkaeufer.dart';
 
 import './providers/aob_list.dart';
+import './providers/verkaeufer_list.dart';
 import './providers/detail.dart';
 import './providers/project_list.dart';
 import './providers/customer_forecast_list.dart';
@@ -52,6 +54,12 @@ class VisoonApp extends StatelessWidget {
           update: (ctx, auth, previousAOBList) => AOBList(
             auth.token,
             previousAOBList == null ? [] : previousAOBList.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, VerkaeuferList>(
+          update: (ctx, auth, previousVerkaeuferList) => VerkaeuferList(
+            auth.token,
+            previousVerkaeuferList == null ? [] : previousVerkaeuferList.items,
           ),
         ),
       ],

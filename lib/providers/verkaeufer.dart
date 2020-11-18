@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 class Verkaeufer with ChangeNotifier {
   final String email;
   final String name;
-  final bool selected;
-  final bool isCurrentUser;
+  bool selected;
+  bool isCurrentUser;
 
   Verkaeufer({
     @required this.email,

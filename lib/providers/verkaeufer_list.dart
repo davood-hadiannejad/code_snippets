@@ -18,14 +18,35 @@ class VerkaeuferList with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetVerkaeuferList({bool init = false}) async {
+  Verkaeufer get selectedVerkaufer {
+    if (_items.isNotEmpty) {
+      return _items.firstWhere((verkaeufer) => verkaeufer.selected == true);
+    }
+  }
+
+  Verkaeufer findByEmail(String email) {
+    return _items.firstWhere((verkaeufer) => verkaeufer.email == email);
+  }
+
+  void selectVerkaeuferByEmail(String email) {
+    _items.forEach((verkaeufer) {
+      if (verkaeufer.email == email) {
+        verkaeufer.selected = true;
+      } else {
+        verkaeufer.selected = false;
+      }
+    });
+    notifyListeners();
+  }
+
+  Future<void> fetchAndSetVerkaeuferList() async {
     var url = 'http://hammbwdsc02:96/api/verkaeufer/';
     try {
       final response = await http.get(
         url,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(response.body) as List<dynamic>;
+      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
       //final extractedData = json.decode(dummyData) as List<dynamic>;
 
       if (extractedData == null) {
@@ -33,22 +54,21 @@ class VerkaeuferList with ChangeNotifier {
       }
       final List<Verkaeufer> loadedVerkaeuferList = [];
       extractedData.forEach((verkaeufer) {
-        if (verkaeufer['status' == 'AKTIV']) {
+        if (verkaeufer['status'] == 'AKTIV') {
           loadedVerkaeuferList.add(
             Verkaeufer(
               name: verkaeufer['name_advendio'],
               email: verkaeufer['email'],
-              selected: verkaeufer['is_current_user'],
-              isCurrentUser: verkaeufer['is_current_user'],
+              selected: true, //verkaeufer['is_current_user'],
+              isCurrentUser: false, //verkaeufer['is_current_user'],
             ),
           );
         }
       });
       _items = loadedVerkaeuferList;
 
-      if (init != true) {
-        notifyListeners();
-      }
+      notifyListeners();
+
     } catch (error) {
       throw (error);
     }

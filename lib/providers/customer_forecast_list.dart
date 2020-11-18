@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/http_exception.dart';
+import './verkaeufer.dart';
 import './customer_forecast.dart';
 
 String dummyData =
@@ -34,9 +34,14 @@ class CustomerForecastList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetCustomerForecastList({bool init = false}) async {
+  Future<void> fetchAndSetCustomerForecastList({bool init = false, Verkaeufer verkaeufer}) async {
     var url =
-        'http://hammbwdsc02:96/api/customer-forecast/?filter_gattung=TV&email=magdalena.idziak@visoon.de';
+        'http://hammbwdsc02:96/api/customer-forecast/';
+
+    if (verkaeufer != null) {
+      url = url + '?email=' + verkaeufer.email;
+    }
+
     try {
       final response = await http.get(
         url,

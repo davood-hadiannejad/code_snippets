@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import './verkaeufer.dart';
 import '../models/http_exception.dart';
 import './summary.dart';
 
@@ -29,9 +30,15 @@ class SummaryList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetSummaryList(String kind, {bool init=false}) async {
+  Future<void> fetchAndSetSummaryList(String kind, {bool init=false, Verkaeufer verkaeufer}) async {
     var searchType = kind.toLowerCase();
-    var url = 'http://hammbwdsc02:96/api/dashboard/$searchType/?email=magdalena.idziak@visoon.de';
+    var url = 'http://hammbwdsc02:96/api/dashboard/$searchType/';
+
+    if (verkaeufer != null) {
+      url = url + '?email=' + verkaeufer.email;
+    }
+    print(url);
+
     try {
       final response = await http.get(
         url,

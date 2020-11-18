@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/verkaeufer.dart';
+import '../providers/verkaeufer_list.dart';
 import '../providers/summary_list.dart';
 import '../widgets/dashboard_filter.dart';
 import '../widgets/dashboard_item.dart';
@@ -18,9 +20,12 @@ final tabList = [
 ];
 
 class DashboardScreen extends StatelessWidget {
+  Verkaeufer selectedVerkaufer;
   String activeTab = 'Mandant';
+
   @override
   Widget build(BuildContext context) {
+    selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
     return DefaultTabController(
       length: tabList.length,
       child: Scaffold(
@@ -29,13 +34,14 @@ class DashboardScreen extends StatelessWidget {
           bottom: TabBar(
             onTap: (selectedTab) {
               Provider.of<SummaryList>(context, listen: false)
-                  .fetchAndSetSummaryList(tabList[selectedTab]);
+                  .fetchAndSetSummaryList(tabList[selectedTab], verkaeufer: selectedVerkaufer);
               activeTab = tabList[selectedTab];
             },
             tabs: tabList
-                .map((e) => Tab(
-                      text: e,
-                    ))
+                .map((e) =>
+                Tab(
+                  text: e,
+                ))
                 .toList(),
           ),
           title: Text('Visoon Forecasting'),
@@ -62,7 +68,7 @@ class DashboardScreen extends StatelessWidget {
             children: [
               FutureBuilder(
                 future: Provider.of<SummaryList>(context, listen: false)
-                    .fetchAndSetSummaryList('Mandant', init: true),
+                    .fetchAndSetSummaryList('Mandant', init: true, verkaeufer: selectedVerkaufer),
                 builder: (ctx, dataSnapshot) {
                   if (dataSnapshot.connectionState == ConnectionState.waiting) {
                     return Container(
@@ -86,10 +92,11 @@ class DashboardScreen extends StatelessWidget {
                         child: Consumer<SummaryList>(
                           builder: (ctx, summaryData, child) =>
                               ListView.builder(
-                            itemCount: summaryData.items.length,
-                            itemBuilder: (ctx, i) =>
-                                DashboardItem(summaryData.items[i], activeTab),
-                          ),
+                                itemCount: summaryData.items.length,
+                                itemBuilder: (ctx, i) =>
+                                    DashboardItem(
+                                        summaryData.items[i], activeTab),
+                              ),
                         ),
                       );
                     }

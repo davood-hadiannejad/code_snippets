@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/verkaeufer_list.dart';
+import '../providers/verkaeufer.dart';
 
 class UserSelect extends StatefulWidget {
   UserSelect({Key key}) : super(key: key);
@@ -8,12 +11,23 @@ class UserSelect extends StatefulWidget {
 }
 
 class _UserSelectState extends State<UserSelect> {
-  String dropdownValue = 'Johannes Jacob';
+  List<Verkaeufer> verkaeuferList;
+  Verkaeufer selectedVerkaufer;
+
+  @override
+  void initState() {
+    if (Provider.of<VerkaeuferList>(context, listen: false).items.isEmpty) {
+      Provider.of<VerkaeuferList>(context, listen: false).fetchAndSetVerkaeuferList();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    verkaeuferList = Provider.of<VerkaeuferList>(context).items;
+    selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
     return DropdownButton<String>(
-      value: dropdownValue,
+      value: (selectedVerkaufer != null) ? selectedVerkaufer.email : null,
       //icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
@@ -26,23 +40,14 @@ class _UserSelectState extends State<UserSelect> {
         height: 1,
         color: Theme.of(context).accentColor,
       ),
-      onChanged: (String newValue) {
-        if (this.mounted) {
-          setState(() {
-            dropdownValue = newValue;
-          });
-        }
+      onChanged: (String email) {
+
+        Provider.of<VerkaeuferList>(context, listen: false).selectVerkaeuferByEmail(email);
       },
-      items: <String>[
-        'Gesamt',
-        'Johannes Jacob',
-        'Thomas Günther',
-        'Frederik Wurst',
-        'Lars Müller'
-      ].map<DropdownMenuItem<String>>((String value) {
+      items: verkaeuferList.map<DropdownMenuItem<String>>((Verkaeufer verkaeufer) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: verkaeufer.email,
+          child: Text(verkaeufer.name),
         );
       }).toList(),
     );
