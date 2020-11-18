@@ -27,6 +27,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   Verkaeufer selectedVerkaufer;
   String activeTab = 'Mandant';
+  String isSelected = 'Gesamt';
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onTap: (selectedTab) {
               setState(() {
                 activeTab = tabList[selectedTab];
+                isSelected = 'Gesamt';
               });
               Provider.of<SummaryList>(context, listen: false)
                   .fetchAndSetSummaryList(activeTab, verkaeufer: selectedVerkaufer);
@@ -110,7 +112,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   }
                 },
               ),
-              DashboardFilter(activeTab, selectedVerkaufer),
+              DashboardFilter(activeTab, selectedVerkaufer, isSelected),
             ],
           )),
         ),

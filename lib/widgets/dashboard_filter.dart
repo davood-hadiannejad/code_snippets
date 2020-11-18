@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/verkaeufer.dart';
@@ -8,15 +7,15 @@ import '../providers/summary_list.dart';
 class DashboardFilter extends StatefulWidget {
   final String activeTab;
   final Verkaeufer selectedUser;
+  String isSelected;
 
-  DashboardFilter(this.activeTab, this.selectedUser);
+  DashboardFilter(this.activeTab, this.selectedUser, this.isSelected);
 
   @override
   _DashboardFilterState createState() => _DashboardFilterState();
 }
 
 class _DashboardFilterState extends State<DashboardFilter> {
-  String isSelected = 'Gesamt';
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +58,14 @@ class _DashboardFilterState extends State<DashboardFilter> {
               Center(
                 child: FlatButton(
                   minWidth: 200,
-                  color: (isSelected == 'Gesamt')
+                  color: (widget.isSelected == 'Gesamt')
                       ? Theme.of(context).accentColor
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
                     if (this.mounted) {
                       setState(() {
-                        isSelected = 'Gesamt';
+                        widget.isSelected = 'Gesamt';
                         Provider.of<SummaryList>(context, listen: false)
                             .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser);
                       });
@@ -81,14 +80,14 @@ class _DashboardFilterState extends State<DashboardFilter> {
               Center(
                 child: FlatButton(
                   minWidth: 200,
-                  color: (isSelected == 'TV')
+                  color: (widget.isSelected == 'TV')
                       ? Theme.of(context).accentColor
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
                     if (this.mounted) {
                       setState(() {
-                        isSelected = 'TV';
+                        widget.isSelected = 'TV';
                         Provider.of<SummaryList>(context, listen: false)
                             .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'TV');
                       });
@@ -103,14 +102,14 @@ class _DashboardFilterState extends State<DashboardFilter> {
               Center(
                 child: FlatButton(
                   minWidth: 200,
-                  color: (isSelected == 'Online')
+                  color: (widget.isSelected == 'Online')
                       ? Theme.of(context).accentColor
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
                     if (this.mounted) {
                       setState(() {
-                        isSelected = 'Online';
+                        widget.isSelected = 'Online';
                         Provider.of<SummaryList>(context, listen: false)
                             .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'Online');
                       });
