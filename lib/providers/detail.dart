@@ -25,13 +25,25 @@ class Detail with ChangeNotifier {
     this.name,
   );
 
-  Future<void> fetchAndSetDetail(String kind, String id, {init=false, Verkaeufer verkaeufer}) async {
-    print('load $kind $id');
+  Future<void> fetchAndSetDetail(String kind, String id, {init=false, Verkaeufer verkaeufer, String medium}) async {
     var searchType = kind.toLowerCase();
-    var url = 'http://hammbwdsc02:96/api/detail/$searchType/$id/';
+    Map<String, String> uriQuery = {};
+
+    if (verkaeufer != null) {
+      uriQuery['email'] = verkaeufer.email;
+    }
+
+    if (medium != null) {
+      uriQuery['filter_gattung'] = medium;
+    }
+
+    var uri = Uri.http('hammbwdsc02:96', '/api/detail/$searchType/$id/', uriQuery);
+
+    print(uri);
+
     try {
       final response = await http.get(
-        url,
+        uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
       final extractedData = json.decode(response.body) as dynamic;
@@ -50,7 +62,7 @@ class Detail with ChangeNotifier {
       projects = extractedData['projects'];
       tv = extractedData['tv'];
       online = extractedData['online'];
-
+      print(brands);
       if (init != true) {
         notifyListeners();
       }

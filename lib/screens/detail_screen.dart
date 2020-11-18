@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:visoonfrontend/widgets/mandant_item.dart';
 
 import '../providers/detail.dart';
+import '../providers/verkaeufer.dart';
+import '../providers/verkaeufer_list.dart';
 import '../widgets/detail_filter.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
@@ -12,6 +14,7 @@ final tabList = ['Goal und Forecast', 'Detailansicht'];
 
 class DetailScreen extends StatelessWidget {
   static const routeName = '/detail';
+  Verkaeufer selectedVerkaufer;
 
   void gotoDashboard(BuildContext context) async {
     await Navigator.of(context).pushReplacementNamed('/');
@@ -25,6 +28,8 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
+
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
     if (args == null) {
       loadDashboard(context);
@@ -60,7 +65,7 @@ class DetailScreen extends StatelessWidget {
                 FutureBuilder(
                   future: Provider.of<Detail>(context, listen: false)
                       .fetchAndSetDetail(args['pageType'], args['id'],
-                          init: true),
+                          init: true, verkaeufer: selectedVerkaufer),
                   builder: (ctx, dataSnapshot) {
                     if (dataSnapshot.connectionState ==
                         ConnectionState.waiting) {
@@ -92,7 +97,7 @@ class DetailScreen extends StatelessWidget {
                     }
                   },
                 ),
-                DetailFilter(),
+                DetailFilter(args['pageType'], args['id'], selectedVerkaufer),
               ],
             )),
           ),

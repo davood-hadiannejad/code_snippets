@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import './brand_select.dart';
+import '../providers/detail.dart';
+import '../providers/verkaeufer.dart';
 
 class DetailFilter extends StatefulWidget {
+  final String pageType;
+  final String detailId;
+  final Verkaeufer selectedUser;
+  DetailFilter(this.pageType, this.detailId, this.selectedUser);
+
   @override
   _DetailFilterState createState() => _DetailFilterState();
 }
@@ -51,6 +58,9 @@ class _DetailFilterState extends State<DetailFilter> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'Gesamt';
+                        Provider.of<Detail>(context, listen: false)
+                            .fetchAndSetDetail(widget.pageType, widget.detailId,
+                            init: true, verkaeufer: widget.selectedUser);
                       });
                     }
                   },
@@ -71,6 +81,9 @@ class _DetailFilterState extends State<DetailFilter> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'TV';
+                        Provider.of<Detail>(context, listen: false)
+                            .fetchAndSetDetail(widget.pageType, widget.detailId,
+                            init: true, verkaeufer: widget.selectedUser, medium: 'TV');
                       });
                     }
                   },
@@ -91,6 +104,9 @@ class _DetailFilterState extends State<DetailFilter> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'Online';
+                        Provider.of<Detail>(context, listen: false)
+                            .fetchAndSetDetail(widget.pageType, widget.detailId,
+                            init: true, verkaeufer: widget.selectedUser, medium: 'Online');
                       });
                     }
                   },
