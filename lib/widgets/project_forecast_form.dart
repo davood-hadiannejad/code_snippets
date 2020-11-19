@@ -287,7 +287,6 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     );
   }
 
-
   _submit() {
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -301,7 +300,6 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
         brandDropdownValue == null ||
         agencyDropdownValue == null ||
         statusDropdownValue == null) {
-
       setState(() {
         _hasError = true;
       });
@@ -315,30 +313,34 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
       _hasError = false;
     });
     try {
-      Provider.of<ProjectList>(context, listen: false).addProject(
-        _projectNameController.text,
-        customerDropdownValue,
-        mediumDropdownValue,
-        brandDropdownValue,
-        agencyDropdownValue,
-        num.parse(_mN3Controller.text),
-        num.parse(_cashRabattPercentController.text),
-        num.parse(_naturalRabattPercentController.text),
-        num.parse(bewertungDropdownValue),
-        _commentController.text,
-        _dateController.text,
-        statusDropdownValue,
-      );
+      if (widget.projectId != null) {
+        // todo update provider
+      } else {
+        Provider.of<ProjectList>(context, listen: false).addProject(
+          _projectNameController.text,
+          customerDropdownValue,
+          mediumDropdownValue,
+          brandDropdownValue,
+          agencyDropdownValue,
+          num.parse(_mN3Controller.text),
+          num.parse(_cashRabattPercentController.text),
+          num.parse(_naturalRabattPercentController.text),
+          num.parse(bewertungDropdownValue),
+          _commentController.text,
+          _dateController.text,
+          statusDropdownValue,
+        );
+      }
     } catch (error) {
       setState(() {
         _networkError = true;
       });
     }
 
-
     setState(() {
       _isLoading = false;
     });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -398,7 +400,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                     }
                   },
                   items: <String>[
-                    'Volkswagen',
+                    'dummy_Baum',
                     'Audi',
                     'Mercedes-Benz',
                     'Neukunde',
@@ -444,6 +446,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   items: <String>[
                     'Initiative',
                     'Universal McCann',
+                    'MEDIAPLUS HAMBURG',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -470,7 +473,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       },
                       items: <String>[
                         'TV',
-                        'Online',
+                        'ONLINE',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -497,7 +500,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                         }
                       },
                       items: <String>[
-                        'MTV',
+                        'MEDIAIMPACT',
                         'NTV',
                         'Nick',
                       ].map<DropdownMenuItem<String>>((String value) {
@@ -823,8 +826,22 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   ),
                 ),
                 SizedBox(height: 20),
-                _hasError ? Text('Bitte alle Angaben ausfüllen.', style: TextStyle(color: Colors.red),) : SizedBox(height: 12,),
-                _networkError ? Text('Bitte Verbindung prüfen.', style: TextStyle(color: Colors.red),) : SizedBox(height: 12,),
+                _hasError
+                    ? Text(
+                        'Bitte alle Angaben ausfüllen.',
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : SizedBox(
+                        height: 12,
+                      ),
+                _networkError
+                    ? Text(
+                        'Bitte Verbindung prüfen.',
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : SizedBox(
+                        height: 12,
+                      ),
                 Row(
                   children: [
                     FlatButton(
@@ -834,7 +851,9 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       },
                     ),
                     RaisedButton(
-                      child: const Text('Speichern'),
+                      child: (widget.projectId != null)
+                          ? const Text('Update')
+                          : const Text('Speichern'),
                       onPressed: _submit,
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,

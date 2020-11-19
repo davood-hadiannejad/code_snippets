@@ -31,9 +31,7 @@ class AOBList with ChangeNotifier {
         url,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(response.body) as List<dynamic>;
-      //final extractedData = json.decode(dummyData) as List<dynamic>;
-
+      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
       if (extractedData == null) {
         return;
       }

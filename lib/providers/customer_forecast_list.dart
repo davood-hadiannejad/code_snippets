@@ -92,7 +92,7 @@ class CustomerForecastList with ChangeNotifier {
     String dueDate,
     String status,
   ) async {
-    var url = 'http://127.0.0.1:8002/api/CustomerForecasts/';
+    var url = 'http://hammbwdsc02:96/api/CustomerForecasts/';
     try {
       final response = await http.post(url, headers: {
         "Authorization": "Bearer $authToken"

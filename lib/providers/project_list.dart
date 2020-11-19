@@ -75,14 +75,13 @@ class ProjectList with ChangeNotifier {
 
   Future<void> fetchAndSetProjectList({bool init = false, Verkaeufer verkaeufer}) async {
     var url =
-        'http://hammbwdsc02:96/api/projects/?filter_gattung=TV&email=magdalena.idziak@visoon.de';
+        'http://hammbwdsc02:96/api/projects/?email=magdalena.idziak@visoon.de';
     try {
       final response = await http.get(
         url,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(response.body) as List<dynamic>;
-
+      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
       if (extractedData == null) {
         return;
       }
@@ -92,10 +91,10 @@ class ProjectList with ChangeNotifier {
           Project(
             id: project['id'],
             name: project['name'],
-            customer: project['customer'],
+            customer: project['kunde'],
             medium: project['medium'],
             brand: project['brand'],
-            agency: project['agency'],
+            agency: project['agentur'],
             mn3: project['mn3'],
             cashRabatt: project['cashRabatt'],
             naturalRabatt: project['naturalRabatt'],
@@ -131,13 +130,12 @@ class ProjectList with ChangeNotifier {
     String dueDate,
     String status,
   ) async {
-    var url = 'http://127.0.0.1:8002/api/projects/';
+    var url = 'http://hammbwdsc02:96/api/projects/';
     try {
       final response = await http.post(url, headers: {
         "Authorization": "Bearer $authToken"
       }, body: {
         'name': name,
-        'name_slug': name,
         'kunde': customer,
         'verkaeufer': 'magdalena.idziak@visoon.de',
         'medium': medium,
@@ -152,7 +150,6 @@ class ProjectList with ChangeNotifier {
         'status': status,
       });
       final extractedData = json.decode(response.body) as dynamic;
-      print(response.body);
       _items.add(Project(
         id: extractedData['id'],
         name: name,

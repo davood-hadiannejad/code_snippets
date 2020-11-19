@@ -46,8 +46,7 @@ class Detail with ChangeNotifier {
         uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(response.body) as dynamic;
-
+      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as dynamic;
       if (extractedData == null) {
         return;
       }

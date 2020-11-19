@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import './verkaeufer.dart';
-import '../models/http_exception.dart';
 import './summary.dart';
 
 

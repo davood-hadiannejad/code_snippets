@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../providers/project_list.dart';
 import './project_forecast_dialog.dart';
 import './aob_item.dart';
+
+final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
+final formatterPercent =
+new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 
 class ProjectForecastItem extends StatefulWidget {
   final ProjectList forecastData;
@@ -57,7 +61,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
               ),
             ),
             Container(
-              width: 1200,
+              width: 1350,
               child: DataTable(
                 sortColumnIndex: columnSort,
                 sortAscending: ascSort,
@@ -144,9 +148,11 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                             DataCell(Text(project.customer)),
                             DataCell(Text(project.medium)),
                             DataCell(Text(project.brand)),
-                            DataCell(Text(
-                                (project.mn3 * project.bewertung / 100)
-                                    .toString())),
+                            DataCell(Container(
+                              width: 110,
+                              child: Text(
+                                  formatter.format(project.mn3 * project.bewertung / 100)),
+                            )),
                             DataCell(Text(project.bewertung.toString() + '%')),
                             DataCell(Text(project.dueDate)),
                             DataCell(Text(project.status)),
