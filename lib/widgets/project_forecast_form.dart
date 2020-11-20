@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../providers/project_list.dart';
 import '../providers/project.dart';
+import '../providers/brand_list.dart';
 
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 
@@ -27,6 +28,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   String mediumDropdownValue;
   String bewertungDropdownValue;
   String statusDropdownValue;
+  List<String> brandDropdownList = [];
 
   int mN3;
   int cashRabattPercent;
@@ -91,8 +93,15 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   }
 
   @override
+  void didChangeDependencies() {
+    brandDropdownList = (Provider.of<BrandList>(context).items.isNotEmpty) ? Provider.of<BrandList>(context).items.map((e) => e.name).toList() : [];
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
     super.initState();
+    Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
     _mN3Controller.addListener(_addMN3);
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
@@ -512,11 +521,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                           });
                         }
                       },
-                      items: <String>[
-                        'MEDIAIMPACT',
-                        'NTV',
-                        'Nick',
-                      ].map<DropdownMenuItem<String>>((String value) {
+                      items: brandDropdownList.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/brand_list.dart';
+
 
 class BrandSelect extends StatefulWidget {
   BrandSelect({Key key}) : super(key: key);
@@ -8,12 +11,20 @@ class BrandSelect extends StatefulWidget {
 }
 
 class _BrandSelectState extends State<BrandSelect> {
-  List<String> dropdownList = [
-    'Nickelodeon',
-    'MTV',
-    'NTV',
-  ];
+  List<String> dropdownList = [];
   List<String> filterList = [];
+
+  @override
+  void initState() {
+    Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    dropdownList = (Provider.of<BrandList>(context).items.isNotEmpty) ? Provider.of<BrandList>(context).items.map((e) => e.name).toList() : [];
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,32 +38,32 @@ class _BrandSelectState extends State<BrandSelect> {
             //icon: Icon(Icons.arrow_downward),
             iconSize: 24,
             elevation: 16,
-            onChanged: (String newValue) {
+            onChanged: (String brand) {
               setState(() {
-                dropdownList.remove(newValue);
-                filterList.add(newValue);
+                filterList.add(brand);
+                dropdownList.remove(brand);
               });
 
             },
-            items: dropdownList.map<DropdownMenuItem<String>>((String value) {
+            items: dropdownList.map<DropdownMenuItem<String>>((String brand) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: brand,
+                child: Text(brand),
               );
             }).toList(),
           ),
         ),
         Column(
-          children: filterList.map((String value) {
+          children: filterList.map((String brand) {
             return InputChip(
               onDeleted: () {
                 setState(() {
-                  dropdownList.add(value);
-                  filterList.remove(value);
+                  dropdownList.add(brand);
+                  filterList.remove(brand);
                 });
               },
               deleteIconColor: Colors.black54,
-              label: Text(value),
+              label: Text(brand),
             );
           }).toList(),
         )
