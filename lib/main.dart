@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import './providers/aob_list.dart';
 import './providers/brand_list.dart';
+import './providers/customer_list.dart';
 import './providers/verkaeufer_list.dart';
 import './providers/detail.dart';
 import './providers/project_list.dart';
@@ -66,6 +67,12 @@ class VisoonApp extends StatelessWidget {
           update: (ctx, auth, previousBrandList) => BrandList(
             auth.token,
             previousBrandList == null ? [] : previousBrandList.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, CustomerList>(
+          update: (ctx, auth, previousCustomerList) => CustomerList(
+            auth.token,
+            previousCustomerList == null ? [] : previousCustomerList.items,
           ),
         ),
       ],

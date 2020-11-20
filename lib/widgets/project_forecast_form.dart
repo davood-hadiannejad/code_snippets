@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../providers/project_list.dart';
 import '../providers/project.dart';
 import '../providers/brand_list.dart';
+import '../providers/customer_list.dart';
 
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 
@@ -29,6 +30,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   String bewertungDropdownValue;
   String statusDropdownValue;
   List<String> brandDropdownList = [];
+  List<String> customerDropdownList = [];
 
   int mN3;
   int cashRabattPercent;
@@ -95,6 +97,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   @override
   void didChangeDependencies() {
     brandDropdownList = (Provider.of<BrandList>(context).items.isNotEmpty) ? Provider.of<BrandList>(context).items.map((e) => e.name).toList() : [];
+    customerDropdownList = (Provider.of<CustomerList>(context).items.isNotEmpty) ? Provider.of<CustomerList>(context).items.map((e) => e.name).toList() : [];
     super.didChangeDependencies();
   }
 
@@ -102,6 +105,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   void initState() {
     super.initState();
     Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
+    Provider.of<CustomerList>(context, listen: false).fetchAndSetCustomerList();
     _mN3Controller.addListener(_addMN3);
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
@@ -387,7 +391,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: 250,
+                width: 410,
                 child: TextFormField(
                   controller: _projectNameController,
                   decoration: InputDecoration(
@@ -402,7 +406,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                 ),
               ),
               Container(
-                width: 250,
+                width: 450,
                 child: DropdownButton<String>(
                   value: customerDropdownValue,
                   hint: Text('Bitte Kunde auswählen...'),
@@ -420,12 +424,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       });
                     }
                   },
-                  items: <String>[
-                    'dummy_Baum',
-                    'Audi',
-                    'Mercedes-Benz',
-                    'Neukunde',
-                  ].map<DropdownMenuItem<String>>((String value) {
+                  items: customerDropdownList.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -435,7 +434,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               ),
               enableNeukunde
                   ? Container(
-                      width: 250,
+                      width: 450,
                       child: TextField(
                         controller: _neukundeController,
                         enabled: enableNeukunde,
@@ -452,7 +451,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       height: 1,
                     ),
               Container(
-                width: 250,
+                width: 450,
                 child: DropdownButton<String>(
                   value: agencyDropdownValue,
                   hint: Text('Bitte Agentur auswählen...'),
@@ -508,7 +507,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                     width: 20,
                   ),
                   Container(
-                    width: 200,
+                    width: 330,
                     child: DropdownButton<String>(
                       value: brandDropdownValue,
                       hint: Text('Brand'),
@@ -543,7 +542,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                     width: 20,
                   ),
                   Container(
-                    width: 100,
+                    width: 200,
                     child: DropdownButton<String>(
                       value: bewertungDropdownValue,
                       hint: Text('Bewertung'),
