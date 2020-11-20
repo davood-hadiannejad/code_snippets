@@ -36,6 +36,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   var _projectNameController = TextEditingController();
   var _commentController = TextEditingController();
   var _mN3Controller = TextEditingController();
+  var _neukundeController = TextEditingController();
   var _dateController = TextEditingController();
   num mN2;
   num mN1;
@@ -85,6 +86,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     _naturalRabattPercentController.dispose();
     _mN3Controller.dispose();
     _dateController.dispose();
+    _neukundeController.dispose();
     super.dispose();
   }
 
@@ -295,7 +297,13 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
       });
       return;
     }
-    if (customerDropdownValue == null ||
+
+    String inputCustomer = (customerDropdownValue == 'Neukunde')
+        ? _neukundeController.text
+        : customerDropdownValue;
+
+    if (inputCustomer == null ||
+        inputCustomer == '' ||
         mediumDropdownValue == null ||
         brandDropdownValue == null ||
         agencyDropdownValue == null ||
@@ -318,7 +326,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
       } else {
         Provider.of<ProjectList>(context, listen: false).addProject(
           _projectNameController.text,
-          customerDropdownValue,
+          inputCustomer,
           mediumDropdownValue,
           brandDropdownValue,
           agencyDropdownValue,
@@ -341,6 +349,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
       _isLoading = false;
     });
     Navigator.of(context).pop();
+
+    if (customerDropdownValue == 'Neukunde') {
+      // todo reload customer list
+    }
   }
 
   @override
@@ -416,6 +428,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   ? Container(
                       width: 250,
                       child: TextField(
+                        controller: _neukundeController,
                         enabled: enableNeukunde,
                         onChanged: (text) {
                           //Provider.of<ProjectForecast>(context, listen: false)
