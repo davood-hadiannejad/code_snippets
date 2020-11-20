@@ -32,7 +32,7 @@ class SummaryList with ChangeNotifier {
   Future<void> fetchAndSetSummaryList(String kind, {bool init=false, Verkaeufer verkaeufer, String medium}) async {
     var searchType = kind.toLowerCase();
     Map<String, String> uriQuery = {};
-    if (verkaeufer != null) {
+    if (verkaeufer != null && verkaeufer.email != null) {
       uriQuery['email'] = verkaeufer.email;
     }
 

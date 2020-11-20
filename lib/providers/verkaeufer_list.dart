@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 
 import './verkaeufer.dart';
 
-String dummyData = '[{"medium": "TV", "brand": "Nick", "goal": 600000, "offen": 500000, "gebucht": 5000}, {"medium": "TV", "brand": "MTV", "goal": 800000, "offen": 500000, "gebucht": 10000}]';
+String dummyData =
+    '[{"medium": "TV", "brand": "Nick", "goal": 600000, "offen": 500000, "gebucht": 5000}, {"medium": "TV", "brand": "MTV", "goal": 800000, "offen": 500000, "gebucht": 10000}]';
 
 class VerkaeuferList with ChangeNotifier {
   List<Verkaeufer> _items = [];
@@ -46,20 +47,29 @@ class VerkaeuferList with ChangeNotifier {
         url,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
+      final extractedData =
+          json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
 
       if (extractedData == null) {
         return;
       }
-      final List<Verkaeufer> loadedVerkaeuferList = [];
+      final List<Verkaeufer> loadedVerkaeuferList = [Verkaeufer(
+        name: 'Gesamt',
+        email: null,
+        selected: true,
+        isCurrentUser: false,
+      )];
       extractedData.forEach((verkaeufer) {
         if (verkaeufer['status'] == 'AKTIV') {
+          if (verkaeufer['is_current_user']) {
+            loadedVerkaeuferList.first.selected = false;
+          }
           loadedVerkaeuferList.add(
             Verkaeufer(
               name: verkaeufer['name_advendio'],
               email: verkaeufer['email'],
-              selected: true, //verkaeufer['is_current_user'],
-              isCurrentUser: false, //verkaeufer['is_current_user'],
+              selected: verkaeufer['is_current_user'],
+              isCurrentUser: verkaeufer['is_current_user'],
             ),
           );
         }
@@ -67,7 +77,6 @@ class VerkaeuferList with ChangeNotifier {
       _items = loadedVerkaeuferList;
 
       notifyListeners();
-
     } catch (error) {
       throw (error);
     }

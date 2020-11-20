@@ -29,7 +29,7 @@ class Detail with ChangeNotifier {
     var searchType = kind.toLowerCase();
     Map<String, String> uriQuery = {};
 
-    if (verkaeufer != null) {
+    if (verkaeufer != null && verkaeufer.email != null) {
       uriQuery['email'] = verkaeufer.email;
     }
 

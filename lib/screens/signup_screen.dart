@@ -120,10 +120,10 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: EdgeInsets.all(24.0),
             child: TextFormField(
               controller: _usernameTextController,
-              decoration: InputDecoration(hintText: 'Benutzername / Email'),
+              decoration: InputDecoration(hintText: 'Email-Adresse'),
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Bitte Benutzername oder Email eingeben';
+                  return 'Bitte Visoon Email-Adresse eingeben';
                 }
                 return null;
               },
