@@ -20,13 +20,8 @@ class BrandList with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetBrandList(
-      {bool init = false, Verkaeufer verkaeufer}) async {
+  Future<void> fetchAndSetBrandList({bool init = false}) async {
     var url = 'http://hammbwdsc02:96/api/brands/';
-
-    if (verkaeufer != null) {
-      url = url + '?email=' + verkaeufer.email;
-    }
 
     try {
       final response = await http.get(
@@ -47,6 +42,7 @@ class BrandList with ChangeNotifier {
           ),
         );
       });
+      loadedBrandList.sort((a, b) => a.name.compareTo(b.name));
       _items = loadedBrandList;
 
       if (init != true) {

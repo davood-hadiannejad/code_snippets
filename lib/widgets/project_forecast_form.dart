@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
 
+import '../providers/agency_list.dart';
 import '../providers/project_list.dart';
 import '../providers/project.dart';
 import '../providers/brand_list.dart';
@@ -31,6 +32,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   String statusDropdownValue;
   List<String> brandDropdownList = [];
   List<String> customerDropdownList = [];
+  List<String> agencyDropdownList = [];
 
   int mN3;
   int cashRabattPercent;
@@ -96,19 +98,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
 
   @override
   void didChangeDependencies() {
-    brandDropdownList = (Provider.of<BrandList>(context).items.isNotEmpty) ? Provider.of<BrandList>(context).items.map((e) => e.name).toList() : [];
-    customerDropdownList = (Provider.of<CustomerList>(context).items.isNotEmpty) ? Provider.of<CustomerList>(context).items.map((e) => e.name).toList() : [];
-    super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
-    Provider.of<CustomerList>(context, listen: false).fetchAndSetCustomerList();
-    _mN3Controller.addListener(_addMN3);
-    _cashRabattPercentController.addListener(_addcashRabattPercent);
-    _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
+    brandDropdownList = Provider.of<BrandList>(context).items.map((e) => e.name).toList();
+    customerDropdownList = Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
+    customerDropdownList.add('Neukunde');
+    agencyDropdownList = Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
     if (widget.projectId != null) {
       Project project = Provider.of<ProjectList>(context, listen: false)
           .findById(widget.projectId);
@@ -126,6 +119,18 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
       mediumDropdownValue = project.medium.toString();
       statusDropdownValue = project.status.toString();
     }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
+    Provider.of<CustomerList>(context, listen: false).fetchAndSetCustomerList();
+    _mN3Controller.addListener(_addMN3);
+    _cashRabattPercentController.addListener(_addcashRabattPercent);
+    _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
+
   }
 
   bool enableNeukunde = false;
@@ -364,7 +369,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     Navigator.of(context).pop();
 
     if (customerDropdownValue == 'Neukunde') {
-      // todo reload customer list
+      Provider.of<CustomerList>(context, listen: false).fetchAndSetCustomerList();
     }
   }
 
@@ -464,11 +469,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       });
                     }
                   },
-                  items: <String>[
-                    'Initiative',
-                    'Universal McCann',
-                    'MEDIAPLUS HAMBURG',
-                  ].map<DropdownMenuItem<String>>((String value) {
+                  items: agencyDropdownList.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),

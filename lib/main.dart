@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './providers/agency_list.dart';
 import './providers/aob_list.dart';
 import './providers/brand_list.dart';
 import './providers/customer_list.dart';
@@ -46,9 +47,12 @@ class VisoonApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProxyProvider<Auth, CustomerForecastList>(
-          update: (ctx, auth, previousCustomerForecastList) => CustomerForecastList(
+          update: (ctx, auth, previousCustomerForecastList) =>
+              CustomerForecastList(
             auth.token,
-            previousCustomerForecastList == null ? [] : previousCustomerForecastList.items,
+            previousCustomerForecastList == null
+                ? []
+                : previousCustomerForecastList.items,
           ),
         ),
         ChangeNotifierProxyProvider<Auth, AOBList>(
@@ -75,6 +79,12 @@ class VisoonApp extends StatelessWidget {
             previousCustomerList == null ? [] : previousCustomerList.items,
           ),
         ),
+        ChangeNotifierProxyProvider<Auth, AgencyList>(
+          update: (ctx, auth, previousAgencyList) => AgencyList(
+            auth.token,
+            previousAgencyList == null ? [] : previousAgencyList.items,
+          ),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -87,13 +97,13 @@ class VisoonApp extends StatelessWidget {
           home: auth.isAuth
               ? DashboardScreen()
               : FutureBuilder(
-            future: auth.tryAutoLogin(),
-            builder: (ctx, authResultSnapshot) =>
-            authResultSnapshot.connectionState ==
-                ConnectionState.waiting
-                ? SplashScreen()
-                : SignUpScreen(),
-          ),
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : SignUpScreen(),
+                ),
           routes: {
             DetailScreen.routeName: (ctx) => DetailScreen(),
             CustomerForecastScreen.routeName: (ctx) => CustomerForecastScreen(),

@@ -20,13 +20,8 @@ class CustomerList with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetCustomerList(
-      {bool init = false, Verkaeufer verkaeufer}) async {
+  Future<void> fetchAndSetCustomerList({bool init = false}) async {
     var url = 'http://hammbwdsc02:96/api/kunden/';
-
-    if (verkaeufer != null) {
-      url = url + '?email=' + verkaeufer.email;
-    }
 
     try {
       final response = await http.get(
