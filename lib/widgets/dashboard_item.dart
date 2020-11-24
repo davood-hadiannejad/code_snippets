@@ -95,7 +95,12 @@ class DashboardItem extends StatelessWidget {
                           formatter
                               .format(summaryItem.goal['goal_letztes_jahr']),
                         ))),
-                        TableCell(child: Center(child: Text('Value'))),
+                        TableCell(
+                            child: Center(
+                                child: Text(formatterPercent.format((summaryItem
+                                            .goal['goal'] /
+                                        summaryItem.goal['goal_letztes_jahr']) -
+                                    1)))),
                       ]),
                       TableRow(
                         children: [
@@ -118,7 +123,13 @@ class DashboardItem extends StatelessWidget {
                             formatter.format(
                                 summaryItem.stichtag['ist_letztes_jahr']),
                           ))),
-                          TableCell(child: Center(child: Text('Value'))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(formatterPercent.format(
+                                      (summaryItem.stichtag['ist'] /
+                                              summaryItem.stichtag[
+                                                  'ist_letztes_jahr']) -
+                                          1)))),
                         ],
                       ),
                       TableRow(
@@ -142,10 +153,31 @@ class DashboardItem extends StatelessWidget {
                             ),
                           )),
                           TableCell(
-                            child: Center(child: Text('Value')),
+                            child: Center(
+                                child: Text(formatterPercent.format(
+                                    (summaryItem.stichtag['ist'] /
+                                            summaryItem.goal['goal']) -
+                                        1))),
                           ),
-                          TableCell(child: Center(child: Text('Value'))),
-                          TableCell(child: Center(child: Text('Value'))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(formatterPercent.format(
+                                      (summaryItem.stichtag[
+                                                  'ist_letztes_jahr'] /
+                                              summaryItem
+                                                  .goal['goal_letztes_jahr']) -
+                                          1)))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(formatterPercent.format(
+                                      ((summaryItem.stichtag['ist'] /
+                                                  summaryItem.goal['goal']) -
+                                              1) -
+                                          ((summaryItem.stichtag[
+                                                      'ist_letztes_jahr'] /
+                                                  summaryItem.goal[
+                                                      'goal_letztes_jahr']) -
+                                              1))))),
                         ],
                       ),
                       TableRow(
@@ -174,7 +206,15 @@ class DashboardItem extends StatelessWidget {
                             formatter
                                 .format(summaryItem.forecast['letztes_jahr']),
                           ))),
-                          TableCell(child: Center(child: Text('Value'))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(formatterPercent.format(
+                                      ((summaryItem.forecast['kunde'] +
+                                                  summaryItem
+                                                      .forecast['projekt']) /
+                                              summaryItem
+                                                  .forecast['letztes_jahr']) -
+                                          1)))),
                         ],
                       ),
                       TableRow(
@@ -203,7 +243,18 @@ class DashboardItem extends StatelessWidget {
                                 summaryItem.forecast['letztes_jahr'] +
                                     summaryItem.stichtag['ist_letztes_jahr']),
                           ))),
-                          TableCell(child: Center(child: Text('Value'))),
+                          TableCell(
+                              child: Center(
+                                  child: Text(formatterPercent.format(
+                                      (summaryItem.forecast['kunde'] +
+                                                  summaryItem
+                                                      .forecast['projekt'] +
+                                                  summaryItem.stichtag['ist']) /
+                                              (summaryItem.forecast[
+                                                      'letztes_jahr'] +
+                                                  summaryItem.stichtag[
+                                                      'ist_letztes_jahr']) -
+                                          1)))),
                         ],
                       )
                     ],
@@ -344,8 +395,8 @@ class DashboardItem extends StatelessWidget {
                           TableCell(
                             child: Center(
                                 child: (summaryItem.gobalrate['rate'] != null)
-                                    ? Text(formatterPercent
-                                        .format(summaryItem.gobalrate['rate'] / 100))
+                                    ? Text(formatterPercent.format(
+                                        summaryItem.gobalrate['rate'] / 100))
                                     : Text('N/A')),
                           ),
                         ]),
@@ -364,7 +415,8 @@ class DashboardItem extends StatelessWidget {
                                   child: (summaryItem.gobalrate['forecast'] !=
                                           null)
                                       ? Text(formatterPercent.format(
-                                          summaryItem.gobalrate['forecast'] /  100))
+                                          summaryItem.gobalrate['forecast'] /
+                                              100))
                                       : Text('N/A')),
                             ),
                           ],
@@ -381,7 +433,12 @@ class DashboardItem extends StatelessWidget {
                               )),
                             )),
                             TableCell(
-                              child: Center(child: Text('value gesamt')),
+                              child: Center(child: (summaryItem.gobalrate['gesamt'] !=
+                                  null)
+                                  ? Text(formatterPercent.format(
+                                  summaryItem.gobalrate['gesamt'] /
+                                      100))
+                                  : Text('N/A')),
                             )
                           ],
                         ),
@@ -404,7 +461,8 @@ class DashboardItem extends StatelessWidget {
                                               .gobalrate['rate_letztes_jahr'] !=
                                           null)
                                       ? Text(formatterPercent.format(summaryItem
-                                          .gobalrate['rate_letztes_jahr'] / 100))
+                                              .gobalrate['rate_letztes_jahr'] /
+                                          100))
                                       : Text('N/A')),
                             ),
                           ],
