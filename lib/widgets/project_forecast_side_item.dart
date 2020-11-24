@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/project_list.dart';
 import './brand_select.dart';
 import './project_forecast_dialog.dart';
 
@@ -47,8 +48,7 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
               ),
               TextField(
                 onChanged: (text) {
-                  //Provider.of<SummaryList>(context, listen: false)
-                  //    .searchByName(text);
+                  Provider.of<ProjectList>(context, listen: false).searchByName(text);
                 },
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),

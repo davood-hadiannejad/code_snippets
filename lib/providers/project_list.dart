@@ -73,6 +73,18 @@ class ProjectList with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> filterByStatus(String status) async {
+    _activeItems = _items
+        .where((project) => project.status == status).toList();
+    notifyListeners();
+  }
+
+  Future<void> filterByBrand(List<String> brands) async {
+    _activeItems = _items
+        .where((project) => brands.contains(project.brand)).toList();
+    notifyListeners();
+  }
+
   Future<void> fetchAndSetProjectList({bool init = false, Verkaeufer verkaeufer}) async {
     var url =
         'http://hammbwdsc02:96/api/projects/?email=magdalena.idziak@visoon.de';
@@ -106,7 +118,7 @@ class ProjectList with ChangeNotifier {
         );
       });
       _items = loadedProjectList;
-      _activeItems = loadedProjectList;
+      _activeItems = _items.where((project) => project.status == 'offen').toList();
 
       if (init != true) {
         notifyListeners();
