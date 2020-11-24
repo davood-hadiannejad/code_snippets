@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './brand_select.dart';
+import './select_menu.dart';
 import '../providers/detail.dart';
 import '../providers/verkaeufer.dart';
 
@@ -9,7 +9,9 @@ class DetailFilter extends StatefulWidget {
   final String pageType;
   final String detailId;
   final Verkaeufer selectedUser;
-  DetailFilter(this.pageType, this.detailId, this.selectedUser);
+  List<String> brandList;
+  DetailFilter(this.pageType, this.detailId, this.selectedUser, {this.brandList});
+
 
   @override
   _DetailFilterState createState() => _DetailFilterState();
@@ -43,7 +45,7 @@ class _DetailFilterState extends State<DetailFilter> {
               SizedBox(
                 height: 20,
               ),
-              Center(child: BrandSelect()),
+              Center(child: SelectMenu(widget.brandList, 'Brand')),
               SizedBox(
                 height: 20,
               ),
@@ -60,7 +62,7 @@ class _DetailFilterState extends State<DetailFilter> {
                         isSelected = 'Gesamt';
                         Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                            init: true, verkaeufer: widget.selectedUser);
+                            verkaeufer: widget.selectedUser);
                       });
                     }
                   },
@@ -83,7 +85,7 @@ class _DetailFilterState extends State<DetailFilter> {
                         isSelected = 'TV';
                         Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                            init: true, verkaeufer: widget.selectedUser, medium: 'TV');
+                            verkaeufer: widget.selectedUser, medium: 'TV');
                       });
                     }
                   },
@@ -106,7 +108,7 @@ class _DetailFilterState extends State<DetailFilter> {
                         isSelected = 'Online';
                         Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                            init: true, verkaeufer: widget.selectedUser, medium: 'Online');
+                            verkaeufer: widget.selectedUser, medium: 'Online');
                       });
                     }
                   },

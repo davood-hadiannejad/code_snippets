@@ -60,46 +60,59 @@ class DetailScreen extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: (Row(
-              children: [
-                FutureBuilder(
-                  future: Provider.of<Detail>(context, listen: false)
-                      .fetchAndSetDetail(args['pageType'], args['id'],
-                          init: true, verkaeufer: selectedVerkaufer),
-                  builder: (ctx, dataSnapshot) {
-                    if (dataSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Container(
-                        width: 1250,
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    } else {
-                      if (dataSnapshot.error != null) {
-                        // ...
-                        // Do error handling stuff
-                        print(dataSnapshot.error);
-                        return Container(
-                            width: 1250,
-                            child: Center(
-                              child: Text(
-                                  'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
-                            ));
-                      } else {
-                        return Container(
-                          width: 1250,
+            child: FutureBuilder(
+              future: Provider.of<Detail>(context, listen: false)
+                  .fetchAndSetDetail(args['pageType'], args['id'],
+                      init: true, verkaeufer: selectedVerkaufer),
+              builder: (ctx, dataSnapshot) {
+                if (dataSnapshot.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    width: 1500,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else {
+                  if (dataSnapshot.error != null) {
+                    // ...
+                    // Do error handling stuff
+                    print(dataSnapshot.error);
+                    return Container(
+                        width: 1500,
+                        child: Center(
+                          child: Text(
+                              'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
+                        ));
+                  } else {
+                    return Row(
+                      children: [
+                        Container(
+                          width: 1500,
                           child: Consumer<Detail>(
-                            builder: (ctx, detailData, child) => Center(
-                              child: MandantItem(detailData),
+                            builder: (ctx, detailData, child) => Row(
+                              children: [
+                                Container(
+                                  width: 1250,
+                                  child: Center(
+                                    child: MandantItem(detailData),
+                                  ),
+                                ),
+                                DetailFilter(
+                                  args['pageType'],
+                                  args['id'],
+                                  selectedVerkaufer,
+                                  brandList: detailData.brands
+                                      .map((e) => e['name'].toString())
+                                      .toList(),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      }
-                    }
-                  },
-                ),
-                DetailFilter(args['pageType'], args['id'], selectedVerkaufer),
-              ],
-            )),
+                        ),
+                      ],
+                    );
+                  }
+                }
+              },
+            ),
           ),
         ),
       );

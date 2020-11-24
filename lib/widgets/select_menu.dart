@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/brand_list.dart';
+import '../providers/detail.dart';
 
 
-class BrandSelect extends StatefulWidget {
-  BrandSelect({Key key}) : super(key: key);
-
+class SelectMenu extends StatefulWidget {
+  List<String> itemList;
+  String filterType;
+  SelectMenu(this.itemList, this.filterType);
   @override
-  _BrandSelectState createState() => _BrandSelectState();
+  _SelectMenuState createState() => _SelectMenuState();
 }
 
-class _BrandSelectState extends State<BrandSelect> {
-  List<String> dropdownList = [];
+class _SelectMenuState extends State<SelectMenu> {
   List<String> filterList = [];
+  List<String> dropdownList = [];
 
   @override
   void initState() {
-    Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
+    dropdownList = widget.itemList;
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    dropdownList = (Provider.of<BrandList>(context).items.isNotEmpty) ? Provider.of<BrandList>(context).items.map((e) => e.name).toList() : [];
-    super.didChangeDependencies();
+
+  void updateList() {
+    if (widget.filterType == 'Brand') {
+      Provider.of<Detail>(context, listen: false).filterBrands(filterList);
+    }
+    print(widget.filterType);
   }
 
   @override
@@ -34,7 +37,7 @@ class _BrandSelectState extends State<BrandSelect> {
           width: 200,
           child: DropdownButton<String>(
             value: null,
-            hint: Text('Filter Brand...'),
+            hint: Text('Filter ${widget.filterType}...'),
             //icon: Icon(Icons.arrow_downward),
             iconSize: 24,
             elevation: 16,
@@ -42,6 +45,7 @@ class _BrandSelectState extends State<BrandSelect> {
               setState(() {
                 filterList.add(brand);
                 dropdownList.remove(brand);
+                updateList();
               });
 
             },
@@ -60,6 +64,7 @@ class _BrandSelectState extends State<BrandSelect> {
                 setState(() {
                   dropdownList.add(brand);
                   filterList.remove(brand);
+                  updateList();
                 });
               },
               deleteIconColor: Colors.black54,

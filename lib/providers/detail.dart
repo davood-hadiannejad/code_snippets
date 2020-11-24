@@ -20,10 +20,20 @@ class Detail with ChangeNotifier {
   List<dynamic> tv;
   List<dynamic> online;
 
+  List<dynamic> activeBrands;
   Detail(
     this.authToken,
     this.name,
   );
+
+  Future<void> filterBrands(List<String> brandsList) async {
+    if (brandsList.isEmpty) {
+      activeBrands = brands;
+    } else {
+      activeBrands = brands.where((b) => brandsList.contains(b['name'])).toList();
+    }
+    notifyListeners();
+  }
 
   Future<void> fetchAndSetDetail(String kind, String id, {init=false, Verkaeufer verkaeufer, String medium}) async {
     var searchType = kind.toLowerCase();
@@ -57,11 +67,13 @@ class Detail with ChangeNotifier {
       kundenForecastGesamt = extractedData['kunden_forecast_gesamt'];
       projektForecastGesamt = extractedData['projekt_forecast_gesamt'];
       brands = extractedData['brands'];
+      activeBrands = brands;
       customers = extractedData['customers'];
       projects = extractedData['projects'];
       tv = extractedData['tv'];
       online = extractedData['online'];
       print(brands);
+      print(init);
       if (init != true) {
         notifyListeners();
       }

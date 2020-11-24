@@ -104,8 +104,8 @@ class MandantItem extends StatelessWidget {
                     ),
                   ),
                 ],
-                rows: (detailData.brands != null)
-                    ? detailData.brands
+                rows: (detailData.activeBrands != null)
+                    ? detailData.activeBrands
                         .map((brand) => DataRow(cells: [
                               DataCell(Text(brand['name'])),
                               DataCell(Text(formatter.format(brand['goal']))),

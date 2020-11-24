@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import './brand_select.dart';
+import './select_menu.dart';
 import './project_forecast_dialog.dart';
 
 
@@ -58,7 +58,7 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
               SizedBox(
                 height: 20,
               ),
-              Center(child: BrandSelect()),
+              Center(child: SelectMenu([], 'Brand')),
               SizedBox(
                 height: 20,
               ),
