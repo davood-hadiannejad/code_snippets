@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/detail_item.dart';
 import '../widgets/mandant_brand_item.dart';
 import '../providers/detail.dart';
 import '../providers/verkaeufer.dart';
@@ -92,19 +93,28 @@ class DetailScreen extends StatelessWidget {
                                 Container(
                                   width: 1250,
                                   child: Center(
-                                    child: MandantBrandItem(detailData, args['pageType']),
+                                    child: (args['pageType'] == 'Mandant' ||
+                                            args['pageType'] == 'Brand')
+                                        ? MandantBrandItem(
+                                            detailData, args['pageType'])
+                                        : DetailItem(
+                                            detailData, args['pageType']),
                                   ),
                                 ),
                                 DetailFilter(
                                   args['pageType'],
                                   args['id'],
                                   selectedVerkaufer,
-                                  brandList: (detailData.brands != null) ? detailData.brands
-                                      .map((e) => e['name'].toString())
-                                      .toList() : null,
-                                  customerList: (detailData.customers != null) ? detailData.customers
-                                      .map((e) => e['name'].toString())
-                                      .toList() : null,
+                                  brandList: (detailData.brands != null)
+                                      ? detailData.brands
+                                          .map((e) => e['name'].toString())
+                                          .toList()
+                                      : null,
+                                  customerList: (detailData.customers != null)
+                                      ? detailData.customers
+                                          .map((e) => e['name'].toString())
+                                          .toList()
+                                      : null,
                                 ),
                               ],
                             ),
