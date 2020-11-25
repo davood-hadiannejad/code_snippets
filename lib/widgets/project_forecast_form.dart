@@ -127,6 +127,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     super.initState();
     Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
     Provider.of<CustomerList>(context, listen: false).fetchAndSetCustomerList();
+    Provider.of<AgencyList>(context, listen: false).fetchAndSetAgencyList();
     _mN3Controller.addListener(_addMN3);
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);

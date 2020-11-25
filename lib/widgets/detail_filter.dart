@@ -10,7 +10,8 @@ class DetailFilter extends StatefulWidget {
   final String detailId;
   final Verkaeufer selectedUser;
   List<String> brandList;
-  DetailFilter(this.pageType, this.detailId, this.selectedUser, {this.brandList});
+  List<String> customerList;
+  DetailFilter(this.pageType, this.detailId, this.selectedUser, {this.brandList, this.customerList});
 
 
   @override
@@ -42,13 +43,16 @@ class _DetailFilterState extends State<DetailFilter> {
                 'Filter',
                 style: Theme.of(context).textTheme.headline5,
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Center(child: SelectMenu(widget.brandList, 'Brand')),
-              SizedBox(
-                height: 20,
-              ),
+              (widget.brandList != null) ?
+              Center(child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: SelectMenu(widget.brandList, 'Brand'),
+              )) : SizedBox(height: 1,),
+              (widget.customerList != null) ?
+              Center(child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: SelectMenu(widget.customerList, 'Kunde'),
+              )) : SizedBox(height: 1,),
               Center(
                 child: FlatButton(
                   minWidth: 200,

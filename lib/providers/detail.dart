@@ -72,8 +72,8 @@ class Detail with ChangeNotifier {
       projects = extractedData['projects'];
       tv = extractedData['tv'];
       online = extractedData['online'];
-      print(brands);
-      print(init);
+      print(customers);
+      print(projects);
       if (init != true) {
         notifyListeners();
       }

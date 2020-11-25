@@ -161,7 +161,7 @@ class ProjectList with ChangeNotifier {
         'dueDate': dueDate,
         'status': status,
       });
-      final extractedData = json.decode(response.body) as dynamic;
+      final extractedData = json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       _items.add(Project(
         id: extractedData['id'],
         name: name,

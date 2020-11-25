@@ -102,6 +102,9 @@ class DetailScreen extends StatelessWidget {
                                   brandList: (detailData.brands != null) ? detailData.brands
                                       .map((e) => e['name'].toString())
                                       .toList() : null,
+                                  customerList: (detailData.customers != null) ? detailData.customers
+                                      .map((e) => e['name'].toString())
+                                      .toList() : null,
                                 ),
                               ],
                             ),

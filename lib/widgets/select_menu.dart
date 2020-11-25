@@ -24,7 +24,10 @@ class _SelectMenuState extends State<SelectMenu> {
 
   void updateList() {
     if (widget.filterType == 'Brand') {
+      // TODO Filter with URL
       Provider.of<Detail>(context, listen: false).filterBrands(filterList);
+    } else if (widget.filterType == 'Kunde') {
+      print('Kunden Filter');
     }
     print(widget.filterType);
   }
@@ -41,36 +44,39 @@ class _SelectMenuState extends State<SelectMenu> {
             //icon: Icon(Icons.arrow_downward),
             iconSize: 24,
             elevation: 16,
-            onChanged: (String brand) {
+            onChanged: (String item) {
               setState(() {
-                filterList.add(brand);
-                dropdownList.remove(brand);
+                filterList.add(item);
+                dropdownList.remove(item);
                 updateList();
               });
 
             },
-            items: dropdownList.map<DropdownMenuItem<String>>((String brand) {
+            items: dropdownList.map<DropdownMenuItem<String>>((String item) {
               return DropdownMenuItem<String>(
-                value: brand,
-                child: Text(brand),
+                value: item,
+                child: Container(width: 175,child: Text(item)),
               );
             }).toList(),
           ),
         ),
-        Column(
-          children: filterList.map((String brand) {
-            return InputChip(
-              onDeleted: () {
-                setState(() {
-                  dropdownList.add(brand);
-                  filterList.remove(brand);
-                  updateList();
-                });
-              },
-              deleteIconColor: Colors.black54,
-              label: Text(brand),
-            );
-          }).toList(),
+        Container(
+          width: 200,
+          child: Column(
+            children: filterList.map((String item) {
+              return InputChip(
+                onDeleted: () {
+                  setState(() {
+                    dropdownList.add(item);
+                    filterList.remove(item);
+                    updateList();
+                  });
+                },
+                deleteIconColor: Colors.black54,
+                label: Text(item),
+              );
+            }).toList(),
+          ),
         )
       ],
     );

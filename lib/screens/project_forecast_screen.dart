@@ -40,7 +40,7 @@ class ProjectForecastScreen extends StatelessWidget {
         child: (Row(
           children: [
             FutureBuilder(
-              future: Provider.of<ProjectList>(context, listen: false)
+              future: Provider.of<ProjectList>(context)
                   .fetchAndSetProjectList(init: true),
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
