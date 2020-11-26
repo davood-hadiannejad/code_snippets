@@ -183,4 +183,64 @@ class ProjectList with ChangeNotifier {
       throw error;
     }
   }
+
+  Future<void> updateProject(
+      int id,
+      String name,
+      String customer,
+      String medium,
+      String brand,
+      String agency,
+      double mn3,
+      double cashRabatt,
+      double naturalRabatt,
+      int bewertung,
+      String comment,
+      String dueDate,
+      String status,
+      ) async {
+    var url = 'http://hammbwdsc02:96/api/projects/${id.toString()}/';
+    try {
+      final response = await http.put(url, headers: {
+        "Authorization": "Bearer $authToken"
+      }, body: {
+        'id': id.toString(),
+        'name': name,
+        'kunde': customer,
+        'verkaeufer': 'magdalena.idziak@visoon.de',
+        'medium': medium,
+        'brand': brand,
+        'agentur': agency,
+        'mn3': mn3.toString(),
+        'cashRabatt': cashRabatt.toString(),
+        'naturalRabatt': naturalRabatt.toString(),
+        'bewertung': bewertung.toString(),
+        'comment': comment,
+        'dueDate': dueDate,
+        'status': status,
+      });
+      final extractedData = json.decode(utf8.decode(response.bodyBytes)) as dynamic;
+      _items.removeWhere((project) => project.id == id);
+
+      _items.add(Project(
+        id: extractedData['id'],
+        name: name,
+        customer: customer,
+        medium: medium,
+        brand: brand,
+        agency: agency,
+        mn3: mn3,
+        cashRabatt: cashRabatt,
+        naturalRabatt: naturalRabatt,
+        bewertung: bewertung,
+        comment: comment,
+        dueDate: dueDate,
+        status: status,
+      ));
+
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
 }

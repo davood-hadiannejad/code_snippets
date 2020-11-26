@@ -100,7 +100,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   void didChangeDependencies() {
     brandDropdownList = Provider.of<BrandList>(context).items.map((e) => e.name).toList();
     customerDropdownList = Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
-    customerDropdownList.add('Neukunde');
+    if (widget.projectId == null) {
+      customerDropdownList.add('Neukunde');
+    }
+
     agencyDropdownList = Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
     if (widget.projectId != null) {
       Project project = Provider.of<ProjectList>(context, listen: false)
@@ -341,7 +344,21 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     });
     try {
       if (widget.projectId != null) {
-        // todo update provider
+        Provider.of<ProjectList>(context, listen: false).updateProject(
+          widget.projectId,
+          _projectNameController.text,
+          inputCustomer,
+          mediumDropdownValue,
+          brandDropdownValue,
+          agencyDropdownValue,
+          num.parse(_mN3Controller.text),
+          num.parse(_cashRabattPercentController.text),
+          num.parse(_naturalRabattPercentController.text),
+          num.parse(bewertungDropdownValue),
+          _commentController.text,
+          _dateController.text,
+          statusDropdownValue,
+        );
       } else {
         Provider.of<ProjectList>(context, listen: false).addProject(
           _projectNameController.text,
