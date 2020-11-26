@@ -4,6 +4,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../providers/detail.dart';
 import './monthly_chart.dart';
+import '../screens/project_forecast_screen.dart';
 
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
@@ -67,14 +68,18 @@ class MandantBrandItem extends StatelessWidget {
             SizedBox(height: 50),
             Container(
               width: 1200,
-              child: (pageType == 'Mandant') ? buildMandantTable() : buildCustomerTable(),
+              child: (pageType == 'Mandant')
+                  ? buildMandantTable(context)
+                  : buildCustomerTable(context),
             ),
             Container(
               width: 1200,
-              child: (pageType == 'Brand') ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                child: buildProjectTable(),
-              ) : null,
+              child: (pageType == 'Brand')
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      child: buildProjectTable(context),
+                    )
+                  : null,
             ),
           ],
         ),
@@ -82,8 +87,9 @@ class MandantBrandItem extends StatelessWidget {
     );
   }
 
-  DataTable buildMandantTable() {
+  DataTable buildMandantTable(context) {
     return DataTable(
+      showCheckboxColumn: false,
       columns: const <DataColumn>[
         DataColumn(
           label: Text(
@@ -123,55 +129,57 @@ class MandantBrandItem extends StatelessWidget {
       ],
       rows: (detailData.brands != null)
           ? detailData.brands
-          .map((brand) => DataRow(cells: [
-        DataCell(Text(brand['name'])),
-        DataCell(Text(formatter.format(brand['goal']))),
-        DataCell(Text(
-            formatter.format(brand['ist_stichtag']))),
-        DataCell(Text(
-            formatter.format(brand['kunden_forecast']))),
-        DataCell(Text(
-            formatter.format(brand['projekt_forecast']))),
-        DataCell(Text(formatter.format(
-            brand['ist_stichtag'] +
-                brand['projekt_forecast'] +
-                brand['kunden_forecast']))),
-        DataCell(
-          CircularPercentIndicator(
-            radius: 42.0,
-            percent: ((brand['ist_stichtag'] +
-                brand['projekt_forecast'] +
-                brand['kunden_forecast']) /
-                brand['goal'] >
-                1)
-                ? 1.0
-                : (brand['ist_stichtag'] +
-                brand['projekt_forecast'] +
-                brand['kunden_forecast']) /
-                brand['goal'],
-            center: Text(
-              formatterPercent.format(
-                  (brand['ist_stichtag'] +
-                      brand['projekt_forecast'] +
-                      brand['kunden_forecast']) /
-                      brand['goal']),
-              style: TextStyle(fontSize: 10),
-            ),
-            progressColor: getProgressColor(
-                (brand['ist_stichtag'] +
-                    brand['projekt_forecast'] +
-                    brand['kunden_forecast']) /
-                    brand['goal']),
-          ),
-        )
-      ]))
-          .toList()
+              .map((brand) => DataRow(
+                      onSelectChanged: (bool) {
+                        print('row pressed ${brand['name']}');
+                      },
+                      cells: [
+                        DataCell(Text(brand['name'])),
+                        DataCell(Text(formatter.format(brand['goal']))),
+                        DataCell(Text(formatter.format(brand['ist_stichtag']))),
+                        DataCell(
+                            Text(formatter.format(brand['kunden_forecast']))),
+                        DataCell(
+                            Text(formatter.format(brand['projekt_forecast']))),
+                        DataCell(Text(formatter.format(brand['ist_stichtag'] +
+                            brand['projekt_forecast'] +
+                            brand['kunden_forecast']))),
+                        DataCell(
+                          CircularPercentIndicator(
+                            radius: 42.0,
+                            percent: ((brand['ist_stichtag'] +
+                                            brand['projekt_forecast'] +
+                                            brand['kunden_forecast']) /
+                                        brand['goal'] >
+                                    1)
+                                ? 1.0
+                                : (brand['ist_stichtag'] +
+                                        brand['projekt_forecast'] +
+                                        brand['kunden_forecast']) /
+                                    brand['goal'],
+                            center: Text(
+                              formatterPercent.format((brand['ist_stichtag'] +
+                                      brand['projekt_forecast'] +
+                                      brand['kunden_forecast']) /
+                                  brand['goal']),
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            progressColor: getProgressColor(
+                                (brand['ist_stichtag'] +
+                                        brand['projekt_forecast'] +
+                                        brand['kunden_forecast']) /
+                                    brand['goal']),
+                          ),
+                        )
+                      ]))
+              .toList()
           : [],
     );
   }
 
-  DataTable buildCustomerTable() {
+  DataTable buildCustomerTable(context) {
     return DataTable(
+      showCheckboxColumn: false,
       columns: const <DataColumn>[
         DataColumn(
           label: Text(
@@ -206,48 +214,53 @@ class MandantBrandItem extends StatelessWidget {
       ],
       rows: (detailData.customers != null)
           ? detailData.customers
-          .map((customer) => DataRow(cells: [
-        DataCell(Text(customer['name'])),
-        DataCell(Text(formatter.format(customer['goal']))),
-        DataCell(Text(
-            formatter.format(customer['ist_stichtag']))),
-        DataCell(Text(
-            formatter.format(customer['kunden_forecast']))),
-        DataCell(Text(formatter.format(
-            customer['ist_stichtag'] +
-                customer['kunden_forecast']))),
-        DataCell(
-          CircularPercentIndicator(
-            radius: 42.0,
-            percent: ((customer['ist_stichtag'] +
-                customer['kunden_forecast']) /
-                customer['goal'] >
-                1)
-                ? 1.0
-                : (customer['ist_stichtag'] +
-                customer['kunden_forecast']) /
-                customer['goal'],
-            center: Text(
-              formatterPercent.format(
-                  (customer['ist_stichtag'] +
-                      customer['kunden_forecast']) /
-                      customer['goal']),
-              style: TextStyle(fontSize: 10),
-            ),
-            progressColor: getProgressColor(
-                (customer['ist_stichtag'] +
-                    customer['kunden_forecast']) /
-                    customer['goal']),
-          ),
-        )
-      ]))
-          .toList()
+              .map((customer) => DataRow(
+                      onSelectChanged: (bool) {
+                        print('row pressed ${customer['name']}');
+                      },
+                      cells: [
+                        DataCell(Text(customer['name'])),
+                        DataCell(Text(formatter.format(customer['goal']))),
+                        DataCell(
+                            Text(formatter.format(customer['ist_stichtag']))),
+                        DataCell(Text(
+                            formatter.format(customer['kunden_forecast']))),
+                        DataCell(Text(formatter.format(
+                            customer['ist_stichtag'] +
+                                customer['kunden_forecast']))),
+                        DataCell(
+                          CircularPercentIndicator(
+                            radius: 42.0,
+                            percent: ((customer['ist_stichtag'] +
+                                            customer['kunden_forecast']) /
+                                        customer['goal'] >
+                                    1)
+                                ? 1.0
+                                : (customer['ist_stichtag'] +
+                                        customer['kunden_forecast']) /
+                                    customer['goal'],
+                            center: Text(
+                              formatterPercent.format(
+                                  (customer['ist_stichtag'] +
+                                          customer['kunden_forecast']) /
+                                      customer['goal']),
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            progressColor: getProgressColor(
+                                (customer['ist_stichtag'] +
+                                        customer['kunden_forecast']) /
+                                    customer['goal']),
+                          ),
+                        )
+                      ]))
+              .toList()
           : [],
     );
   }
 
-  DataTable buildProjectTable() {
+  DataTable buildProjectTable(context) {
     return DataTable(
+      showCheckboxColumn: false,
       columns: <DataColumn>[
         DataColumn(
           label: Text(
@@ -290,29 +303,36 @@ class MandantBrandItem extends StatelessWidget {
           ),
         ),
       ],
-      rows: (detailData.projects != null) ? detailData.projects
-          .map((project) => DataRow(
-        cells: <DataCell>[
-          DataCell((project['comment'] != null && project['comment'] != '')
-              ? Tooltip(
-              message: project['comment'],
-              waitDuration: Duration(microseconds: 300),
-              child: Text(project['name']))
-              : Text(project['name'])),
-          DataCell(Text(project['kunde'])),
-          DataCell(Text(project['medium'])),
-          DataCell(Text(project['brand'])),
-          DataCell(Container(
-            width: 110,
-            child: Text(
-                formatter.format(project['mn3'] * project['bewertung'] / 100)),
-          )),
-          DataCell(Text(project['bewertung'].toString() + '%')),
-          DataCell(Text(project['dueDate'])),
-          DataCell(Text(project['status'])),
-        ],
-      ))
-          .toList() : [],
+      rows: (detailData.projects != null)
+          ? detailData.projects
+              .map((project) => DataRow(
+                    onSelectChanged: (bool) {
+                      Navigator.of(context)
+                          .pushNamed(ProjectForecastScreen.routeName);
+                    },
+                    cells: <DataCell>[
+                      DataCell((project['comment'] != null &&
+                              project['comment'] != '')
+                          ? Tooltip(
+                              message: project['comment'],
+                              waitDuration: Duration(microseconds: 300),
+                              child: Text(project['name']))
+                          : Text(project['name'])),
+                      DataCell(Text(project['kunde'])),
+                      DataCell(Text(project['medium'])),
+                      DataCell(Text(project['brand'])),
+                      DataCell(Container(
+                        width: 110,
+                        child: Text(formatter.format(
+                            project['mn3'] * project['bewertung'] / 100)),
+                      )),
+                      DataCell(Text(project['bewertung'].toString() + '%')),
+                      DataCell(Text(project['dueDate'])),
+                      DataCell(Text(project['status'])),
+                    ],
+                  ))
+              .toList()
+          : [],
     );
   }
 
