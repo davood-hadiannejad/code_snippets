@@ -28,23 +28,25 @@ class CustomerForecastList with ChangeNotifier {
 
   Future<void> searchByName(String searchString) async {
     _activeItems = _items
-        .where((customerForecast) =>
-            customerForecast.customer.toLowerCase().startsWith(searchString.toLowerCase()))
+        .where((customerForecast) => customerForecast.customer
+            .toLowerCase()
+            .startsWith(searchString.toLowerCase()))
         .toList();
     notifyListeners();
   }
 
-  Future<void> fetchAndSetCustomerForecastList({bool init = false, Verkaeufer verkaeufer}) async {
-    var url =
-        'http://hammbwdsc02:96/api/customer-forecast/';
-
-    if (verkaeufer != null) {
-      url = url + '?email=' + verkaeufer.email;
+  Future<void> fetchAndSetCustomerForecastList(
+      {bool init = false, Verkaeufer verkaeufer}) async {
+    Map<String, String> uriQuery = {};
+    if (verkaeufer != null && verkaeufer.email != null) {
+      uriQuery['email'] = verkaeufer.email;
     }
+
+    var uri = Uri.http('hammbwdsc02:96', '/api/customer-forecast/', uriQuery);
 
     try {
       final response = await http.get(
-        url,
+        uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
       //final extractedData = json.decode(response.body) as List<dynamic>;
@@ -79,46 +81,39 @@ class CustomerForecastList with ChangeNotifier {
   }
 
   Future<void> addCustomerForecast(
-    String name,
     String customer,
     String medium,
     String brand,
-    String agency,
-    double mn3,
-    double cashRabatt,
-    double naturalRabatt,
-    int bewertung,
-    String comment,
-    String dueDate,
-    String status,
+    Map<dynamic, dynamic> forecast,
   ) async {
     var url = 'http://hammbwdsc02:96/api/CustomerForecasts/';
     try {
       final response = await http.post(url, headers: {
         "Authorization": "Bearer $authToken"
       }, body: {
-        'name': name,
-        'name_slug': name,
-        'kunde': customer,
-        'verkaeufer': 'magdalena.idziak@visoon.de',
+        'customer': customer,
         'medium': medium,
         'brand': brand,
-        'agentur': agency,
-        'mn3': mn3.toString(),
-        'cashRabatt': cashRabatt.toString(),
-        'naturalRabatt': naturalRabatt.toString(),
-        'bewertung': bewertung.toString(),
-        'comment': comment,
-        'dueDate': dueDate,
-        'status': status,
+        'forecast': forecast,
       });
       final extractedData = json.decode(response.body) as dynamic;
       print(response.body);
+      CustomerForecast tempItem = _items.firstWhere((forecast) =>
+          forecast.customer == customer &&
+          forecast.brand == brand &&
+          forecast.medium == medium);
+      _items.removeWhere((forecast) =>
+          forecast.customer == customer &&
+          forecast.brand == brand &&
+          forecast.medium == medium);
       _items.add(CustomerForecast(
-        customer: customer,
-        medium: medium,
-        brand: brand,
-      ));
+          customer: customer,
+          medium: medium,
+          brand: brand,
+          forecast: forecast,
+          goal: tempItem.goal,
+          ist: tempItem.ist,
+          istLastYear: tempItem.istLastYear));
 
       notifyListeners();
     } catch (error) {

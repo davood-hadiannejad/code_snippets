@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../providers/customer_forecast_list.dart';
+import '../providers/customer_forecast.dart';
 
 class CustomerForecastItem extends StatefulWidget {
   final CustomerForecastList customerForecastData;
@@ -26,12 +27,16 @@ List<String> _month = [
   'm12'
 ];
 
-int currentMonth = DateTime.now().month;
+int currentMonth = DateTime
+    .now()
+    .month;
 
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
   int columnSort;
   bool ascSort = false;
-  List<TextEditingController> _controllerList = [];
+  Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
+
+  //Map<String, <List<TextEditingController>>> _controllerList;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +65,10 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Kunden Forecast',
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline5,
               ),
             ),
             Container(
@@ -205,126 +213,135 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   ),
                 ],
                 rows: widget.customerForecastData.items
-                    .map((forecast) => DataRow(cells: [
-                          DataCell(Text(forecast.customer)),
-                          DataCell(Text(forecast.medium)),
-                          DataCell(Text(forecast.brand)),
-                          DataCell(Container(
-                            height: 170,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 8),
-                                Text('Forecast'),
-                                Divider(),
-                                Text('Goal'),
-                                Divider(),
-                                Text('IST'),
-                                Divider(),
-                                Text('IST (letztes Jahr)'),
-                                Divider(),
-                                Text('Delta'),
-                                SizedBox(height: 8),
-                              ],
-                            ),
-                          )),
-                          ..._month.asMap().entries.map((entry) {
-                            int idx = entry.key;
-                            String monthKey = entry.value;
-                            _controllerList.add(TextEditingController(text: forecast.forecast['m1'].toString()));
-                            return DataCell(
-
-                              Container(
-                                height: 170,
-                                child: Column(
-                                  children: [
-                                    TextField(
-                                      readOnly: false,
-                                      controller: _controllerList[idx],
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: (idx + 1 >= currentMonth)
-                                            ? Colors.blue[50]
-                                            : Colors.grey[300],
-                                        border: InputBorder.none,
-                                        contentPadding:
-                                            EdgeInsets.symmetric(vertical: 8),
-                                        //Change this value to custom as you like
-                                        isDense: true, // and add this line
-                                      ),
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      style: TextStyle(fontSize: 14),
-                                      maxLines: 1,
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                        width: double.infinity,
-                                        child: Text(monthKey)),
-                                    Divider(),
-                                    Container(
-                                        width: double.infinity,
-                                        child: Text(monthKey)),
-                                    Divider(),
-                                    Container(
-                                        width: double.infinity,
-                                        child: Text(monthKey)),
-                                    Divider(),
-                                    Container(
-                                        width: double.infinity,
-                                        child: Text(monthKey)),
-                                    SizedBox(height: 4),
-                                  ],
+                    .map((forecast) {
+                  _controllerList[forecast] = [];
+                  return DataRow(cells: [
+                    DataCell(Text(forecast.customer)),
+                    DataCell(Text(forecast.medium)),
+                    DataCell(Text(forecast.brand)),
+                    DataCell(Container(
+                      height: 170,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 8),
+                          Text('Forecast'),
+                          Divider(),
+                          Text('Goal'),
+                          Divider(),
+                          Text('IST'),
+                          Divider(),
+                          Text('IST (letztes Jahr)'),
+                          Divider(),
+                          Text('Delta'),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                    )),
+                    ..._month
+                        .asMap()
+                        .entries
+                        .map((entry) {
+                      int idx = entry.key;
+                      String monthKey = entry.value;
+                      _controllerList[forecast].add(TextEditingController(
+                          text: forecast.forecast['m1'].toString()));
+                      return DataCell(
+                        Container(
+                          height: 170,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                readOnly: false,
+                                controller: _controllerList[forecast][idx],
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: (idx + 1 >= currentMonth)
+                                      ? Colors.blue[50]
+                                      : Colors.grey[300],
+                                  border: InputBorder.none,
+                                  contentPadding:
+                                  EdgeInsets.symmetric(vertical: 8),
+                                  //Change this value to custom as you like
+                                  isDense: true, // and add this line
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                          DataCell(
-                            Container(
-                              height: 170,
-                              child: Column(
-                                children: [
-                                  TextField(
-                                    readOnly: false,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.blue[50],
-                                      border: InputBorder.none,
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8),
-                                      //Change this value to custom as you like
-                                      isDense: true, // and add this line
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    style: TextStyle(fontSize: 14),
-                                    maxLines: 1,
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Container(
-                                      width: double.infinity, child: Text('gesamtWert')),
-                                  Divider(),
-                                  Container(
-                                      width: double.infinity, child: Text('gesamtWert')),
-                                  Divider(),
-                                  Container(
-                                      width: double.infinity, child: Text('gesamtWert')),
-                                  Divider(),
-                                  Container(
-                                      width: double.infinity, child: Text('gesamtWert')),
-                                  SizedBox(height: 4),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
                                 ],
+                                style: TextStyle(fontSize: 14),
+                                maxLines: 1,
                               ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Container(
+                                  width: double.infinity,
+                                  child: Text(monthKey)),
+                              Divider(),
+                              Container(
+                                  width: double.infinity,
+                                  child: Text(monthKey)),
+                              Divider(),
+                              Container(
+                                  width: double.infinity,
+                                  child: Text(monthKey)),
+                              Divider(),
+                              Container(
+                                  width: double.infinity,
+                                  child: Text(monthKey)),
+                              SizedBox(height: 4),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    DataCell(
+                      Container(
+                        height: 170,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              readOnly: false,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.blue[50],
+                                border: InputBorder.none,
+                                contentPadding:
+                                EdgeInsets.symmetric(vertical: 8),
+                                //Change this value to custom as you like
+                                isDense: true, // and add this line
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              style: TextStyle(fontSize: 14),
+                              maxLines: 1,
                             ),
-                          )
-                        ]))
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                                width: double.infinity, child: Text('gesamt')),
+                            Divider(),
+                            Container(
+                                width: double.infinity,
+                                child: Text('gesamtWert')),
+                            Divider(),
+                            Container(
+                                width: double.infinity,
+                                child: Text('gesamtWert')),
+                            Divider(),
+                            Container(
+                                width: double.infinity,
+                                child: Text('gesamtWert')),
+                            SizedBox(height: 4),
+                          ],
+                        ),
+                      ),
+                    )
+                  ]);
+                })
                     .toList(),
               ),
             ),
