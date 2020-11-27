@@ -5,6 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../providers/detail.dart';
 import './monthly_chart.dart';
 import '../screens/project_forecast_screen.dart';
+import '../screens/detail_screen.dart';
 
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
@@ -131,7 +132,11 @@ class MandantBrandItem extends StatelessWidget {
           ? detailData.brands
               .map((brand) => DataRow(
                       onSelectChanged: (bool) {
-                        print('row pressed ${brand['name']}');
+                        Navigator.of(context)
+                            .pushNamed(DetailScreen.routeName, arguments: {
+                          'pageType': 'Brand',
+                          'id': brand['name_slug'].toString(),
+                        });
                       },
                       cells: [
                         DataCell(Text(brand['name'])),
@@ -216,7 +221,11 @@ class MandantBrandItem extends StatelessWidget {
           ? detailData.customers
               .map((customer) => DataRow(
                       onSelectChanged: (bool) {
-                        print('row pressed ${customer['name']}');
+                        Navigator.of(context)
+                            .pushNamed(DetailScreen.routeName, arguments: {
+                          'pageType': 'Kunde',
+                          'id': customer['name_slug'].toString(),
+                        });
                       },
                       cells: [
                         DataCell(Text(customer['name'])),
