@@ -86,11 +86,17 @@ class ProjectList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProjectList({bool init = false, Verkaeufer verkaeufer}) async {
-    var url =
-        'http://hammbwdsc02:96/api/projects/?email=magdalena.idziak@visoon.de';
+    Map<String, String> uriQuery = {};
+
+    if (verkaeufer != null && verkaeufer.email != null) {
+      uriQuery['email'] = verkaeufer.email;
+    }
+
+    var uri = Uri.http('hammbwdsc02:96', '/api/projects/', uriQuery);
+
     try {
       final response = await http.get(
-        url,
+        uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
       final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
