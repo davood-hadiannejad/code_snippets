@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../providers/detail.dart';
 import './monthly_chart.dart';
+import './monthly_chart_detail.dart';
 import '../screens/project_forecast_screen.dart';
 
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
@@ -101,7 +101,10 @@ class DetailItem extends StatelessWidget {
                                         Theme.of(context).textTheme.headline5,
                                   ),
                                   Text(
-                                    (detailData.cashRabatt != null) ? formatterPercent.format(detailData.cashRabatt / 100) : 'N/A',
+                                    (detailData.cashRabatt != null)
+                                        ? formatterPercent
+                                            .format(detailData.cashRabatt / 100)
+                                        : 'N/A',
                                     style:
                                         Theme.of(context).textTheme.headline5,
                                   )
@@ -115,7 +118,10 @@ class DetailItem extends StatelessWidget {
                                         Theme.of(context).textTheme.headline5,
                                   ),
                                   Text(
-                                    (detailData.naturalRabatt != null) ? formatterPercent.format(detailData.naturalRabatt / 100) : 'N/A',
+                                    (detailData.naturalRabatt != null)
+                                        ? formatterPercent.format(
+                                            detailData.naturalRabatt / 100)
+                                        : 'N/A',
                                     style:
                                         Theme.of(context).textTheme.headline5,
                                   )
@@ -129,7 +135,10 @@ class DetailItem extends StatelessWidget {
                                         Theme.of(context).textTheme.headline5,
                                   ),
                                   Text(
-                                    (detailData.globalRate != null) ? formatterPercent.format(detailData.globalRate / 100) : 'N/A',
+                                    (detailData.globalRate != null)
+                                        ? formatterPercent
+                                            .format(detailData.globalRate / 100)
+                                        : 'N/A',
                                     style:
                                         Theme.of(context).textTheme.headline5,
                                   )
@@ -191,12 +200,9 @@ class DetailItem extends StatelessWidget {
                     Container(
                       width: 1200,
                       height: 300,
-                      child: MonthlyChart.withData(
-                        detailData.goalGesamt,
-                        detailData.istStichtagGesamt,
-                        detailData.kundenForecastGesamt,
-                        detailData.projektForecastGesamt,
-                        showProjekt: false,
+                      child: MonthlyChartDetail.withData(
+                        detailData.tv,
+                        detailData.online,
                       ),
                     ),
                   ],
@@ -294,38 +300,132 @@ class DetailItem extends StatelessWidget {
           ),
         ),
       ],
-      rows: [...detailData.tv.map((sales) => DataRow(
-                cells: [
-                  DataCell(Text('TV')),
-                  DataCell(Text(sales['name'])),
-                  ..._month
-                      .map((month) =>
-                          DataCell(Text(formatter.format(sales[month]))))
-                      .toList(),
-                  DataCell(Text(formatter.format(_month
-                      .map((month) => sales[month])
+      rows: [
+        ...detailData.tv
+            .map((sales) => DataRow(
+                  cells: [
+                    DataCell(Text('TV')),
+                    DataCell(Text(sales['name'])),
+                    ..._month
+                        .map((month) =>
+                            DataCell(Text(formatter.format(sales[month]))))
+                        .toList(),
+                    DataCell(Text(formatter.format(_month
+                        .map((month) => sales[month])
+                        .toList()
+                        .reduce((a, b) => a + b)))),
+                    DataCell(Text((sales['global_rate'] != null)
+                        ? formatterPercent.format(sales['global_rate'] / 100)
+                        : 'N/A')),
+                    DataCell(Text((sales['global_rate'] != null)
+                        ? formatterPercent
+                            .format(sales['global_rate_letztes_jahr'] / 100)
+                        : 'N/A')),
+                  ],
+                ))
+            .toList(),
+        DataRow(
+            color: MaterialStateProperty.resolveWith(
+                (Set<MaterialState> states) => Colors.grey[300]),
+            cells: [
+              DataCell(Text('TV')),
+              DataCell(Text('Gesamt')),
+              ..._month
+                  .map((month) => DataCell(Text(formatter.format(detailData.tv
+                      .map((e) => e[month])
                       .toList()
-                      .reduce((a, b) => a + b)))),
-                  DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate'] / 100) : 'N/A')),
-                  DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate_letztes_jahr'] / 100) : 'N/A')),
-                ],
-              )).toList(),
-        ...detailData.online.map((sales) => DataRow(
-          cells: [
-            DataCell(Text('Online')),
-            DataCell(Text(sales['name'])),
-            ..._month
-                .map((month) =>
-                DataCell(Text(formatter.format(sales[month]))))
-                .toList(),
-            DataCell(Text(formatter.format(_month
-                .map((month) => sales[month])
-                .toList()
-                .reduce((a, b) => a + b)))),
-            DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate'] / 100) : 'N/A')),
-            DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate_letztes_jahr'] / 100) : 'N/A')),
-          ],
-        )).toList(),
+                      .reduce((a, b) => a + b)))))
+                  .toList(),
+              DataCell(Text(formatter.format(_month
+                  .map((month) => detailData.tv
+                      .map((e) => e[month])
+                      .toList()
+                      .reduce((a, b) => a + b))
+                  .toList()
+                  .reduce((a, b) => a + b)))),
+              DataCell(Text('')),
+              DataCell(Text('')),
+            ]),
+        ...detailData.online
+            .map((sales) => DataRow(
+                  cells: [
+                    DataCell(Text('Online')),
+                    DataCell(Text(sales['name'])),
+                    ..._month
+                        .map((month) =>
+                            DataCell(Text(formatter.format(sales[month]))))
+                        .toList(),
+                    DataCell(Text(formatter.format(_month
+                        .map((month) => sales[month])
+                        .toList()
+                        .reduce((a, b) => a + b)))),
+                    DataCell(Text((sales['global_rate'] != null)
+                        ? formatterPercent.format(sales['global_rate'] / 100)
+                        : 'N/A')),
+                    DataCell(Text((sales['global_rate'] != null)
+                        ? formatterPercent
+                            .format(sales['global_rate_letztes_jahr'] / 100)
+                        : 'N/A')),
+                  ],
+                ))
+            .toList(),
+        DataRow(
+            color: MaterialStateProperty.resolveWith(
+                (Set<MaterialState> states) => Colors.grey[300]),
+            cells: [
+              DataCell(Text('Online')),
+              DataCell(Text('Gesamt')),
+              ..._month
+                  .map((month) => DataCell(Text(formatter.format(detailData
+                      .online
+                      .map((e) => e[month])
+                      .toList()
+                      .reduce((a, b) => a + b)))))
+                  .toList(),
+              DataCell(Text(formatter.format(_month
+                  .map((month) => detailData.online
+                      .map((e) => e[month])
+                      .toList()
+                      .reduce((a, b) => a + b))
+                  .toList()
+                  .reduce((a, b) => a + b)))),
+              DataCell(Text('')),
+              DataCell(Text('')),
+            ]),
+        DataRow(color: MaterialStateProperty.resolveWith(
+                (Set<MaterialState> states) => Colors.grey[500]),
+            cells: [
+          DataCell(Text('Kunde')),
+          DataCell(Text('Gesamt')),
+          ..._month
+              .map((month) => DataCell(Text(formatter.format(detailData.online
+                      .map((e) => e[month])
+                      .toList()
+                      .reduce((a, b) => a + b) +
+                  detailData.tv
+                      .map((e) => e[month])
+                      .toList()
+                      .reduce((a, b) => a + b)))))
+              .toList(),
+          DataCell(Text(formatter.format(_month
+                  .map((month) => detailData.online
+                      .map((e) => e[month])
+                      .toList()
+                      .reduce((a, b) => a + b))
+                  .toList()
+                  .reduce((a, b) => a + b) +
+              _month
+                  .map((month) => detailData.tv
+                      .map((e) => e[month])
+                      .toList()
+                      .reduce((a, b) => a + b))
+                  .toList()
+                  .reduce((a, b) => a + b)))),
+          DataCell(Text((detailData.globalRate != null)
+              ? formatterPercent.format(detailData.globalRate / 100)
+              : 'N/A')),
+          DataCell(Text('')),
+        ]),
       ],
     );
   }
