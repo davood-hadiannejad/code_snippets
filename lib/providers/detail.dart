@@ -19,6 +19,9 @@ class Detail with ChangeNotifier {
   List<dynamic> projects;
   List<dynamic> tv;
   List<dynamic> online;
+  num naturalRabatt;
+  num globalRate;
+  num cashRabatt;
 
   List<dynamic> activeBrands;
   Detail(
@@ -70,10 +73,12 @@ class Detail with ChangeNotifier {
       activeBrands = brands;
       customers = extractedData['customers'];
       projects = extractedData['projects'];
-      tv = extractedData['tv'];
-      online = extractedData['online'];
-      print(customers);
-      print(projects);
+      tv = extractedData['TV'];
+      online = extractedData['ONLINE'];
+      naturalRabatt = extractedData['natural_rabatt_gesamt'];
+      cashRabatt = extractedData['cash_rabatt_gesamt'];
+      globalRate = extractedData['global_rate_gesamt'];
+
       if (init != true) {
         notifyListeners();
       }

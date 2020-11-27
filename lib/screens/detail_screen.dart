@@ -68,7 +68,7 @@ class DetailScreen extends StatelessWidget {
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    width: 1500,
+                    width: 1650,
                     child: Center(child: CircularProgressIndicator()),
                   );
                 } else {
@@ -77,7 +77,7 @@ class DetailScreen extends StatelessWidget {
                     // Do error handling stuff
                     print(dataSnapshot.error);
                     return Container(
-                        width: 1500,
+                        width: 1650,
                         child: Center(
                           child: Text(
                               'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
@@ -86,12 +86,12 @@ class DetailScreen extends StatelessWidget {
                     return Row(
                       children: [
                         Container(
-                          width: 1500,
+                          width: 1650,
                           child: Consumer<Detail>(
                             builder: (ctx, detailData, child) => Row(
                               children: [
                                 Container(
-                                  width: 1250,
+                                  width: 1400,
                                   child: Center(
                                     child: (args['pageType'] == 'Mandant' ||
                                             args['pageType'] == 'Brand')

@@ -6,7 +6,6 @@ import '../providers/detail.dart';
 import './monthly_chart.dart';
 import '../screens/project_forecast_screen.dart';
 
-
 final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
     new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
@@ -102,7 +101,7 @@ class DetailItem extends StatelessWidget {
                                         Theme.of(context).textTheme.headline5,
                                   ),
                                   Text(
-                                    formatterPercent.format(.25),
+                                    (detailData.cashRabatt != null) ? formatterPercent.format(detailData.cashRabatt / 100) : 'N/A',
                                     style:
                                         Theme.of(context).textTheme.headline5,
                                   )
@@ -116,7 +115,7 @@ class DetailItem extends StatelessWidget {
                                         Theme.of(context).textTheme.headline5,
                                   ),
                                   Text(
-                                    formatterPercent.format(.25),
+                                    (detailData.naturalRabatt != null) ? formatterPercent.format(detailData.naturalRabatt / 100) : 'N/A',
                                     style:
                                         Theme.of(context).textTheme.headline5,
                                   )
@@ -130,7 +129,7 @@ class DetailItem extends StatelessWidget {
                                         Theme.of(context).textTheme.headline5,
                                   ),
                                   Text(
-                                    formatterPercent.format(.25),
+                                    (detailData.globalRate != null) ? formatterPercent.format(detailData.globalRate / 100) : 'N/A',
                                     style:
                                         Theme.of(context).textTheme.headline5,
                                   )
@@ -189,10 +188,6 @@ class DetailItem extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      'Monatlicher Umsatz',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
                     Container(
                       width: 1200,
                       height: 300,
@@ -209,7 +204,7 @@ class DetailItem extends StatelessWidget {
                 SizedBox(height: 50),
                 Container(
                   width: 1200,
-                  child: buildCustomerTable(context),
+                  child: buildDetailTable(context),
                 ),
               ],
             ),
@@ -219,85 +214,119 @@ class DetailItem extends StatelessWidget {
     );
   }
 
-  DataTable buildDetailTable() {
+  DataTable buildDetailTable(context) {
     return DataTable(
+      columnSpacing: 0,
       columns: const <DataColumn>[
         DataColumn(
           label: Text(
-            'Brand',
+            '',
           ),
         ),
         DataColumn(
           label: Text(
-            'Goal',
+            '',
+          ),
+        ),
+        DataColumn(
+            label: Center(
+          child: Text(
+            'Januar',
+          ),
+        )),
+        DataColumn(
+            label: Text(
+          'Februar',
+        )),
+        DataColumn(
+            label: Text(
+          'März',
+        )),
+        DataColumn(
+            label: Text(
+          'April',
+        )),
+        DataColumn(
+            label: Text(
+          'Mai',
+        )),
+        DataColumn(
+            label: Text(
+          'Juni',
+        )),
+        DataColumn(
+            label: Text(
+          'Juli',
+        )),
+        DataColumn(
+            label: Text(
+          'August',
+        )),
+        DataColumn(
+            label: Text(
+          'September',
+        )),
+        DataColumn(
+            label: Text(
+          'Oktober',
+        )),
+        DataColumn(
+            label: Text(
+          'November',
+        )),
+        DataColumn(
+            label: Text(
+          'Dezember',
+        )),
+        DataColumn(
+          label: Text(
+            'Summe Jahr',
           ),
         ),
         DataColumn(
           label: Text(
-            'IST-Stichtag',
+            'Global Rate',
           ),
         ),
         DataColumn(
           label: Text(
-            'Kunden-Forecast',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Projekt-Forecast',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'IST + Forecast',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Status',
+            'GR(letztes Jahr)',
           ),
         ),
       ],
-      rows: (detailData.tv != null)
-          ? detailData.tv
-              .map((brand) => DataRow(cells: [
-                    DataCell(Text(brand['name'])),
-                    DataCell(Text(formatter.format(brand['goal']))),
-                    DataCell(Text(formatter.format(brand['ist_stichtag']))),
-                    DataCell(Text(formatter.format(brand['kunden_forecast']))),
-                    DataCell(Text(formatter.format(brand['projekt_forecast']))),
-                    DataCell(Text(formatter.format(brand['ist_stichtag'] +
-                        brand['projekt_forecast'] +
-                        brand['kunden_forecast']))),
-                    DataCell(
-                      CircularPercentIndicator(
-                        radius: 42.0,
-                        percent: ((brand['ist_stichtag'] +
-                                        brand['projekt_forecast'] +
-                                        brand['kunden_forecast']) /
-                                    brand['goal'] >
-                                1)
-                            ? 1.0
-                            : (brand['ist_stichtag'] +
-                                    brand['projekt_forecast'] +
-                                    brand['kunden_forecast']) /
-                                brand['goal'],
-                        center: Text(
-                          formatterPercent.format((brand['ist_stichtag'] +
-                                  brand['projekt_forecast'] +
-                                  brand['kunden_forecast']) /
-                              brand['goal']),
-                          style: TextStyle(fontSize: 10),
-                        ),
-                        progressColor: getProgressColor((brand['ist_stichtag'] +
-                                brand['projekt_forecast'] +
-                                brand['kunden_forecast']) /
-                            brand['goal']),
-                      ),
-                    )
-                  ]))
-              .toList()
-          : [],
+      rows: [...detailData.tv.map((sales) => DataRow(
+                cells: [
+                  DataCell(Text('TV')),
+                  DataCell(Text(sales['name'])),
+                  ..._month
+                      .map((month) =>
+                          DataCell(Text(formatter.format(sales[month]))))
+                      .toList(),
+                  DataCell(Text(formatter.format(_month
+                      .map((month) => sales[month])
+                      .toList()
+                      .reduce((a, b) => a + b)))),
+                  DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate'] / 100) : 'N/A')),
+                  DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate_letztes_jahr'] / 100) : 'N/A')),
+                ],
+              )).toList(),
+        ...detailData.online.map((sales) => DataRow(
+          cells: [
+            DataCell(Text('Online')),
+            DataCell(Text(sales['name'])),
+            ..._month
+                .map((month) =>
+                DataCell(Text(formatter.format(sales[month]))))
+                .toList(),
+            DataCell(Text(formatter.format(_month
+                .map((month) => sales[month])
+                .toList()
+                .reduce((a, b) => a + b)))),
+            DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate'] / 100) : 'N/A')),
+            DataCell(Text((sales['global_rate'] != null) ? formatterPercent.format(sales['global_rate_letztes_jahr'] / 100) : 'N/A')),
+          ],
+        )).toList(),
+      ],
     );
   }
 
@@ -465,10 +494,10 @@ class DetailItem extends StatelessWidget {
       rows: (detailData.projects != null)
           ? detailData.projects
               .map((project) => DataRow(
-        onSelectChanged: (bool) {
-          Navigator.of(context)
-              .pushNamed(ProjectForecastScreen.routeName);
-        },
+                    onSelectChanged: (bool) {
+                      Navigator.of(context)
+                          .pushNamed(ProjectForecastScreen.routeName);
+                    },
                     cells: <DataCell>[
                       DataCell((project['comment'] != null &&
                               project['comment'] != '')
