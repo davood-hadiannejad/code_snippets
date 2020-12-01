@@ -4,7 +4,7 @@ import '../providers/project_list.dart';
 import './project_forecast_dialog.dart';
 import './aob_item.dart';
 
-final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
+final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
 new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 

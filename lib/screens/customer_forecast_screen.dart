@@ -7,12 +7,16 @@ import '../providers/auth.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/customer_forecast_side_item.dart';
 import '../widgets/customer_forecast_item.dart';
+import '../providers/verkaeufer.dart';
+import '../providers/verkaeufer_list.dart';
 
 class CustomerForecastScreen extends StatelessWidget {
   static const routeName = '/customer-forecast';
+  Verkaeufer selectedVerkaufer;
 
   @override
   Widget build(BuildContext context) {
+    selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       drawer: MainDrawer(),
@@ -41,11 +45,12 @@ class CustomerForecastScreen extends StatelessWidget {
           children: [
             FutureBuilder(
               future: Provider.of<CustomerForecastList>(context, listen: false)
-                  .fetchAndSetCustomerForecastList(init: true),
+                  .fetchAndSetCustomerForecastList(
+                      init: true, verkaeufer: selectedVerkaufer),
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    width: 1250,
+                    width: 1400,
                     child: Center(child: CircularProgressIndicator()),
                   );
                 } else {
@@ -54,14 +59,14 @@ class CustomerForecastScreen extends StatelessWidget {
                     // Do error handling stuff
                     print(dataSnapshot.error);
                     return Container(
-                        width: 1250,
+                        width: 1400,
                         child: Center(
                           child: Text(
                               'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
                         ));
                   } else {
                     return Container(
-                      width: 1250,
+                      width: 1400,
                       child: Consumer<CustomerForecastList>(
                         builder: (ctx, customerForecastData, child) => Center(
                           child: CustomerForecastItem(customerForecastData),

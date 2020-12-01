@@ -10,7 +10,7 @@ import '../providers/project.dart';
 import '../providers/brand_list.dart';
 import '../providers/customer_list.dart';
 
-final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
+final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
 class ProjectForecastForm extends StatefulWidget {
   final int projectId;

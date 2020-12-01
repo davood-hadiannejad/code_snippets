@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+
 import '../providers/customer_forecast_list.dart';
 import '../providers/customer_forecast.dart';
+
+final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatterPercent =
+new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 
 class CustomerForecastItem extends StatefulWidget {
   final CustomerForecastList customerForecastData;
@@ -35,6 +41,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   int columnSort;
   bool ascSort = false;
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
+  Map<CustomerForecast, TextEditingController> _controllerSummary = {};
 
   //Map<String, <List<TextEditingController>>> _controllerList;
 
@@ -72,7 +79,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
               ),
             ),
             Container(
-              width: 1200,
+              width: 1400,
               child: DataTable(
                 showBottomBorder: true,
                 dataRowHeight: 170,
@@ -215,10 +222,11 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                 rows: widget.customerForecastData.items
                     .map((forecast) {
                   _controllerList[forecast] = [];
+                  _controllerSummary[forecast] = TextEditingController(text: formatter.format(forecast.forecast.entries.map((e) => e.value).reduce((a, b) => a + b)));
                   return DataRow(cells: [
-                    DataCell(Text(forecast.customer)),
-                    DataCell(Text(forecast.medium)),
-                    DataCell(Text(forecast.brand)),
+                    DataCell(Container(width: 80, child: Text(forecast.customer))),
+                    DataCell(Container(child: Text(forecast.medium))),
+                    DataCell(Container(width: 80, child: Text(forecast.brand))),
                     DataCell(Container(
                       height: 170,
                       child: Column(
@@ -230,7 +238,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           Divider(),
                           Text('IST'),
                           Divider(),
-                          Text('IST (letztes Jahr)'),
+                          Text('IST (VJ)'),
                           Divider(),
                           Text('Delta'),
                           SizedBox(height: 8),
@@ -244,7 +252,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                       int idx = entry.key;
                       String monthKey = entry.value;
                       _controllerList[forecast].add(TextEditingController(
-                          text: forecast.forecast['m1'].toString()));
+                          text: formatter.format(forecast.forecast[monthKey])));
                       return DataCell(
                         Container(
                           height: 170,
@@ -276,15 +284,15 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               ),
                               Container(
                                   width: double.infinity,
-                                  child: Text(monthKey)),
+                                  child: Text(formatter.format(forecast.goal[monthKey]))),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(monthKey)),
+                                  child: Text(formatter.format(forecast.ist[monthKey]))),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(monthKey)),
+                                  child: Text(formatter.format(forecast.goal[monthKey]))),
                               Divider(),
                               Container(
                                   width: double.infinity,
@@ -301,6 +309,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: _controllerSummary[forecast],
                               readOnly: false,
                               decoration: InputDecoration(
                                 filled: true,

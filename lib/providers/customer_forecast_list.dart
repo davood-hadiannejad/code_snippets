@@ -43,14 +43,14 @@ class CustomerForecastList with ChangeNotifier {
     }
 
     var uri = Uri.http('hammbwdsc02:96', '/api/customer-forecast/', uriQuery);
-
+    print(uri);
     try {
       final response = await http.get(
         uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      //final extractedData = json.decode(response.body) as List<dynamic>;
-      final extractedData = json.decode(dummyData) as List<dynamic>;
+      final extractedData = json.decode(response.body) as List<dynamic>;
+      //final extractedData = json.decode(dummyData) as List<dynamic>;
 
       if (extractedData == null) {
         return;
@@ -59,18 +59,18 @@ class CustomerForecastList with ChangeNotifier {
       extractedData.forEach((customerForecast) {
         loadedCustomerForecastList.add(
           CustomerForecast(
-            customer: customerForecast['customer'],
+            customer: customerForecast['kunde'],
             medium: customerForecast['medium'],
             brand: customerForecast['brand'],
             goal: customerForecast['goal'],
             forecast: customerForecast['forecast'],
             ist: customerForecast['ist'],
-            istLastYear: customerForecast['ist_letztes_jahr'],
+            istLastYear: customerForecast['ist'], //customerForecast['ist_letztes_jahr'],
           ),
         );
       });
       _items = loadedCustomerForecastList;
-      _activeItems = loadedCustomerForecastList;
+      _activeItems = loadedCustomerForecastList.sublist(0, 10);
 
       if (init != true) {
         notifyListeners();
@@ -86,12 +86,12 @@ class CustomerForecastList with ChangeNotifier {
     String brand,
     Map<dynamic, dynamic> forecast,
   ) async {
-    var url = 'http://hammbwdsc02:96/api/CustomerForecasts/';
+    var url = 'http://hammbwdsc02:96/api/customer-forecast/';
     try {
       final response = await http.post(url, headers: {
         "Authorization": "Bearer $authToken"
       }, body: {
-        'customer': customer,
+        'kunde': customer,
         'medium': medium,
         'brand': brand,
         'forecast': forecast,

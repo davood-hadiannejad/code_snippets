@@ -6,7 +6,7 @@ import './monthly_chart.dart';
 import './monthly_chart_detail.dart';
 import '../screens/project_forecast_screen.dart';
 
-final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
+final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
     new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 
@@ -130,7 +130,7 @@ class DetailItem extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    'Global Rabatt: ',
+                                    'Global Rate: ',
                                     style:
                                         Theme.of(context).textTheme.headline5,
                                   ),

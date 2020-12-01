@@ -60,7 +60,7 @@ class VerkaeuferList with ChangeNotifier {
         isCurrentUser: false,
       )];
       extractedData.forEach((verkaeufer) {
-        if (verkaeufer['status'] == 'AKTIV') {
+        if (verkaeufer['status'] == 'AKTIV' && verkaeufer['email'].contain('@')) {
           if (verkaeufer['is_current_user']) {
             loadedVerkaeuferList.first.selected = false;
           }

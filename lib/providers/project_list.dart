@@ -93,7 +93,7 @@ class ProjectList with ChangeNotifier {
     }
 
     var uri = Uri.http('hammbwdsc02:96', '/api/projects/', uriQuery);
-
+    print(uri);
     try {
       final response = await http.get(
         uri,

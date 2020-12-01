@@ -7,7 +7,7 @@ import './monthly_chart.dart';
 import '../screens/project_forecast_screen.dart';
 import '../screens/detail_screen.dart';
 
-final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
+final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
     new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 

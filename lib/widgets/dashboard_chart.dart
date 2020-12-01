@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
+final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
 class DashboardChart extends StatelessWidget {
   final List<charts.Series> seriesList;

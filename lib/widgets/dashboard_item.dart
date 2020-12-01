@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
-import 'package:visoonfrontend/screens/customer_forecast_screen.dart';
 
+import '../screens/customer_forecast_screen.dart';
 import '../screens/project_forecast_screen.dart';
 import '../providers/summary.dart';
 import '../screens/detail_screen.dart';
 import './dashboard_chart.dart';
 
-final formatter = new NumberFormat.currency(locale: 'eu', decimalDigits: 0);
+final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
     new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 final currentYear = '2020';
