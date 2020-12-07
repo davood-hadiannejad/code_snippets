@@ -5,8 +5,10 @@ import '../providers/detail.dart';
 import './monthly_chart.dart';
 import './monthly_chart_detail.dart';
 import '../screens/project_forecast_screen.dart';
+import '../screens/detail_screen.dart';
 
-final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatter =
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
     new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 
@@ -29,6 +31,54 @@ class DetailItem extends StatelessWidget {
   final Detail detailData;
   final String pageType;
 
+  Future<void> _showRelatedDialog(context) async {
+    String futurePageType;
+    String futurePageTypeTitle;
+
+    if (pageType == 'Konzern' || pageType == 'Agentur') {
+      futurePageType = 'Kunde';
+      futurePageTypeTitle = 'Kundenliste';
+    } else if (pageType == 'Agenturnetzwerk') {
+      futurePageType = 'Agentur';
+      futurePageTypeTitle = 'Agenturliste';
+    }
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(futurePageTypeTitle),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: detailData.subType
+                  .map((subTypeItem) => FlatButton(
+                        child: Text(subTypeItem['name']),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context)
+                              .pushNamed(DetailScreen.routeName, arguments: {
+                            'pageType': futurePageType,
+                            'id': subTypeItem['name_slug'].toString(),
+                          });
+                        },
+                      ))
+                  .toList(),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Zurück'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   DetailItem(this.detailData, this.pageType);
 
   @override
@@ -44,7 +94,7 @@ class DetailItem extends StatelessWidget {
             child: ListView(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     FlatButton.icon(
                       onPressed: () {
@@ -53,12 +103,26 @@ class DetailItem extends StatelessWidget {
                       label: Text('Zurück'),
                       icon: Icon(Icons.arrow_back_ios),
                     ),
+                    (pageType != 'Kunde')
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 80),
+                            child: RaisedButton(
+                                onPressed: () {
+                                  _showRelatedDialog(context);
+                                },
+                                child: (pageType == 'Agenturnetzwerk')
+                                    ? Text('Agenturliste')
+                                    : Text('Kundenliste')),
+                          )
+                        : SizedBox(
+                            width: 50,
+                          ),
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    detailData.name,
+                    '$pageType: ${detailData.name}',
                     style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
@@ -175,7 +239,7 @@ class DetailItem extends StatelessWidget {
             child: ListView(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     FlatButton.icon(
                       onPressed: () {
@@ -183,6 +247,20 @@ class DetailItem extends StatelessWidget {
                       },
                       label: Text('Zurück'),
                       icon: Icon(Icons.arrow_back_ios),
+                    ),
+                    (pageType != 'Kunde')
+                        ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 80),
+                      child: RaisedButton(
+                          onPressed: () {
+                            _showRelatedDialog(context);
+                          },
+                          child: (pageType == 'Agenturnetzwerk')
+                              ? Text('Agenturliste')
+                              : Text('Kundenliste')),
+                    )
+                        : SizedBox(
+                      width: 50,
                     ),
                   ],
                 ),
@@ -317,7 +395,7 @@ class DetailItem extends StatelessWidget {
                     DataCell(Text((sales['global_rate'] != null)
                         ? formatterPercent.format(sales['global_rate'] / 100)
                         : 'N/A')),
-                    DataCell(Text((sales['global_rate'] != null)
+                    DataCell(Text((sales['global_rate_letztes_jahr'] != null)
                         ? formatterPercent
                             .format(sales['global_rate_letztes_jahr'] / 100)
                         : 'N/A')),
@@ -362,7 +440,7 @@ class DetailItem extends StatelessWidget {
                     DataCell(Text((sales['global_rate'] != null)
                         ? formatterPercent.format(sales['global_rate'] / 100)
                         : 'N/A')),
-                    DataCell(Text((sales['global_rate'] != null)
+                    DataCell(Text((sales['global_rate_letztes_jahr'] != null)
                         ? formatterPercent
                             .format(sales['global_rate_letztes_jahr'] / 100)
                         : 'N/A')),
@@ -392,40 +470,42 @@ class DetailItem extends StatelessWidget {
               DataCell(Text('')),
               DataCell(Text('')),
             ]),
-        DataRow(color: MaterialStateProperty.resolveWith(
+        DataRow(
+            color: MaterialStateProperty.resolveWith(
                 (Set<MaterialState> states) => Colors.grey[500]),
             cells: [
-          DataCell(Text('Kunde')),
-          DataCell(Text('Gesamt')),
-          ..._month
-              .map((month) => DataCell(Text(formatter.format(detailData.online
-                      .map((e) => e[month])
+              DataCell(Text('Kunde')),
+              DataCell(Text('Gesamt')),
+              ..._month
+                  .map((month) => DataCell(Text(formatter.format(detailData
+                          .online
+                          .map((e) => e[month])
+                          .toList()
+                          .reduce((a, b) => a + b) +
+                      detailData.tv
+                          .map((e) => e[month])
+                          .toList()
+                          .reduce((a, b) => a + b)))))
+                  .toList(),
+              DataCell(Text(formatter.format(_month
+                      .map((month) => detailData.online
+                          .map((e) => e[month])
+                          .toList()
+                          .reduce((a, b) => a + b))
                       .toList()
                       .reduce((a, b) => a + b) +
-                  detailData.tv
-                      .map((e) => e[month])
+                  _month
+                      .map((month) => detailData.tv
+                          .map((e) => e[month])
+                          .toList()
+                          .reduce((a, b) => a + b))
                       .toList()
-                      .reduce((a, b) => a + b)))))
-              .toList(),
-          DataCell(Text(formatter.format(_month
-                  .map((month) => detailData.online
-                      .map((e) => e[month])
-                      .toList()
-                      .reduce((a, b) => a + b))
-                  .toList()
-                  .reduce((a, b) => a + b) +
-              _month
-                  .map((month) => detailData.tv
-                      .map((e) => e[month])
-                      .toList()
-                      .reduce((a, b) => a + b))
-                  .toList()
-                  .reduce((a, b) => a + b)))),
-          DataCell(Text((detailData.globalRate != null)
-              ? formatterPercent.format(detailData.globalRate / 100)
-              : 'N/A')),
-          DataCell(Text('')),
-        ]),
+                      .reduce((a, b) => a + b)))),
+              DataCell(Text((detailData.globalRate != null)
+                  ? formatterPercent.format(detailData.globalRate / 100)
+                  : 'N/A')),
+              DataCell(Text('')),
+            ]),
       ],
     );
   }

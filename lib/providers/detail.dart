@@ -22,6 +22,7 @@ class Detail with ChangeNotifier {
   num naturalRabatt;
   num globalRate;
   num cashRabatt;
+  List<dynamic> subType;
 
   List<dynamic> activeBrands;
   Detail(
@@ -40,6 +41,7 @@ class Detail with ChangeNotifier {
 
   Future<void> fetchAndSetDetail(String kind, String id, {init=false, Verkaeufer verkaeufer, String medium}) async {
     var searchType = kind.toLowerCase();
+    var subTypeUri;
     Map<String, String> uriQuery = {};
 
     if (verkaeufer != null && verkaeufer.email != null) {
@@ -51,7 +53,10 @@ class Detail with ChangeNotifier {
     }
 
     var uri = Uri.http('hammbwdsc02:96', '/api/detail/$searchType/$id/', uriQuery);
-
+    if (searchType == 'agentur' || searchType == 'konzern' || searchType == 'agenturnetzwerk') {
+      subTypeUri = Uri.http('hammbwdsc02:96', '/api/subtype/$searchType/$id/', uriQuery);
+      print(subTypeUri);
+    }
     print(uri);
 
     try {
@@ -63,7 +68,6 @@ class Detail with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
-
       name = extractedData['name'];
       goalGesamt = extractedData['goal_gesamt'];
       istStichtagGesamt = extractedData['ist_stichtag_gesamt'];
@@ -78,6 +82,14 @@ class Detail with ChangeNotifier {
       naturalRabatt = extractedData['natural_rabatt_gesamt'];
       cashRabatt = extractedData['cash_rabatt_gesamt'];
       globalRate = extractedData['global_rate_gesamt'];
+
+      if (subTypeUri != null) {
+        final response = await http.get(
+          subTypeUri,
+          headers: {"Authorization": "Bearer $authToken"},
+        );
+        subType = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
+      }
 
       if (init != true) {
         notifyListeners();
