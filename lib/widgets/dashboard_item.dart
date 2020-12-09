@@ -70,7 +70,7 @@ class DashboardItem extends StatelessWidget {
                         TableCell(
                             child: Center(
                                 child: Text(
-                          'Vergleich',
+                          'Veränderung',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ))),
                       ]),
@@ -141,7 +141,7 @@ class DashboardItem extends StatelessWidget {
                               children: [
                                 Center(
                                     child: Text(
-                                  'delta Goal',
+                                  'Δ Goal',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 Center(
@@ -169,15 +169,7 @@ class DashboardItem extends StatelessWidget {
                                           1)))),
                           TableCell(
                               child: Center(
-                                  child: Text(formatterPercent.format(
-                                      ((summaryItem.stichtag['ist'] /
-                                                  summaryItem.goal['goal']) -
-                                              1) -
-                                          ((summaryItem.stichtag[
-                                                      'ist_letztes_jahr'] /
-                                                  summaryItem.goal[
-                                                      'goal_letztes_jahr']) -
-                                              1))))),
+                                  child: Text(''))),
                         ],
                       ),
                       TableRow(
@@ -373,20 +365,6 @@ class DashboardItem extends StatelessWidget {
                           TableCell(
                               child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Center(child: Text('')),
-                          )),
-                          TableCell(
-                            child: Center(
-                                child: Text(
-                              'MN3 / MB3 in %',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                          ),
-                        ]),
-                        TableRow(children: [
-                          TableCell(
-                              child: Padding(
-                            padding: const EdgeInsets.all(8.0),
                             child: Center(
                                 child: Text('$currentYear IST ',
                                     style: TextStyle(
@@ -449,7 +427,7 @@ class DashboardItem extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
                                   child: Text(
-                                '$lastYear IST',
+                                '$lastYear Gesamt',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),

@@ -601,7 +601,7 @@ class DetailItem extends StatelessWidget {
       ),
       DataRow(
         cells: [
-          DataCell(Text('Kunden Forecast')),
+          DataCell(Text('Kundenforecast')),
           ..._month
               .map((month) => DataCell(Text(
                   formatter.format(detailData.kundenForecastGesamt[month]))))

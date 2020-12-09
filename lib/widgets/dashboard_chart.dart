@@ -72,7 +72,7 @@ class DashboardChart extends StatelessWidget {
 
     return [
       new charts.Series<OrdinalSales, String>(
-        id: 'Ziel',
+        id: 'Goal',
         seriesCategory: 'A',
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
@@ -96,7 +96,7 @@ class DashboardChart extends StatelessWidget {
         colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.6)),
       ),
       new charts.Series<OrdinalSales, String>(
-        id: 'Ist Stichtag',
+        id: 'IST Stichtag',
         seriesCategory: 'B',
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,

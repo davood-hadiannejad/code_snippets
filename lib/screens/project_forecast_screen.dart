@@ -22,7 +22,7 @@ class ProjectForecastScreen extends StatelessWidget {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        title: Text('Projekt Forecast'),
+        title: Text('Projektforecast'),
         actions: <Widget>[
           UserSelect(),
           SizedBox(

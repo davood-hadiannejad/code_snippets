@@ -12,7 +12,7 @@ class MainDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
-            title: Text('Visoon!'),
+            title: Text('Visoon'),
             automaticallyImplyLeading: false,
           ),
           Divider(),
@@ -26,7 +26,7 @@ class MainDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.people),
-            title: Text('Kunden Forecast'),
+            title: Text('Kundenforecast'),
             onTap: () {
               Navigator.of(context)
                   .pushNamed(CustomerForecastScreen.routeName);
@@ -35,7 +35,7 @@ class MainDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.remove_red_eye),
-            title: Text('Projekt Forecast'),
+            title: Text('Projektforecast'),
             onTap: () {
               Navigator.of(context)
                   .pushNamed(ProjectForecastScreen.routeName);

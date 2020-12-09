@@ -5,9 +5,10 @@ import 'package:intl/intl.dart';
 import '../providers/customer_forecast_list.dart';
 import '../providers/customer_forecast.dart';
 
-final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatter =
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
-new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
+    new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 
 class CustomerForecastItem extends StatefulWidget {
   final CustomerForecastList customerForecastData;
@@ -33,9 +34,7 @@ List<String> _month = [
   'm12'
 ];
 
-int currentMonth = DateTime
-    .now()
-    .month;
+int currentMonth = DateTime.now().month;
 
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
   int columnSort;
@@ -43,7 +42,37 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
 
-  //Map<String, <List<TextEditingController>>> _controllerList;
+  Future<void> _showGesamtDialog(num gesamtSumme, CustomerForecast forecast) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Wie soll die Gesamtsumme verteilt werden?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Gleichverteilt'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Wie Vorjahr'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Abbrechen'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +100,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Kunden Forecast',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline5,
+                'Kundenforecast',
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
             Container(
@@ -219,12 +245,20 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                     ),
                   ),
                 ],
-                rows: widget.customerForecastData.items
-                    .map((forecast) {
+                rows: widget.customerForecastData.items.map((forecast) {
                   _controllerList[forecast] = [];
-                  _controllerSummary[forecast] = TextEditingController(text: formatter.format(forecast.forecast.entries.map((e) => e.value).reduce((a, b) => a + b)));
+                  _controllerSummary[forecast] = TextEditingController(
+                      text: formatter.format(forecast.forecast.entries.map((e) {
+                    int month = int.parse(e.key.substring(1));
+                    if (month >= currentMonth) {
+                      return e.value;
+                    } else {
+                      return 0;
+                    }
+                  }).reduce((a, b) => a + b)));
                   return DataRow(cells: [
-                    DataCell(Container(width: 80, child: Text(forecast.customer))),
+                    DataCell(
+                        Container(width: 80, child: Text(forecast.customer))),
                     DataCell(Container(child: Text(forecast.medium))),
                     DataCell(Container(width: 80, child: Text(forecast.brand))),
                     DataCell(Container(
@@ -245,21 +279,26 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ],
                       ),
                     )),
-                    ..._month
-                        .asMap()
-                        .entries
-                        .map((entry) {
+                    ..._month.asMap().entries.map((entry) {
                       int idx = entry.key;
                       String monthKey = entry.value;
-                      _controllerList[forecast].add(TextEditingController(
-                          text: formatter.format(forecast.forecast[monthKey])));
+                      if (idx + 1 >= currentMonth) {
+                        _controllerList[forecast].add(TextEditingController(
+                            text:
+                                formatter.format(forecast.forecast[monthKey])));
+                      }
+                      {
+                        _controllerList[forecast].add(
+                            TextEditingController(text: formatter.format(0)));
+                      }
+
                       return DataCell(
                         Container(
                           height: 170,
                           child: Column(
                             children: [
                               TextFormField(
-                                readOnly: false,
+                                readOnly: !(idx + 1 >= currentMonth),
                                 controller: _controllerList[forecast][idx],
                                 decoration: InputDecoration(
                                   filled: true,
@@ -268,7 +307,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                       : Colors.grey[300],
                                   border: InputBorder.none,
                                   contentPadding:
-                                  EdgeInsets.symmetric(vertical: 8),
+                                      EdgeInsets.symmetric(vertical: 8),
                                   //Change this value to custom as you like
                                   isDense: true, // and add this line
                                 ),
@@ -278,25 +317,37 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 ],
                                 style: TextStyle(fontSize: 14),
                                 maxLines: 1,
+                                onEditingComplete: () {
+                                  FocusScope.of(context).unfocus();
+                                  print(_controllerList[forecast][idx].text);
+                                },
                               ),
                               SizedBox(
                                 height: 8,
                               ),
                               Container(
                                   width: double.infinity,
-                                  child: Text(formatter.format(forecast.goal[monthKey]))),
+                                  child: Text(formatter
+                                      .format(forecast.goal[monthKey]))),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(formatter.format(forecast.ist[monthKey]))),
+                                  child: Text(formatter
+                                      .format(forecast.ist[monthKey]))),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(formatter.format(forecast.goal[monthKey]))),
+                                  child: Text(formatter
+                                      .format(forecast.goal[monthKey]))),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(monthKey)),
+                                  child: Text(formatter.format(
+                                      (idx + 1 >= currentMonth)
+                                          ? forecast.forecast[monthKey]
+                                          : 0 +
+                                              forecast.ist[monthKey] -
+                                              forecast.goal[monthKey]))),
                               SizedBox(height: 4),
                             ],
                           ),
@@ -316,7 +367,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 fillColor: Colors.blue[50],
                                 border: InputBorder.none,
                                 contentPadding:
-                                EdgeInsets.symmetric(vertical: 8),
+                                    EdgeInsets.symmetric(vertical: 8),
                                 //Change this value to custom as you like
                                 isDense: true, // and add this line
                               ),
@@ -325,33 +376,44 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 FilteringTextInputFormatter.digitsOnly
                               ],
                               style: TextStyle(fontSize: 14),
+                              onEditingComplete: () {
+                                FocusScope.of(context).unfocus();
+                                _showGesamtDialog(num.parse(_controllerSummary[forecast].text), forecast);
+                                },
                               maxLines: 1,
                             ),
                             SizedBox(
                               height: 8,
                             ),
                             Container(
-                                width: double.infinity, child: Text('gesamt')),
+                                width: double.infinity,
+                                child: Text(formatter.format(forecast
+                                    .goal.entries
+                                    .map((e) => e.value)
+                                    .reduce((a, b) => a + b)))),
                             Divider(),
                             Container(
                                 width: double.infinity,
-                                child: Text('gesamtWert')),
+                                child: Text(formatter.format(forecast
+                                    .ist.entries
+                                    .map((e) => e.value)
+                                    .reduce((a, b) => a + b)))),
                             Divider(),
                             Container(
                                 width: double.infinity,
-                                child: Text('gesamtWert')),
+                                child: Text(formatter.format(forecast
+                                    .istLastYear.entries
+                                    .map((e) => e.value)
+                                    .reduce((a, b) => a + b)))),
                             Divider(),
-                            Container(
-                                width: double.infinity,
-                                child: Text('gesamtWert')),
+                            Container(width: double.infinity, child: Text('')),
                             SizedBox(height: 4),
                           ],
                         ),
                       ),
                     )
                   ]);
-                })
-                    .toList(),
+                }).toList(),
               ),
             ),
             SizedBox(

@@ -21,7 +21,7 @@ class CustomerForecastScreen extends StatelessWidget {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        title: Text('Kunden Forecast'),
+        title: Text('Kundenforecast'),
         actions: <Widget>[
           UserSelect(),
           SizedBox(

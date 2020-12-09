@@ -117,7 +117,7 @@ class MonthlyChart extends StatelessWidget {
 
     List<charts.Series<OrdinalSales, String>>  chartList = [
       new charts.Series<OrdinalSales, String>(
-        id: 'Ziel',
+        id: 'Goal',
         seriesCategory: 'A',
         domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
@@ -134,7 +134,7 @@ class MonthlyChart extends StatelessWidget {
             charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.3)),
       ),
       new charts.Series<OrdinalSales, String>(
-        id: 'Ist Stichtag',
+        id: 'IST Stichtag',
         seriesCategory: 'B',
         domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
