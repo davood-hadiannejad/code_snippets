@@ -20,6 +20,10 @@ class CustomerList with ChangeNotifier {
     return [..._items];
   }
 
+  Customer findByName(String name) {
+    return _items.firstWhere((customer) => customer.name == name);
+  }
+
   Future<void> fetchAndSetCustomerList({bool init = false}) async {
     var url = 'http://hammbwdsc02:96/api/kunden/';
 
@@ -40,6 +44,7 @@ class CustomerList with ChangeNotifier {
             name: customer['name'],
             slug: customer['name_slug'],
             konzern: customer['konzern'],
+            agenturen: customer['agentur'].cast<String>(),
           ),
         );
       });

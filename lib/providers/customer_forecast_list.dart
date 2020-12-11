@@ -62,10 +62,11 @@ class CustomerForecastList with ChangeNotifier {
             customer: customerForecast['kunde'],
             medium: customerForecast['medium'],
             brand: customerForecast['brand'],
+            agentur: customerForecast['agentur'],
             goal: customerForecast['goal'],
             forecast: customerForecast['forecast'],
             ist: customerForecast['ist'],
-            istLastYear: customerForecast['ist'], //customerForecast['ist_letztes_jahr'],
+            istLastYear: customerForecast['ist_letztes_jahr'],
           ),
         );
       });
@@ -84,8 +85,12 @@ class CustomerForecastList with ChangeNotifier {
     String customer,
     String medium,
     String brand,
+    String agentur,
+    int year,
+    String verkaeufer,
     Map<dynamic, dynamic> forecast,
   ) async {
+    print('update customer forecast');
     var url = 'http://hammbwdsc02:96/api/customer-forecast/';
     try {
       final response = await http.post(url, headers: {
@@ -94,22 +99,29 @@ class CustomerForecastList with ChangeNotifier {
         'kunde': customer,
         'medium': medium,
         'brand': brand,
-        'forecast': forecast,
+        'agentur': agentur,
+        'year': year,
+        'verkaeufer': verkaeufer,
+        'forecast': json.encode(forecast),
       });
-      final extractedData = json.decode(response.body) as dynamic;
       print(response.body);
+      final extractedData = json.decode(response.body) as dynamic;
+
       CustomerForecast tempItem = _items.firstWhere((forecast) =>
           forecast.customer == customer &&
           forecast.brand == brand &&
-          forecast.medium == medium);
+          forecast.medium == medium &&
+          forecast.agentur == agentur);
       _items.removeWhere((forecast) =>
           forecast.customer == customer &&
           forecast.brand == brand &&
-          forecast.medium == medium);
+          forecast.medium == medium &&
+          forecast.agentur == agentur);
       _items.add(CustomerForecast(
           customer: customer,
           medium: medium,
           brand: brand,
+          agentur: agentur,
           forecast: forecast,
           goal: tempItem.goal,
           ist: tempItem.ist,

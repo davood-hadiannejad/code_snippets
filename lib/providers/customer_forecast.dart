@@ -7,6 +7,7 @@ class CustomerForecast with ChangeNotifier {
   final String customer;
   final String medium;
   final String brand;
+  final String agentur;
   final Map<dynamic, dynamic> goal;
   final Map<dynamic, dynamic> forecast;
   final Map<dynamic, dynamic> ist;
@@ -18,6 +19,7 @@ class CustomerForecast with ChangeNotifier {
     @required this.customer,
     @required this.medium,
     @required this.brand,
+    @required this.agentur,
     @required this.goal,
     @required this.forecast,
     @required this.istLastYear,

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/customer_forecast_list.dart';
 import '../providers/customer_forecast.dart';
+import '../providers/verkaeufer_list.dart';
+import '../providers/verkaeufer.dart';
+
 
 final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
@@ -33,16 +37,26 @@ List<String> _month = [
   'm11',
   'm12'
 ];
+final currentYear = 2020;
+final lastYear = currentYear - 1;
 
 int currentMonth = DateTime.now().month;
 
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
+  Verkaeufer selectedVerkaufer;
   int columnSort;
   bool ascSort = false;
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
 
-  Future<void> _showGesamtDialog(num gesamtSumme, CustomerForecast forecast) async {
+
+
+
+
+  Future<void> _showGesamtDialog(
+      num gesamtSumme, CustomerForecast forecast) async {
+    List<String> activeMonth = _month.sublist(currentMonth - 1);
+    int countActiveMonth = activeMonth.length;
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -53,6 +67,20 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
             FlatButton(
               child: Text('Gleichverteilt'),
               onPressed: () {
+                activeMonth.forEach((monthKey) {
+                  forecast.forecast[monthKey] =
+                      (gesamtSumme / countActiveMonth).toString();
+                });
+                Provider.of<CustomerForecastList>(context, listen: false)
+                    .addCustomerForecast(
+                  forecast.customer,
+                  forecast.medium,
+                  forecast.brand,
+                  forecast.agentur,
+                  currentYear,
+                  selectedVerkaufer.email,
+                  forecast.forecast,
+                );
                 Navigator.of(context).pop();
               },
             ),
@@ -76,6 +104,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
 
   @override
   Widget build(BuildContext context) {
+    selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
+
     return Card(
       margin: EdgeInsets.all(12.0),
       child: Container(
@@ -249,12 +279,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   _controllerList[forecast] = [];
                   _controllerSummary[forecast] = TextEditingController(
                       text: formatter.format(forecast.forecast.entries.map((e) {
-                    int month = int.parse(e.key.substring(1));
-                    if (month >= currentMonth) {
-                      return e.value;
-                    } else {
-                      return 0;
-                    }
+                    return e.value;
                   }).reduce((a, b) => a + b)));
                   return DataRow(cells: [
                     DataCell(
@@ -282,16 +307,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                     ..._month.asMap().entries.map((entry) {
                       int idx = entry.key;
                       String monthKey = entry.value;
-                      if (idx + 1 >= currentMonth) {
-                        _controllerList[forecast].add(TextEditingController(
-                            text:
-                                formatter.format(forecast.forecast[monthKey])));
-                      }
-                      {
-                        _controllerList[forecast].add(
-                            TextEditingController(text: formatter.format(0)));
-                      }
-
+                      _controllerList[forecast].add(TextEditingController(
+                          text: formatter.format(forecast.forecast[monthKey])));
                       return DataCell(
                         Container(
                           height: 170,
@@ -319,7 +336,19 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 maxLines: 1,
                                 onEditingComplete: () {
                                   FocusScope.of(context).unfocus();
-                                  print(_controllerList[forecast][idx].text);
+                                  forecast.forecast[monthKey] = num.parse(
+                                      _controllerList[forecast][idx].text);
+                                  Provider.of<CustomerForecastList>(context,
+                                          listen: false)
+                                      .addCustomerForecast(
+                                    forecast.customer,
+                                    forecast.medium,
+                                    forecast.brand,
+                                    forecast.agentur,
+                                    currentYear,
+                                    selectedVerkaufer.email,
+                                    forecast.forecast,
+                                  );
                                 },
                               ),
                               SizedBox(
@@ -343,11 +372,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               Container(
                                   width: double.infinity,
                                   child: Text(formatter.format(
-                                      (idx + 1 >= currentMonth)
-                                          ? forecast.forecast[monthKey]
-                                          : 0 +
-                                              forecast.ist[monthKey] -
-                                              forecast.goal[monthKey]))),
+                                      forecast.forecast[monthKey] +
+                                          forecast.ist[monthKey] -
+                                          forecast.goal[monthKey]))),
                               SizedBox(height: 4),
                             ],
                           ),
@@ -378,8 +405,11 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               style: TextStyle(fontSize: 14),
                               onEditingComplete: () {
                                 FocusScope.of(context).unfocus();
-                                _showGesamtDialog(num.parse(_controllerSummary[forecast].text), forecast);
-                                },
+                                _showGesamtDialog(
+                                    num.parse(
+                                        _controllerSummary[forecast].text),
+                                    forecast);
+                              },
                               maxLines: 1,
                             ),
                             SizedBox(
