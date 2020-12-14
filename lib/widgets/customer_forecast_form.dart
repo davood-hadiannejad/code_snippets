@@ -58,7 +58,8 @@ class _CustomerForecastFormState extends State<CustomerForecastForm> {
                 if (this.mounted) {
                   setState(() {
                     customerDropdownValue = newValue;
-                    //agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                    agencyDropdownValue = null;
+                    agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
                   });
                 }
               },

@@ -443,6 +443,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                           enableNeukunde = true;
                         } else {
                           enableNeukunde = false;
+                          agencyDropdownValue = null;
+                          agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
                         }
                       });
                     }
