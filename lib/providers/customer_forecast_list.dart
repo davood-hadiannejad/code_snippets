@@ -13,6 +13,7 @@ String dummyData =
 class CustomerForecastList with ChangeNotifier {
   List<CustomerForecast> _items = [];
   List<CustomerForecast> _activeItems = [];
+  CustomerForecast _addToActiveItems;
 
   final String authToken;
 
@@ -73,12 +74,83 @@ class CustomerForecastList with ChangeNotifier {
       _items = loadedCustomerForecastList;
       _activeItems = loadedCustomerForecastList.sublist(0, 10);
 
+      if (_addToActiveItems != null) {
+        _activeItems.insert(0, _addToActiveItems);
+      }
+
       if (init != true) {
         notifyListeners();
       }
     } catch (error) {
       throw (error);
     }
+  }
+
+  Future<void> newCustomerForecast(customer, medium, brand, agentur) async {
+    _addToActiveItems = CustomerForecast(
+        customer: customer,
+        medium: medium,
+        brand: brand,
+        agentur: agentur,
+        forecast: {
+          "m1": 0.0,
+          "m2": 0.0,
+          "m3": 0.0,
+          "m4": 0.0,
+          "m5": 0.0,
+          "m6": 0.0,
+          "m7": 0.0,
+          "m8": 0.0,
+          "m9": 0.0,
+          "m10": 0.0,
+          "m11": 0.0,
+          "m12": 0.0
+        },
+        goal: {
+          "m1": 0.0,
+          "m2": 0.0,
+          "m3": 0.0,
+          "m4": 0.0,
+          "m5": 0.0,
+          "m6": 0.0,
+          "m7": 0.0,
+          "m8": 0.0,
+          "m9": 0.0,
+          "m10": 0.0,
+          "m11": 0.0,
+          "m12": 0.0
+        },
+        ist: {
+          "m1": 0.0,
+          "m2": 0.0,
+          "m3": 0.0,
+          "m4": 0.0,
+          "m5": 0.0,
+          "m6": 0.0,
+          "m7": 0.0,
+          "m8": 0.0,
+          "m9": 0.0,
+          "m10": 0.0,
+          "m11": 0.0,
+          "m12": 0.0
+        },
+        istLastYear: {
+          "m1": 0.0,
+          "m2": 0.0,
+          "m3": 0.0,
+          "m4": 0.0,
+          "m5": 0.0,
+          "m6": 0.0,
+          "m7": 0.0,
+          "m8": 0.0,
+          "m9": 0.0,
+          "m10": 0.0,
+          "m11": 0.0,
+          "m12": 0.0
+        }
+    );
+
+    notifyListeners();
   }
 
   Future<void> addCustomerForecast(
@@ -130,7 +202,7 @@ class CustomerForecastList with ChangeNotifier {
           ist: tempItem.ist,
           istLastYear: tempItem.istLastYear));
 
-      notifyListeners();
+      //notifyListeners();
     } catch (error) {
       throw error;
     }

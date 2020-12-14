@@ -44,7 +44,7 @@ class CustomerForecastScreen extends StatelessWidget {
         child: (Row(
           children: [
             FutureBuilder(
-              future: Provider.of<CustomerForecastList>(context, listen: false)
+              future: Provider.of<CustomerForecastList>(context)
                   .fetchAndSetCustomerForecastList(
                       init: true, verkaeufer: selectedVerkaufer),
               builder: (ctx, dataSnapshot) {

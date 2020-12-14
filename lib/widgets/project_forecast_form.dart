@@ -101,7 +101,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     brandDropdownList = Provider.of<BrandList>(context).items.map((e) => e.name).toList();
     customerDropdownList = Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
     if (widget.projectId == null) {
-      customerDropdownList.add('Neukunde');
+      customerDropdownList.insert(0, 'Neukunde');
     }
 
     agencyDropdownList = Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
