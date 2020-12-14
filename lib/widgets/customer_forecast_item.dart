@@ -37,8 +37,8 @@ List<String> _month = [
   'm11',
   'm12'
 ];
-final currentYear = 2020;
-final lastYear = currentYear - 1;
+int currentYear = 2020;
+int lastYear = currentYear - 1;
 
 int currentMonth = DateTime.now().month;
 
@@ -69,7 +69,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
               onPressed: () {
                 activeMonth.forEach((monthKey) {
                   forecast.forecast[monthKey] =
-                      (gesamtSumme / countActiveMonth).toString();
+                      (gesamtSumme / countActiveMonth);
                 });
                 Provider.of<CustomerForecastList>(context, listen: false)
                     .addCustomerForecast(

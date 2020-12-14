@@ -91,19 +91,22 @@ class CustomerForecastList with ChangeNotifier {
     Map<dynamic, dynamic> forecast,
   ) async {
     print('update customer forecast');
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $authToken"
+    };
+    final msg = jsonEncode({
+      'kunde': customer,
+      'medium': medium,
+      'brand': brand,
+      'agentur': agentur,
+      'year': year,
+      'verkaeufer': verkaeufer,
+      'forecast': forecast,
+    });
     var url = 'http://hammbwdsc02:96/api/customer-forecast/';
     try {
-      final response = await http.post(url, headers: {
-        "Authorization": "Bearer $authToken"
-      }, body: {
-        'kunde': customer,
-        'medium': medium,
-        'brand': brand,
-        'agentur': agentur,
-        'year': year,
-        'verkaeufer': verkaeufer,
-        'forecast': json.encode(forecast),
-      });
+      final response = await http.post(url, headers: headers, body: msg);
       print(response.body);
       final extractedData = json.decode(response.body) as dynamic;
 

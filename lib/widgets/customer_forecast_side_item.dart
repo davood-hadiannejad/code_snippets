@@ -60,7 +60,7 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                       if (this.mounted) {
                         setState(() {
                           customerDropdownValue = newValue;
-                          //agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                          agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
                         });
                       }
                     },
