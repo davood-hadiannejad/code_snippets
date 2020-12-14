@@ -14,13 +14,20 @@ class CustomerForecastList with ChangeNotifier {
   List<CustomerForecast> _items = [];
   List<CustomerForecast> _activeItems = [];
   CustomerForecast _addToActiveItems;
-
+  int currentPage = 1;
+  int maxPages;
+  int maxItemsOnPage = 10;
   final String authToken;
 
   CustomerForecastList(this.authToken, this._items);
 
   List<CustomerForecast> get items {
     return [..._activeItems];
+  }
+
+  Future<void> changePage(int pageNumber) async {
+    currentPage = pageNumber;
+    notifyListeners();
   }
 
   List<CustomerForecast> sortByField(field, {ascending = false}) {
@@ -37,12 +44,13 @@ class CustomerForecastList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetCustomerForecastList(
-      {bool init = false, Verkaeufer verkaeufer}) async {
+      {bool init = false, Verkaeufer verkaeufer, bool refresh = false}) async {
     Map<String, String> uriQuery = {};
+    List<CustomerForecast> loadedCustomerForecastList = [];
     if (verkaeufer != null && verkaeufer.email != null) {
       uriQuery['email'] = verkaeufer.email;
     }
-
+    if (_items.isEmpty || refresh) {
     var uri = Uri.http('hammbwdsc02:96', '/api/customer-forecast/', uriQuery);
     print(uri);
     try {
@@ -56,7 +64,6 @@ class CustomerForecastList with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
-      final List<CustomerForecast> loadedCustomerForecastList = [];
       extractedData.forEach((customerForecast) {
         loadedCustomerForecastList.add(
           CustomerForecast(
@@ -72,17 +79,27 @@ class CustomerForecastList with ChangeNotifier {
         );
       });
       _items = loadedCustomerForecastList;
-      _activeItems = loadedCustomerForecastList.sublist(0, 10);
-
-      if (_addToActiveItems != null) {
-        _activeItems.insert(0, _addToActiveItems);
-      }
-
-      if (init != true) {
-        notifyListeners();
-      }
     } catch (error) {
       throw (error);
+    }} else {
+      loadedCustomerForecastList = [..._items];
+    }
+
+    maxPages = (_items.length / maxItemsOnPage).ceil();
+    int minItemsPage = currentPage * maxItemsOnPage - maxItemsOnPage;
+    int maxItemsPage = currentPage * maxItemsOnPage;
+    if (maxItemsPage > _items.length) {
+      _activeItems = loadedCustomerForecastList.sublist(minItemsPage);
+    } else {
+      _activeItems = loadedCustomerForecastList.sublist(minItemsPage, maxItemsPage);
+    }
+
+
+    if (_addToActiveItems != null) {
+      _activeItems.insert(0, _addToActiveItems);
+    }
+    if (init != true) {
+      notifyListeners();
     }
   }
 
@@ -147,8 +164,7 @@ class CustomerForecastList with ChangeNotifier {
           "m10": 0.0,
           "m11": 0.0,
           "m12": 0.0
-        }
-    );
+        });
 
     notifyListeners();
   }
@@ -179,7 +195,6 @@ class CustomerForecastList with ChangeNotifier {
     var url = 'http://hammbwdsc02:96/api/customer-forecast/';
     try {
       final response = await http.post(url, headers: headers, body: msg);
-      print(response.body);
       final extractedData = json.decode(response.body) as dynamic;
 
       CustomerForecast tempItem = _items.firstWhere((forecast) =>

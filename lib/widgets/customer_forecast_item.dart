@@ -8,7 +8,6 @@ import '../providers/customer_forecast.dart';
 import '../providers/verkaeufer_list.dart';
 import '../providers/verkaeufer.dart';
 
-
 final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
@@ -48,10 +47,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   bool ascSort = false;
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
-
-
-
-
 
   Future<void> _showGesamtDialog(
       num gesamtSumme, CustomerForecast forecast) async {
@@ -126,12 +121,55 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Kundenforecast',
-                style: Theme.of(context).textTheme.headline5,
+            SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Kundenforecast',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
+                FlatButton.icon(onPressed: () {
+                  Provider.of<CustomerForecastList>(context, listen: false)
+                      .fetchAndSetCustomerForecastList(
+                      verkaeufer: selectedVerkaufer, refresh: true);
+                }, icon: Icon(Icons.refresh), label: Text('Refresh'))
+              ],
+            ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: 1,),
+                  Row(
+                    children: List<Container>.generate(
+                      widget.customerForecastData.maxPages,
+                      (i) => Container(
+                        width: 25,
+                        height: 25,
+                        child: FlatButton(
+                          color:
+                              ((i + 1) == widget.customerForecastData.currentPage)
+                                  ? Theme.of(context).accentColor
+                                  : null,
+                          padding: EdgeInsets.all(1.0),
+                          child: Text((i + 1).toString(),
+                              style: TextStyle(
+                                fontSize: 8,
+                              )),
+                          onPressed: () {
+                            Provider.of<CustomerForecastList>(context,
+                                listen: false).changePage(i + 1);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 1,),
+                ],
               ),
             ),
             Container(
