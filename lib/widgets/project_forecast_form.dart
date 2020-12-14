@@ -598,19 +598,17 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               Container(
                 width: 250,
                 child: TextFormField(
-                  controller: _naturalRabattPercentController,
+                  controller: _mN3Controller,
                   decoration: InputDecoration(
-                    hintText: 'Natural Rabatt',
-                    helperText: (naturalRabattPercent != null)
-                        ? 'Natural Rabatt'
-                        : null,
-                    suffixText: '%',
+                    hintText: 'MN 3',
+                    helperText: (mN3 != null) ? 'MN 3' : null,
+                    suffixText: '€',
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Bitte Cash Rabatt angeben.';
+                      return 'Bitte MN3 angeben.';
                     }
                     return null;
                   },
@@ -623,7 +621,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   decoration: InputDecoration(
                     hintText: 'Cash Rabatt',
                     helperText:
-                        (cashRabattPercent != null) ? 'Cash Rabatt' : null,
+                    (cashRabattPercent != null) ? 'Cash Rabatt' : null,
                     suffixText: '%',
                   ),
                   keyboardType: TextInputType.number,
@@ -639,17 +637,19 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               Container(
                 width: 250,
                 child: TextFormField(
-                  controller: _mN3Controller,
+                  controller: _naturalRabattPercentController,
                   decoration: InputDecoration(
-                    hintText: 'MN 3',
-                    helperText: (mN3 != null) ? 'MN 3' : null,
-                    suffixText: '€',
+                    hintText: 'Natural Rabatt',
+                    helperText: (naturalRabattPercent != null)
+                        ? 'Natural Rabatt'
+                        : null,
+                    suffixText: '%',
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Bitte MN3 angeben.';
+                      return 'Bitte Natural Rabatt angeben.';
                     }
                     return null;
                   },
