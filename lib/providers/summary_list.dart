@@ -25,11 +25,14 @@ class SummaryList with ChangeNotifier {
   }
 
   Future<void> searchByName(String searchString) async {
-    _activeItems = _items.where((summary) => summary.name.toLowerCase().startsWith(searchString.toLowerCase())).toList();
+    _activeItems = _items.where((summary) =>
+        summary.name.toLowerCase().startsWith(searchString.toLowerCase()))
+        .toList();
     notifyListeners();
   }
 
-  Future<void> fetchAndSetSummaryList(String kind, {bool init=false, Verkaeufer verkaeufer, String medium}) async {
+  Future<void> fetchAndSetSummaryList(String kind,
+      {bool init = false, Verkaeufer verkaeufer, String medium}) async {
     var searchType = kind.toLowerCase();
     Map<String, String> uriQuery = {};
     if (verkaeufer != null && verkaeufer.email != null) {
@@ -40,7 +43,8 @@ class SummaryList with ChangeNotifier {
       uriQuery['filter_gattung'] = medium;
     }
 
-    var uri = Uri.http('hammbwdsc02:96', '/api/dashboard/$searchType/', uriQuery);
+    var uri = Uri.http(
+        'hammbwdsc02:96', '/api/dashboard/$searchType/', uriQuery);
 
     print(uri);
 
@@ -68,6 +72,15 @@ class SummaryList with ChangeNotifier {
           ),
         );
       });
+      if (searchType == 'mandant') {
+        List<String> sortList = ['WELT', 'VIMN', 'VISO', 'DRIT', 'ZEEO'];
+
+        loadedSummaryList.sort((a, b) {
+          int aIntex = sortList.indexOf(a.name);
+          int bIntex = sortList.indexOf(b.name);
+          return aIntex.compareTo(bIntex);
+        });
+      }
       _items = loadedSummaryList;
       _activeItems = loadedSummaryList;
 
