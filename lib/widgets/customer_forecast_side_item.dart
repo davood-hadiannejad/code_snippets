@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-
+import '../providers/customer_forecast_list.dart';
 import './select_menu.dart';
 import 'customer_forecast_dialog.dart';
 
@@ -11,7 +12,7 @@ class CustomerForecastSideItem extends StatefulWidget {
 }
 
 class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
-  String isSelected = 'offen';
+  String isSelected = 'Gesamt';
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +51,8 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
               ),
               TextField(
                 onChanged: (text) {
-                  //Provider.of<SummaryList>(context, listen: false)
-                  //    .searchByName(text);
+                  Provider.of<CustomerForecastList>(context, listen: false)
+                      .searchByName(text);
                 },
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
@@ -68,19 +69,19 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
               Center(
                 child: FlatButton(
                   minWidth: 200,
-                  color: (isSelected == 'offen')
+                  color: (isSelected == 'Gesamt')
                       ? Theme.of(context).accentColor
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
                     if (this.mounted) {
                       setState(() {
-                        isSelected = 'offen';
+                        isSelected = 'Gesamt';
                       });
                     }
                   },
                   child: Text(
-                    'offene Projekte',
+                    'Gesamt',
                     style: TextStyle(fontSize: 12),
                   ),
                 ),
@@ -88,19 +89,19 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
               Center(
                 child: FlatButton(
                   minWidth: 200,
-                  color: (isSelected == 'gebucht')
+                  color: (isSelected == 'TV')
                       ? Theme.of(context).accentColor
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
                     if (this.mounted) {
                       setState(() {
-                        isSelected = 'gebucht';
+                        isSelected = 'TV';
                       });
                     }
                   },
                   child: Text(
-                    'gebuchte Projekte',
+                    'TV',
                     style: TextStyle(fontSize: 12),
                   ),
                 ),
@@ -108,19 +109,19 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
               Center(
                 child: FlatButton(
                   minWidth: 200,
-                  color: (isSelected == 'abgesagt')
+                  color: (isSelected == 'Online')
                       ? Theme.of(context).accentColor
                       : Theme.of(context).primaryColor.withOpacity(0.70),
                   textColor: Colors.white,
                   onPressed: () {
                     if (this.mounted) {
                       setState(() {
-                        isSelected = 'abgesagt';
+                        isSelected = 'Online';
                       });
                     }
                   },
                   child: Text(
-                    'abgesagte Projekte',
+                    'Online',
                     style: TextStyle(fontSize: 12),
                   ),
                 ),

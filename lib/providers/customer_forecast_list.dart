@@ -35,11 +35,20 @@ class CustomerForecastList with ChangeNotifier {
   }
 
   Future<void> searchByName(String searchString) async {
-    _activeItems = _items
+    currentPage = 1;
+    List<CustomerForecast>  filteredItems = [..._items
         .where((customerForecast) => customerForecast.customer
             .toLowerCase()
             .startsWith(searchString.toLowerCase()))
-        .toList();
+        .toList()];
+    maxPages = (filteredItems.length / maxItemsOnPage).ceil();
+    int minItemsPage = currentPage * maxItemsOnPage - maxItemsOnPage;
+    int maxItemsPage = currentPage * maxItemsOnPage;
+    if (maxItemsPage >= filteredItems.length) {
+      _activeItems = filteredItems.sublist(minItemsPage);
+    } {
+      _activeItems = filteredItems.sublist(minItemsPage, maxItemsPage);
+    }
     notifyListeners();
   }
 
