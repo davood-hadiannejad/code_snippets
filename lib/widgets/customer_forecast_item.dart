@@ -39,7 +39,7 @@ List<String> _month = [
 int currentYear = 2020;
 int lastYear = currentYear - 1;
 
-int currentMonth = DateTime.now().month;
+int currentMonth = DateTime.now().month - 2;
 
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
   Verkaeufer selectedVerkaufer;
@@ -47,59 +47,98 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   bool ascSort = false;
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
+  int maxPages;
+  int currentPage;
 
-  Future<void> _showGesamtDialog(
-      num gesamtSumme, CustomerForecast forecast) async {
-    List<String> activeMonth = _month.sublist(currentMonth - 1);
-    int countActiveMonth = activeMonth.length;
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Wie soll die Gesamtsumme verteilt werden?'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Gleichverteilt'),
-              onPressed: () {
-                activeMonth.forEach((monthKey) {
-                  forecast.forecast[monthKey] =
-                      (gesamtSumme / countActiveMonth);
-                });
-                Provider.of<CustomerForecastList>(context, listen: false)
-                    .addCustomerForecast(
-                  forecast.customer,
-                  forecast.medium,
-                  forecast.brand,
-                  forecast.agentur,
-                  currentYear,
-                  selectedVerkaufer.email,
-                  forecast.forecast,
-                );
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text('Wie Vorjahr'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text('Abbrechen'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+
+
+  @override
+  void initState() {
+    maxPages = widget.customerForecastData.maxPages;
+    currentPage = widget.customerForecastData.currentPage;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
+
+    Future<void> _showGesamtDialog(
+        num gesamtSumme, CustomerForecast forecast) async {
+      List<String> activeMonth = _month.sublist(currentMonth - 1);
+      int countActiveMonth = activeMonth.length;
+      num sumLastYear = activeMonth.map((monthKey) {
+        return forecast.istLastYear[monthKey];
+      }).toList().reduce((a, b) => a + b);
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Wie soll die Gesamtsumme verteilt werden?'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Gleichverteilt'),
+                onPressed: () {
+                  activeMonth.forEach((monthKey) {
+                    forecast.forecast[monthKey] =
+                    (gesamtSumme / countActiveMonth);
+                  });
+                  Provider.of<CustomerForecastList>(context, listen: false)
+                      .addCustomerForecast(
+                    forecast.customer,
+                    forecast.medium,
+                    forecast.brand,
+                    forecast.agentur,
+                    currentYear,
+                    selectedVerkaufer.email,
+                    forecast.forecast,
+                  );
+                  Navigator.of(context).pop();
+                  setState(() {
+                    forecast = forecast;
+                  });
+                },
+              ),
+              FlatButton(
+                child: Text('Wie Vorjahr'),
+                onPressed: (sumLastYear > 0) ? () {
+
+                  activeMonth.forEach((monthKey) {
+                    num montlyAmount =  (gesamtSumme *
+                        forecast.istLastYear[monthKey] /
+                        sumLastYear);
+//                  int idx = _month.indexOf(monthKey);
+//                  _controllerList[forecast][idx].text = montlyAmount.toString();
+                    forecast.forecast[monthKey] = montlyAmount;
+                  });
+                  Provider.of<CustomerForecastList>(context, listen: false)
+                      .addCustomerForecast(
+                    forecast.customer,
+                    forecast.medium,
+                    forecast.brand,
+                    forecast.agentur,
+                    currentYear,
+                    selectedVerkaufer.email,
+                    forecast.forecast,
+                  );
+                  Navigator.of(context).pop();
+                  setState(() {
+                    forecast = forecast;
+                  });
+                } : null,
+              ),
+              FlatButton(
+                child: Text('Abbrechen'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     return Card(
       margin: EdgeInsets.all(12.0),
@@ -132,29 +171,33 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ),
-                FlatButton.icon(onPressed: () {
-                  Provider.of<CustomerForecastList>(context, listen: false)
-                      .fetchAndSetCustomerForecastList(
-                      verkaeufer: selectedVerkaufer, refresh: true);
-                }, icon: Icon(Icons.refresh), label: Text('Refresh'))
+                FlatButton.icon(
+                    onPressed: () {
+                      Provider.of<CustomerForecastList>(context, listen: false)
+                          .fetchAndSetCustomerForecastList(
+                              verkaeufer: selectedVerkaufer, refresh: true);
+                    },
+                    icon: Icon(Icons.refresh),
+                    label: Text('Refresh'))
               ],
             ),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(width: 1,),
+                  SizedBox(
+                    width: 1,
+                  ),
                   Row(
                     children: List<Container>.generate(
-                      widget.customerForecastData.maxPages,
+                      maxPages,
                       (i) => Container(
                         width: 25,
                         height: 25,
                         child: FlatButton(
-                          color:
-                              ((i + 1) == widget.customerForecastData.currentPage)
-                                  ? Theme.of(context).accentColor
-                                  : null,
+                          color: ((i + 1) == currentPage)
+                              ? Theme.of(context).accentColor
+                              : null,
                           padding: EdgeInsets.all(1.0),
                           child: Text((i + 1).toString(),
                               style: TextStyle(
@@ -162,13 +205,16 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               )),
                           onPressed: () {
                             Provider.of<CustomerForecastList>(context,
-                                listen: false).changePage(i + 1);
+                                    listen: false)
+                                .changePage(i + 1);
                           },
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 1,),
+                  SizedBox(
+                    width: 1,
+                  ),
                 ],
               ),
             ),
@@ -405,7 +451,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               Container(
                                   width: double.infinity,
                                   child: Text(formatter
-                                      .format(forecast.goal[monthKey]))),
+                                      .format(forecast.istLastYear[monthKey]))),
                               Divider(),
                               Container(
                                   width: double.infinity,

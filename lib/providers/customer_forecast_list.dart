@@ -196,28 +196,6 @@ class CustomerForecastList with ChangeNotifier {
     try {
       final response = await http.post(url, headers: headers, body: msg);
       final extractedData = json.decode(response.body) as dynamic;
-
-      CustomerForecast tempItem = _items.firstWhere((forecast) =>
-          forecast.customer == customer &&
-          forecast.brand == brand &&
-          forecast.medium == medium &&
-          forecast.agentur == agentur);
-      _items.removeWhere((forecast) =>
-          forecast.customer == customer &&
-          forecast.brand == brand &&
-          forecast.medium == medium &&
-          forecast.agentur == agentur);
-      _items.add(CustomerForecast(
-          customer: customer,
-          medium: medium,
-          brand: brand,
-          agentur: agentur,
-          forecast: forecast,
-          goal: tempItem.goal,
-          ist: tempItem.ist,
-          istLastYear: tempItem.istLastYear));
-
-      //notifyListeners();
     } catch (error) {
       throw error;
     }
