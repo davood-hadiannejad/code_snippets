@@ -9,6 +9,7 @@ import '../providers/project_list.dart';
 import '../providers/project.dart';
 import '../providers/brand_list.dart';
 import '../providers/customer_list.dart';
+import '../providers/verkaeufer_list.dart';
 
 final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
@@ -33,6 +34,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   List<String> brandDropdownList = [];
   List<String> customerDropdownList = [];
   List<String> agencyDropdownList = [];
+  String selectedVerkauferEmail;
 
   int mN3;
   int cashRabattPercent;
@@ -98,6 +100,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
 
   @override
   void didChangeDependencies() {
+    selectedVerkauferEmail = Provider.of<VerkaeuferList>(context).selectedVerkaufer.email;
     brandDropdownList = Provider.of<BrandList>(context).items.map((e) => e.name).toList();
     customerDropdownList = Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
     if (widget.projectId == null) {
@@ -134,7 +137,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     _mN3Controller.addListener(_addMN3);
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
-
+    selectedVerkauferEmail = Provider.of<VerkaeuferList>(context, listen: false).selectedVerkaufer.email;
   }
 
   bool enableNeukunde = false;
@@ -351,6 +354,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
           mediumDropdownValue,
           brandDropdownValue,
           agencyDropdownValue,
+          selectedVerkauferEmail,
           num.parse(_mN3Controller.text),
           num.parse(_cashRabattPercentController.text),
           num.parse(_naturalRabattPercentController.text),
@@ -366,6 +370,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
           mediumDropdownValue,
           brandDropdownValue,
           agencyDropdownValue,
+          selectedVerkauferEmail,
           num.parse(_mN3Controller.text),
           num.parse(_cashRabattPercentController.text),
           num.parse(_naturalRabattPercentController.text),
