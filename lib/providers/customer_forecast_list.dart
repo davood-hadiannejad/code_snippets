@@ -84,6 +84,7 @@ class CustomerForecastList with ChangeNotifier {
           );
         });
         _items = loadedCustomerForecastList;
+        _addToActiveItems = null;
       } catch (error) {
         throw (error);
       }
