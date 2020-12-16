@@ -35,7 +35,6 @@ class _SelectMenuState extends State<SelectMenu> {
       Provider.of<Detail>(context, listen: false).filterBrands(filterList);
     } else if (widget.filterType == 'Kunde' &&
         widget.providerClass == 'detail') {
-      print('Kunden Filter');
     } else if (widget.filterType == 'Brand' &&
         widget.providerClass == 'customer-forecast') {
       Provider.of<CustomerForecastList>(context, listen: false)
@@ -47,7 +46,6 @@ class _SelectMenuState extends State<SelectMenu> {
       Provider.of<AOBList>(context, listen: false)
           .filterByBrandList(filterList);
     }
-    print(widget.filterType);
   }
 
   @override

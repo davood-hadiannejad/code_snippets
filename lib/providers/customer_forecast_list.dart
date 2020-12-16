@@ -217,7 +217,6 @@ class CustomerForecastList with ChangeNotifier {
     String verkaeufer,
     Map<dynamic, dynamic> forecast,
   ) async {
-    print('update customer forecast');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer $authToken"
