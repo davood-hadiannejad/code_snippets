@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/detail.dart';
-
+import '../providers/customer_forecast_list.dart';
+import '../providers/brand_list.dart';
 
 class SelectMenu extends StatefulWidget {
   List<String> itemList;
   String filterType;
-  SelectMenu(this.itemList, this.filterType);
+  String providerClass;
+  SelectMenu(this.providerClass, this.itemList, this.filterType);
   @override
   _SelectMenuState createState() => _SelectMenuState();
 }
@@ -18,18 +20,34 @@ class _SelectMenuState extends State<SelectMenu> {
   @override
   void initState() {
     dropdownList = widget.itemList;
+    Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
     super.initState();
   }
 
 
   void updateList() {
-    if (widget.filterType == 'Brand') {
+    if (widget.filterType == 'Brand' && widget.providerClass == 'detail') {
       // TODO Filter with URL
       Provider.of<Detail>(context, listen: false).filterBrands(filterList);
-    } else if (widget.filterType == 'Kunde') {
+    } else if (widget.filterType == 'Kunde' && widget.providerClass == 'detail') {
       print('Kunden Filter');
+    } else if (widget.filterType == 'Brand' && widget.providerClass == 'customer-forecast') {
+      Provider.of<CustomerForecastList>(context, listen: false).filterByBrandList(filterList);
     }
     print(widget.filterType);
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (widget.filterType == 'Brand' && widget.providerClass == 'customer-forecast') {
+      dropdownList = Provider
+          .of<BrandList>(context)
+          .items
+          .map((e) => e.name)
+          .toList();
+    }
+
+    super.didChangeDependencies();
   }
 
   @override

@@ -19,6 +19,7 @@ class CustomerForecastList with ChangeNotifier {
   int maxItemsOnPage = 10;
   String searchString = '';
   String filterKind = '';
+  List<String> filterBrandList = [];
   final String authToken;
 
   CustomerForecastList(this.authToken, this._items);
@@ -45,6 +46,12 @@ class CustomerForecastList with ChangeNotifier {
   Future<void> filterByMedium(String currentFilterKind) async {
     currentPage = 1;
     filterKind = currentFilterKind;
+    notifyListeners();
+  }
+
+  Future<void> filterByBrandList(List<String> currentFilterBrandList) async {
+    currentPage = 1;
+    filterBrandList = currentFilterBrandList;
     notifyListeners();
   }
 
@@ -105,6 +112,14 @@ class CustomerForecastList with ChangeNotifier {
       loadedCustomerForecastList = [
         ...loadedCustomerForecastList
             .where((customerForecast) => customerForecast.medium == filterKind)
+            .toList()
+      ];
+    }
+
+    if (filterBrandList.isNotEmpty) {
+      loadedCustomerForecastList = [
+        ...loadedCustomerForecastList
+            .where((customerForecast) => filterBrandList.contains(customerForecast.brand))
             .toList()
       ];
     }

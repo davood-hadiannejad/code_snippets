@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/customer_forecast_list.dart';
 import './select_menu.dart';
 import 'customer_forecast_dialog.dart';
+import '../providers/brand_list.dart';
 
 class CustomerForecastSideItem extends StatefulWidget {
   @override
@@ -62,7 +63,8 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
               SizedBox(
                 height: 20,
               ),
-              Center(child: SelectMenu([], 'Brand')),
+              Center(
+                  child: SelectMenu('customer-forecast', [], 'Brand')),
               SizedBox(
                 height: 20,
               ),
@@ -99,7 +101,8 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'TV';
-                        Provider.of<CustomerForecastList>(context, listen: false)
+                        Provider.of<CustomerForecastList>(context,
+                                listen: false)
                             .filterByMedium('TV');
                       });
                     }
@@ -121,7 +124,8 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'Online';
-                        Provider.of<CustomerForecastList>(context, listen: false)
+                        Provider.of<CustomerForecastList>(context,
+                                listen: false)
                             .filterByMedium('ONLINE');
                       });
                     }

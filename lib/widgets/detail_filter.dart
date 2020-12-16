@@ -46,12 +46,12 @@ class _DetailFilterState extends State<DetailFilter> {
               (widget.brandList != null) ?
               Center(child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: SelectMenu(widget.brandList, 'Brand'),
+                child: SelectMenu('detail', widget.brandList, 'Brand'),
               )) : SizedBox(height: 1,),
               (widget.customerList != null) ?
               Center(child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: SelectMenu(widget.customerList, 'Kunde'),
+                child: SelectMenu('detail', widget.customerList, 'Kunde'),
               )) : SizedBox(height: 1,),
               Center(
                 child: FlatButton(

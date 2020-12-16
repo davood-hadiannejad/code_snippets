@@ -9,6 +9,7 @@ import '../widgets/customer_forecast_side_item.dart';
 import '../widgets/customer_forecast_item.dart';
 import '../providers/verkaeufer.dart';
 import '../providers/verkaeufer_list.dart';
+import '../providers/brand_list.dart';
 
 class CustomerForecastScreen extends StatelessWidget {
   static const routeName = '/customer-forecast';
