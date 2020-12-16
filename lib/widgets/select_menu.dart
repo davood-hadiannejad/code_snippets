@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/aob_list.dart';
 import '../providers/detail.dart';
 import '../providers/customer_forecast_list.dart';
 import '../providers/brand_list.dart';
+import '../providers/project_list.dart';
 
 class SelectMenu extends StatefulWidget {
   List<String> itemList;
   String filterType;
   String providerClass;
+
   SelectMenu(this.providerClass, this.itemList, this.filterType);
+
   @override
   _SelectMenuState createState() => _SelectMenuState();
 }
@@ -24,27 +29,35 @@ class _SelectMenuState extends State<SelectMenu> {
     super.initState();
   }
 
-
   void updateList() {
     if (widget.filterType == 'Brand' && widget.providerClass == 'detail') {
       // TODO Filter with URL
       Provider.of<Detail>(context, listen: false).filterBrands(filterList);
-    } else if (widget.filterType == 'Kunde' && widget.providerClass == 'detail') {
+    } else if (widget.filterType == 'Kunde' &&
+        widget.providerClass == 'detail') {
       print('Kunden Filter');
-    } else if (widget.filterType == 'Brand' && widget.providerClass == 'customer-forecast') {
-      Provider.of<CustomerForecastList>(context, listen: false).filterByBrandList(filterList);
+    } else if (widget.filterType == 'Brand' &&
+        widget.providerClass == 'customer-forecast') {
+      Provider.of<CustomerForecastList>(context, listen: false)
+          .filterByBrandList(filterList);
+    } else if (widget.filterType == 'Brand' &&
+        widget.providerClass == 'project-forecast') {
+      Provider.of<ProjectList>(context, listen: false)
+          .filterByBrandList(filterList);
+      Provider.of<AOBList>(context, listen: false)
+          .filterByBrandList(filterList);
     }
     print(widget.filterType);
   }
 
   @override
   void didChangeDependencies() {
-    if (widget.filterType == 'Brand' && widget.providerClass == 'customer-forecast') {
-      dropdownList = Provider
-          .of<BrandList>(context)
-          .items
-          .map((e) => e.name)
-          .toList();
+    if ((widget.filterType == 'Brand' &&
+            widget.providerClass == 'customer-forecast') ||
+        (widget.filterType == 'Brand' &&
+            widget.providerClass == 'project-forecast')) {
+      dropdownList =
+          Provider.of<BrandList>(context).items.map((e) => e.name).toList();
     }
 
     super.didChangeDependencies();
@@ -68,12 +81,11 @@ class _SelectMenuState extends State<SelectMenu> {
                 dropdownList.remove(item);
                 updateList();
               });
-
             },
             items: dropdownList.map<DropdownMenuItem<String>>((String item) {
               return DropdownMenuItem<String>(
                 value: item,
-                child: Container(width: 175,child: Text(item)),
+                child: Container(width: 175, child: Text(item)),
               );
             }).toList(),
           ),

@@ -14,6 +14,9 @@ String dummyData =
 class ProjectList with ChangeNotifier {
   List<Project> _items = [];
   List<Project> _activeItems = [];
+  String statusFilter = 'offen';
+  String searchString = '';
+  List<String> filterBrandList = [];
 
   final String authToken;
 
@@ -65,27 +68,23 @@ class ProjectList with ChangeNotifier {
     return _items.firstWhere((project) => project.id == id);
   }
 
-  Future<void> searchByName(String searchString) async {
-    _activeItems = _items
-        .where((project) =>
-            project.name.toLowerCase().startsWith(searchString.toLowerCase()))
-        .toList();
+  Future<void> searchByName(String currentSearchString) async {
+    searchString = currentSearchString;
     notifyListeners();
   }
 
   Future<void> filterByStatus(String status) async {
-    _activeItems = _items
-        .where((project) => project.status == status).toList();
+    statusFilter = status;
     notifyListeners();
   }
 
-  Future<void> filterByBrand(List<String> brands) async {
-    _activeItems = _items
-        .where((project) => brands.contains(project.brand)).toList();
+  Future<void> filterByBrandList(List<String> currentFilterBrandList) async {
+    filterBrandList = currentFilterBrandList;
     notifyListeners();
   }
 
-  Future<void> fetchAndSetProjectList({bool init = false, Verkaeufer verkaeufer}) async {
+  Future<void> fetchAndSetProjectList(
+      {bool init = false, Verkaeufer verkaeufer}) async {
     Map<String, String> uriQuery = {};
 
     if (verkaeufer != null && verkaeufer.email != null) {
@@ -99,11 +98,12 @@ class ProjectList with ChangeNotifier {
         uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
+      final extractedData =
+          json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
       if (extractedData == null) {
         return;
       }
-      final List<Project> loadedProjectList = [];
+      List<Project> loadedProjectList = [];
       extractedData.forEach((project) {
         loadedProjectList.add(
           Project(
@@ -124,7 +124,23 @@ class ProjectList with ChangeNotifier {
         );
       });
       _items = loadedProjectList;
-      _activeItems = _items.where((project) => project.status == 'offen').toList();
+
+      if (searchString != '') {
+        loadedProjectList = loadedProjectList
+            .where((project) => project.name
+                .toLowerCase()
+                .startsWith(searchString.toLowerCase()))
+            .toList();
+      }
+      if (filterBrandList.isNotEmpty) {
+        loadedProjectList = loadedProjectList
+            .where((project) => filterBrandList.contains(project.brand))
+            .toList();
+      }
+
+      _activeItems = loadedProjectList
+          .where((project) => project.status == statusFilter)
+          .toList();
 
       if (init != true) {
         notifyListeners();
@@ -168,7 +184,8 @@ class ProjectList with ChangeNotifier {
         'dueDate': dueDate,
         'status': status,
       });
-      final extractedData = json.decode(utf8.decode(response.bodyBytes)) as dynamic;
+      final extractedData =
+          json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       _items.add(Project(
         id: extractedData['id'],
         name: name,
@@ -192,21 +209,21 @@ class ProjectList with ChangeNotifier {
   }
 
   Future<void> updateProject(
-      int id,
-      String name,
-      String customer,
-      String medium,
-      String brand,
-      String agency,
-      String verkaueferEmail,
-      double mn3,
-      double cashRabatt,
-      double naturalRabatt,
-      int bewertung,
-      String comment,
-      String dueDate,
-      String status,
-      ) async {
+    int id,
+    String name,
+    String customer,
+    String medium,
+    String brand,
+    String agency,
+    String verkaueferEmail,
+    double mn3,
+    double cashRabatt,
+    double naturalRabatt,
+    int bewertung,
+    String comment,
+    String dueDate,
+    String status,
+  ) async {
     var url = 'http://hammbwdsc02:96/api/projects/${id.toString()}/';
     try {
       final response = await http.put(url, headers: {
@@ -227,7 +244,8 @@ class ProjectList with ChangeNotifier {
         'dueDate': dueDate,
         'status': status,
       });
-      final extractedData = json.decode(utf8.decode(response.bodyBytes)) as dynamic;
+      final extractedData =
+          json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       _items.removeWhere((project) => project.id == id);
 
       _items.add(Project(

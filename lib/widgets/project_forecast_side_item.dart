@@ -73,6 +73,9 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'offen';
+                        Provider.of<ProjectList>(context,
+                            listen: false)
+                            .filterByStatus('offen');
                       });
                     }
                   },
@@ -93,6 +96,9 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'gebucht';
+                        Provider.of<ProjectList>(context,
+                            listen: false)
+                            .filterByStatus('gebucht');
                       });
                     }
                   },
@@ -113,6 +119,9 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'abgesagt';
+                        Provider.of<ProjectList>(context,
+                            listen: false)
+                            .filterByStatus('abgesagt');
                       });
                     }
                   },

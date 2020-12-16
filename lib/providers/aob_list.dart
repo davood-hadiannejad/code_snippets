@@ -10,13 +10,19 @@ String dummyData = '[{"medium": "TV", "brand": "Nick", "goal": 600000, "offen": 
 
 class AOBList with ChangeNotifier {
   List<AOB> _items = [];
-
+  List<AOB> _activeItems = [];
+  List<String> filterBrandList = [];
   final String authToken;
 
   AOBList(this.authToken, this._items);
 
   List<AOB> get items {
-    return [..._items];
+    return [..._activeItems];
+  }
+
+  Future<void> filterByBrandList(List<String> currentFilterBrandList) async {
+    filterBrandList = currentFilterBrandList;
+    notifyListeners();
   }
 
   Future<void> fetchAndSetAOBList({bool init = false, Verkaeufer verkaeufer}) async {
@@ -35,7 +41,7 @@ class AOBList with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
-      final List<AOB> loadedAOBList = [];
+      List<AOB> loadedAOBList = [];
       extractedData.forEach((aob) {
         loadedAOBList.add(
           AOB(
@@ -48,6 +54,13 @@ class AOBList with ChangeNotifier {
         );
       });
       _items = loadedAOBList;
+
+      if (filterBrandList.isNotEmpty) {
+        loadedAOBList = loadedAOBList
+            .where((aob) => filterBrandList.contains(aob.brand))
+            .toList();
+      }
+      _activeItems = loadedAOBList;
 
       if (init != true) {
         notifyListeners();
