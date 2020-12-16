@@ -34,6 +34,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   List<String> brandDropdownList = [];
   List<String> customerDropdownList = [];
   List<String> agencyDropdownList = [];
+  List<String> agencyDropdownListComplete = [];
   String selectedVerkauferEmail;
 
   int mN3;
@@ -108,6 +109,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     }
 
     agencyDropdownList = Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
+    agencyDropdownListComplete = [...agencyDropdownList];
     if (widget.projectId != null) {
       Project project = Provider.of<ProjectList>(context, listen: false)
           .findById(widget.projectId);
@@ -449,7 +451,13 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                         } else {
                           enableNeukunde = false;
                           agencyDropdownValue = null;
-                          agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                          List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                          if (customerAgencies.isNotEmpty){
+                            agencyDropdownList = customerAgencies;
+                          } else {
+                            agencyDropdownList = agencyDropdownListComplete;
+                          }
+
                         }
                       });
                     }
