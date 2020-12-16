@@ -17,6 +17,8 @@ class CustomerForecastList with ChangeNotifier {
   int currentPage = 1;
   int maxPages;
   int maxItemsOnPage = 10;
+  String searchString = '';
+  String filterKind = '';
   final String authToken;
 
   CustomerForecastList(this.authToken, this._items);
@@ -34,21 +36,15 @@ class CustomerForecastList with ChangeNotifier {
     return [..._activeItems];
   }
 
-  Future<void> searchByName(String searchString) async {
+  Future<void> searchByName(String currentSearchString) async {
     currentPage = 1;
-    List<CustomerForecast>  filteredItems = [..._items
-        .where((customerForecast) => customerForecast.customer
-            .toLowerCase()
-            .startsWith(searchString.toLowerCase()))
-        .toList()];
-    maxPages = (filteredItems.length / maxItemsOnPage).ceil();
-    int minItemsPage = currentPage * maxItemsOnPage - maxItemsOnPage;
-    int maxItemsPage = currentPage * maxItemsOnPage;
-    if (maxItemsPage >= filteredItems.length) {
-      _activeItems = filteredItems.sublist(minItemsPage);
-    } {
-      _activeItems = filteredItems.sublist(minItemsPage, maxItemsPage);
-    }
+    searchString = currentSearchString;
+    notifyListeners();
+  }
+
+  Future<void> filterByMedium(String currentFilterKind) async {
+    currentPage = 1;
+    filterKind = currentFilterKind;
     notifyListeners();
   }
 
@@ -60,49 +56,67 @@ class CustomerForecastList with ChangeNotifier {
       uriQuery['email'] = verkaeufer.email;
     }
     if (_items.isEmpty || refresh) {
-    var uri = Uri.http('hammbwdsc02:96', '/api/customer-forecast/', uriQuery);
-    print(uri);
-    try {
-      final response = await http.get(
-        uri,
-        headers: {"Authorization": "Bearer $authToken"},
-      );
-      final extractedData = json.decode(response.body) as List<dynamic>;
-      //final extractedData = json.decode(dummyData) as List<dynamic>;
-
-      if (extractedData == null) {
-        return;
-      }
-      extractedData.forEach((customerForecast) {
-        loadedCustomerForecastList.add(
-          CustomerForecast(
-            customer: customerForecast['kunde'],
-            medium: customerForecast['medium'],
-            brand: customerForecast['brand'],
-            agentur: customerForecast['agentur'],
-            goal: customerForecast['goal'],
-            forecast: customerForecast['forecast'],
-            ist: customerForecast['ist'],
-            istLastYear: customerForecast['ist_letztes_jahr'],
-          ),
+      var uri = Uri.http('hammbwdsc02:96', '/api/customer-forecast/', uriQuery);
+      print(uri);
+      try {
+        final response = await http.get(
+          uri,
+          headers: {"Authorization": "Bearer $authToken"},
         );
-      });
-      _items = loadedCustomerForecastList;
-    } catch (error) {
-      throw (error);
-    }} else {
+        final extractedData = json.decode(response.body) as List<dynamic>;
+        //final extractedData = json.decode(dummyData) as List<dynamic>;
+
+        if (extractedData == null) {
+          return;
+        }
+        extractedData.forEach((customerForecast) {
+          loadedCustomerForecastList.add(
+            CustomerForecast(
+              customer: customerForecast['kunde'],
+              medium: customerForecast['medium'],
+              brand: customerForecast['brand'],
+              agentur: customerForecast['agentur'],
+              goal: customerForecast['goal'],
+              forecast: customerForecast['forecast'],
+              ist: customerForecast['ist'],
+              istLastYear: customerForecast['ist_letztes_jahr'],
+            ),
+          );
+        });
+        _items = loadedCustomerForecastList;
+      } catch (error) {
+        throw (error);
+      }
+    } else {
       loadedCustomerForecastList = [..._items];
     }
-
-    maxPages = (_items.length / maxItemsOnPage).ceil();
-    int minItemsPage = currentPage * maxItemsOnPage - maxItemsOnPage;
-    int maxItemsPage = currentPage * maxItemsOnPage;
-    if (maxItemsPage > _items.length) {
-      _activeItems = loadedCustomerForecastList.sublist(minItemsPage);
-    } else {
-      _activeItems = loadedCustomerForecastList.sublist(minItemsPage, maxItemsPage);
+    if (searchString != '') {
+      loadedCustomerForecastList = [
+        ...loadedCustomerForecastList
+            .where((customerForecast) => customerForecast.customer
+                .toLowerCase()
+                .startsWith(searchString.toLowerCase()))
+            .toList()
+      ];
     }
 
+    if (filterKind != '') {
+      loadedCustomerForecastList = [
+        ...loadedCustomerForecastList
+            .where((customerForecast) => customerForecast.medium == filterKind)
+            .toList()
+      ];
+    }
+
+    maxPages = (loadedCustomerForecastList.length / maxItemsOnPage).ceil();
+    int minItemsPage = currentPage * maxItemsOnPage - maxItemsOnPage;
+    int maxItemsPage = currentPage * maxItemsOnPage;
+    if (maxItemsPage >= loadedCustomerForecastList.length - 1) {
+      _activeItems = loadedCustomerForecastList.sublist(minItemsPage);
+    } else {
+      _activeItems =
+          loadedCustomerForecastList.sublist(minItemsPage, maxItemsPage);
+    }
 
     if (_addToActiveItems != null) {
       _activeItems.insert(0, _addToActiveItems);

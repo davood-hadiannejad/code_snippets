@@ -78,6 +78,8 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                       setState(() {
                         isSelected = 'Gesamt';
                       });
+                      Provider.of<CustomerForecastList>(context, listen: false)
+                          .filterByMedium('');
                     }
                   },
                   child: Text(
@@ -97,6 +99,8 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'TV';
+                        Provider.of<CustomerForecastList>(context, listen: false)
+                            .filterByMedium('TV');
                       });
                     }
                   },
@@ -117,6 +121,8 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                     if (this.mounted) {
                       setState(() {
                         isSelected = 'Online';
+                        Provider.of<CustomerForecastList>(context, listen: false)
+                            .filterByMedium('ONLINE');
                       });
                     }
                   },

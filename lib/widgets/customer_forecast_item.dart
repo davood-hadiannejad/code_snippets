@@ -39,7 +39,7 @@ List<String> _month = [
 int currentYear = 2020;
 int lastYear = currentYear - 1;
 
-int currentMonth = DateTime.now().month - 2;
+int currentMonth = DateTime.now().month;
 
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
   Verkaeufer selectedVerkaufer;
