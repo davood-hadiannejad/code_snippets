@@ -165,7 +165,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Definition Wahrscheinlichkeits Bewertung'),
+        title: Text('Definition Wahrscheinlichkeitsbewertung'),
         content: Container(
           height: 440,
           child: Column(
@@ -182,25 +182,25 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   border: TableBorder.all(color: Colors.grey, width: 1),
                   children: [
-                    TableRow(children: [
-                      TableCell(
-                          child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Wahrscheinlichkeitsfaktor in %',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )),
-                      TableCell(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Wahrscheinlichkeitsbewertung (Definition)',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ]),
+//                    TableRow(children: [
+//                      TableCell(
+//                          child: Padding(
+//                        padding: const EdgeInsets.all(8.0),
+//                        child: Text(
+//                          'Wahrscheinlichkeitsfaktor in %',
+//                          style: TextStyle(fontWeight: FontWeight.bold),
+//                        ),
+//                      )),
+//                      TableCell(
+//                        child: Padding(
+//                          padding: const EdgeInsets.all(8.0),
+//                          child: Text(
+//                            'Wahrscheinlichkeitsbewertung (Definition)',
+//                            style: TextStyle(fontWeight: FontWeight.bold),
+//                          ),
+//                        ),
+//                      ),
+//                    ]),
                     TableRow(children: [
                       TableCell(
                           child: Padding(

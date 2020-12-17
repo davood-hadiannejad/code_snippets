@@ -4,9 +4,10 @@ import '../providers/project_list.dart';
 import './project_forecast_dialog.dart';
 import './aob_item.dart';
 
-final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatter =
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
-new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
+    new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 
 class ProjectForecastItem extends StatefulWidget {
   final ProjectList forecastData;
@@ -20,6 +21,7 @@ class ProjectForecastItem extends StatefulWidget {
 class _ProjectForecastItemState extends State<ProjectForecastItem> {
   int columnSort;
   bool ascSort = false;
+  final today = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -75,108 +77,117 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
 
   DataTable buildProjectTable(BuildContext context) {
     return DataTable(
-              sortColumnIndex: columnSort,
-              sortAscending: ascSort,
-              columns: <DataColumn>[
-                DataColumn(
-                  label: Text(
-                    'Projekt',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Kunde',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Medium',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Brand',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'MN3 bewertet',
-                  ),
-                  onSort: (idx, asc) {
-                    setState(() {
-                      columnSort = idx;
-                      ascSort = asc;
-                      widget.forecastData
-                          .sortByField('mb3_bewertet', ascending: asc);
-                    });
-                  },
-                ),
-                DataColumn(
-                  label: Text(
-                    'Bewertung',
-                  ),
-                  onSort: (idx, asc) {
-                    setState(() {
-                      columnSort = idx;
-                      ascSort = asc;
-                      widget.forecastData
-                          .sortByField('bewertung', ascending: asc);
-                    });
-                  },
-                ),
-                DataColumn(
-                  label: Text(
-                    'Due Date',
-                  ),
-                  onSort: (idx, asc) {
-                    setState(() {
-                      columnSort = idx;
-                      ascSort = asc;
-                      widget.forecastData
-                          .sortByField('dueDate', ascending: asc);
-                    });
-                  },
-                ),
-                DataColumn(
-                  label: Text(
-                    'Status',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    '',
-                  ),
-                ),
-              ],
-              rows: widget.forecastData.items
-                  .map((project) => DataRow(
-                        cells: <DataCell>[
-                          DataCell((project.comment != null && project.comment != '')
-                              ? Tooltip(
-                                  message: project.comment,
-                                  waitDuration: Duration(microseconds: 300),
-                                  child: Text(project.name))
-                              : Text(project.name)),
-                          DataCell(Text(project.customer)),
-                          DataCell(Text(project.medium)),
-                          DataCell(Text(project.brand)),
-                          DataCell(Container(
-                            width: 110,
-                            child: Text(
-                                formatter.format(project.mn3 * project.bewertung / 100)),
-                          )),
-                          DataCell(Text(project.bewertung.toString() + '%')),
-                          DataCell(Text(project.dueDate)),
-                          DataCell(Text(project.status)),
-                          DataCell(IconButton(
-                            color: Colors.blue,
-                            icon: Icon(Icons.edit),
-                            onPressed: () => projectForecastDialog(context,
-                                projectId: project.id),
-                          )),
-                        ],
-                      ))
-                  .toList(),
-            );
+      sortColumnIndex: columnSort,
+      sortAscending: ascSort,
+      columns: <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Projekt',
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Kunde',
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Medium',
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Brand',
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'MN3 bewertet',
+          ),
+          onSort: (idx, asc) {
+            setState(() {
+              columnSort = idx;
+              ascSort = asc;
+              widget.forecastData.sortByField('mb3_bewertet', ascending: asc);
+            });
+          },
+        ),
+        DataColumn(
+          label: Text(
+            'Bewertung',
+          ),
+          onSort: (idx, asc) {
+            setState(() {
+              columnSort = idx;
+              ascSort = asc;
+              widget.forecastData.sortByField('bewertung', ascending: asc);
+            });
+          },
+        ),
+        DataColumn(
+          label: Text(
+            'Due Date',
+          ),
+          onSort: (idx, asc) {
+            setState(() {
+              columnSort = idx;
+              ascSort = asc;
+              widget.forecastData.sortByField('dueDate', ascending: asc);
+            });
+          },
+        ),
+        DataColumn(
+          label: Text(
+            'Status',
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            '',
+          ),
+        ),
+      ],
+      rows: widget.forecastData.items
+          .map((project) => DataRow(
+                cells: <DataCell>[
+                  DataCell((project.comment != null && project.comment != '')
+                      ? Tooltip(
+                          message: project.comment,
+                          waitDuration: Duration(microseconds: 300),
+                          child: Text(project.name))
+                      : Text(project.name)),
+                  DataCell(Text(project.customer)),
+                  DataCell(Text(project.medium)),
+                  DataCell(Text(project.brand)),
+                  DataCell(Container(
+                    width: 110,
+                    child: Text(formatter
+                        .format(project.mn3 * project.bewertung / 100)),
+                  )),
+                  DataCell(Text(project.bewertung.toString() + '%')),
+                  DataCell(Row(
+                    children: [
+                      Text(project.dueDate),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Center(
+                          child: CircleAvatar(
+                        backgroundColor: (today.difference(DateTime.parse(project.dueDate)).inDays < 0) ? (today.difference(DateTime.parse(project.dueDate)).inDays < -7) ? Colors.green : Colors.yellow : Colors.red,
+                        radius: 12,
+                      )),
+                    ],
+                  )),
+                  DataCell(Text(project.status)),
+                  DataCell(IconButton(
+                    color: Colors.blue,
+                    icon: Icon(Icons.edit),
+                    onPressed: () =>
+                        projectForecastDialog(context, projectId: project.id),
+                  )),
+                ],
+              ))
+          .toList(),
+    );
   }
 }
