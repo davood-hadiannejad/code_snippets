@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import './providers/agency_list.dart';
 import './providers/aob_list.dart';
@@ -109,6 +110,13 @@ class VisoonApp extends StatelessWidget {
             CustomerForecastScreen.routeName: (ctx) => CustomerForecastScreen(),
             ProjectForecastScreen.routeName: (ctx) => ProjectForecastScreen(),
           },
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate
+          ],
+          supportedLocales: [
+            const Locale('en'),
+            const Locale('de')
+          ],
         ),
       ),
     );

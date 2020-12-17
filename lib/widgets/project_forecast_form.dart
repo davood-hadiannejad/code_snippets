@@ -148,6 +148,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     final picked = await showDatePicker(
       context: context,
       initialDate: _fromDate,
+      locale: const Locale('de', 'DE'),
       firstDate: DateTime(2015, 1),
       lastDate: DateTime(2100),
     );
