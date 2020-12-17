@@ -8,7 +8,8 @@ import '../providers/summary.dart';
 import '../screens/detail_screen.dart';
 import './dashboard_chart.dart';
 
-final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatter =
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
     new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
 final currentYear = '2020';
@@ -97,10 +98,18 @@ class DashboardItem extends StatelessWidget {
                         ))),
                         TableCell(
                             child: Center(
-                                child: Text(formatterPercent.format((summaryItem
-                                            .goal['goal'] /
-                                        summaryItem.goal['goal_letztes_jahr']) -
-                                    1)))),
+                                child: Text((((summaryItem.goal['goal'] /
+                                                    summaryItem.goal[
+                                                        'goal_letztes_jahr']) -
+                                                1) >
+                                            0
+                                        ? '+'
+                                        : '') +
+                                    formatterPercent.format((summaryItem
+                                                .goal['goal'] /
+                                            summaryItem
+                                                .goal['goal_letztes_jahr']) -
+                                        1)))),
                       ]),
                       TableRow(
                         children: [
@@ -125,11 +134,18 @@ class DashboardItem extends StatelessWidget {
                           ))),
                           TableCell(
                               child: Center(
-                                  child: Text(formatterPercent.format(
-                                      (summaryItem.stichtag['ist'] /
-                                              summaryItem.stichtag[
-                                                  'ist_letztes_jahr']) -
-                                          1)))),
+                                  child: Text(((summaryItem.stichtag['ist'] /
+                                                      summaryItem.stichtag[
+                                                          'ist_letztes_jahr'] -
+                                                  1) >
+                                              0
+                                          ? '+'
+                                          : '') +
+                                      formatterPercent.format(
+                                          (summaryItem.stichtag['ist'] /
+                                                  summaryItem.stichtag[
+                                                      'ist_letztes_jahr']) -
+                                              1)))),
                         ],
                       ),
                       TableRow(
@@ -154,22 +170,34 @@ class DashboardItem extends StatelessWidget {
                           )),
                           TableCell(
                             child: Center(
-                                child: Text(formatterPercent.format(
-                                    (summaryItem.stichtag['ist'] /
-                                            summaryItem.goal['goal']) -
-                                        1))),
+                                child: Text((((summaryItem.stichtag['ist'] /
+                                                    summaryItem.goal['goal']) -
+                                                1) >
+                                            0
+                                        ? '+'
+                                        : '') +
+                                    formatterPercent.format(
+                                        (summaryItem.stichtag['ist'] /
+                                                summaryItem.goal['goal']) -
+                                            1))),
                           ),
                           TableCell(
                               child: Center(
-                                  child: Text(formatterPercent.format(
-                                      (summaryItem.stichtag[
+                                  child: Text((((summaryItem.stichtag[
+                                                          'ist_letztes_jahr'] /
+                                                      summaryItem.goal[
+                                                          'goal_letztes_jahr']) -
+                                                  1) >
+                                              0
+                                          ? '+'
+                                          : '') +
+                                      formatterPercent.format((summaryItem
+                                                      .stichtag[
                                                   'ist_letztes_jahr'] /
                                               summaryItem
                                                   .goal['goal_letztes_jahr']) -
                                           1)))),
-                          TableCell(
-                              child: Center(
-                                  child: Text(''))),
+                          TableCell(child: Center(child: Text(''))),
                         ],
                       ),
                       TableRow(
@@ -200,8 +228,18 @@ class DashboardItem extends StatelessWidget {
                           ))),
                           TableCell(
                               child: Center(
-                                  child: Text(formatterPercent.format(
-                                      ((summaryItem.forecast['kunde'] +
+                                  child: Text(((((summaryItem.forecast[
+                                                              'kunde'] +
+                                                          summaryItem.forecast[
+                                                              'projekt']) /
+                                                      summaryItem.forecast[
+                                                          'letztes_jahr']) -
+                                                  1) >
+                                              0
+                                          ? '+'
+                                          : '') +
+                                      formatterPercent.format(((summaryItem
+                                                      .forecast['kunde'] +
                                                   summaryItem
                                                       .forecast['projekt']) /
                                               summaryItem
@@ -237,15 +275,22 @@ class DashboardItem extends StatelessWidget {
                           ))),
                           TableCell(
                               child: Center(
-                                  child: Text(formatterPercent.format(
-                                      (summaryItem.forecast['kunde'] +
+                                  child: Text((((summaryItem.forecast['kunde'] + summaryItem.forecast['projekt'] + summaryItem.stichtag['ist']) /
+                                                      (summaryItem.forecast['letztes_jahr'] +
+                                                          summaryItem.stichtag[
+                                                              'ist_letztes_jahr']) -
+                                                  1) >
+                                              0
+                                          ? '+'
+                                          : '') +
+                                      formatterPercent.format((summaryItem
+                                                      .forecast['kunde'] +
                                                   summaryItem
                                                       .forecast['projekt'] +
                                                   summaryItem.stichtag['ist']) /
-                                              (summaryItem.forecast[
-                                                      'letztes_jahr'] +
-                                                  summaryItem.stichtag[
-                                                      'ist_letztes_jahr']) -
+                                              (summaryItem.forecast['letztes_jahr'] +
+                                                  summaryItem
+                                                      .stichtag['ist_letztes_jahr']) -
                                           1)))),
                         ],
                       )
@@ -411,12 +456,13 @@ class DashboardItem extends StatelessWidget {
                               )),
                             )),
                             TableCell(
-                              child: Center(child: (summaryItem.gobalrate['gesamt'] !=
-                                  null)
-                                  ? Text(formatterPercent.format(
-                                  summaryItem.gobalrate['gesamt'] /
-                                      100))
-                                  : Text('N/A')),
+                              child: Center(
+                                  child:
+                                      (summaryItem.gobalrate['gesamt'] != null)
+                                          ? Text(formatterPercent.format(
+                                              summaryItem.gobalrate['gesamt'] /
+                                                  100))
+                                          : Text('N/A')),
                             )
                           ],
                         ),
