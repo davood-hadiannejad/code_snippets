@@ -10,7 +10,7 @@ import './summary.dart';
 class SummaryList with ChangeNotifier {
   List<Summary> _items = [];
   List<Summary> _activeItems = [];
-
+  String searchString = '';
 
   final String authToken;
 
@@ -24,7 +24,8 @@ class SummaryList with ChangeNotifier {
     return _items.firstWhere((summary) => summary.id == id);
   }
 
-  Future<void> searchByName(String searchString) async {
+  Future<void> searchByName(String currentSearchString) async {
+    searchString = currentSearchString;
     _activeItems = _items.where((summary) =>
         summary.name.toLowerCase().startsWith(searchString.toLowerCase()))
         .toList();
@@ -59,7 +60,7 @@ class SummaryList with ChangeNotifier {
         return;
       }
       print(kind + ': loading Dashboard items...');
-      final List<Summary> loadedSummaryList = [];
+      List<Summary> loadedSummaryList = [];
       extractedData.forEach((summary) {
         loadedSummaryList.add(
           Summary(
@@ -82,6 +83,13 @@ class SummaryList with ChangeNotifier {
         });
       }
       _items = loadedSummaryList;
+
+      if (searchString != '') {
+        loadedSummaryList = loadedSummaryList.where((summary) =>
+            summary.name.toLowerCase().startsWith(searchString.toLowerCase()))
+            .toList();
+      }
+
       _activeItems = loadedSummaryList;
 
       if (init != true) {
