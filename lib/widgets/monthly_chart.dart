@@ -122,7 +122,7 @@ class MonthlyChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: zielData,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xff007cba)),
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Kundenforecast',
@@ -131,7 +131,7 @@ class MonthlyChart extends StatelessWidget {
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: kundenforecastDataB,
         colorFn: (_, __) =>
-            charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.3)),
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(32, 162, 250, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'IST Stichtag',
@@ -139,19 +139,19 @@ class MonthlyChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: stichtagDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xffe20644)),
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(90, 90, 90, 1)),
       ),
     ];
 
     if (showProjekt) {
-      chartList.add(new charts.Series<OrdinalSales, String>(
+      chartList.insert(1, new charts.Series<OrdinalSales, String>(
         id: 'Projektforecast',
         seriesCategory: 'B',
         domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: projektforecastDataB,
         colorFn: (_, __) =>
-            charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.6)),
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(98, 206, 255, 1)),
       ));
     }
 

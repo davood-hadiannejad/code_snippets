@@ -394,7 +394,7 @@ class DashboardItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Globalrate',
+                    'Global Rate',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   SizedBox(height: 20),

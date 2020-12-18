@@ -77,15 +77,7 @@ class DashboardChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: zielData,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xff007cba)),
-      ),
-      new charts.Series<OrdinalSales, String>(
-        id: 'Kundenforecast',
-        seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: kundenforecastDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.3)),
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Projektforecast',
@@ -93,7 +85,15 @@ class DashboardChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: projektforecastDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 0.6)),
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(98, 206, 255, 1)),
+      ),
+      new charts.Series<OrdinalSales, String>(
+        id: 'Kundenforecast',
+        seriesCategory: 'B',
+        domainFn: (OrdinalSales sales, _) => sales.year,
+        measureFn: (OrdinalSales sales, _) => sales.sales,
+        data: kundenforecastDataB,
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(32, 162, 250, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'IST Stichtag',
@@ -101,7 +101,7 @@ class DashboardChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: stichtagDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color(0xffe20644)),
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(90, 90, 90, 1)),
       ),
     ];
   }
