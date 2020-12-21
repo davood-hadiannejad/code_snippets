@@ -50,8 +50,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   int maxPages;
   int currentPage;
 
-
-
   @override
   void initState() {
     maxPages = widget.customerForecastData.maxPages;
@@ -67,9 +65,12 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         num gesamtSumme, CustomerForecast forecast) async {
       List<String> activeMonth = _month.sublist(currentMonth - 1);
       int countActiveMonth = activeMonth.length;
-      num sumLastYear = activeMonth.map((monthKey) {
-        return forecast.istLastYear[monthKey];
-      }).toList().reduce((a, b) => a + b);
+      num sumLastYear = activeMonth
+          .map((monthKey) {
+            return forecast.istLastYear[monthKey];
+          })
+          .toList()
+          .reduce((a, b) => a + b);
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -82,7 +83,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                 onPressed: () {
                   activeMonth.forEach((monthKey) {
                     forecast.forecast[monthKey] =
-                    (gesamtSumme / countActiveMonth);
+                        (gesamtSumme / countActiveMonth);
                   });
                   Provider.of<CustomerForecastList>(context, listen: false)
                       .addCustomerForecast(
@@ -102,31 +103,33 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
               ),
               FlatButton(
                 child: Text('Wie Vorjahr'),
-                onPressed: (sumLastYear > 0) ? () {
-
-                  activeMonth.forEach((monthKey) {
-                    num montlyAmount =  (gesamtSumme *
-                        forecast.istLastYear[monthKey] /
-                        sumLastYear);
+                onPressed: (sumLastYear > 0)
+                    ? () {
+                        activeMonth.forEach((monthKey) {
+                          num montlyAmount = (gesamtSumme *
+                              forecast.istLastYear[monthKey] /
+                              sumLastYear);
 //                  int idx = _month.indexOf(monthKey);
 //                  _controllerList[forecast][idx].text = montlyAmount.toString();
-                    forecast.forecast[monthKey] = montlyAmount;
-                  });
-                  Provider.of<CustomerForecastList>(context, listen: false)
-                      .addCustomerForecast(
-                    forecast.customer,
-                    forecast.medium,
-                    forecast.brand,
-                    forecast.agentur,
-                    currentYear,
-                    selectedVerkaufer.email,
-                    forecast.forecast,
-                  );
-                  Navigator.of(context).pop();
-                  setState(() {
-                    forecast = forecast;
-                  });
-                } : null,
+                          forecast.forecast[monthKey] = montlyAmount;
+                        });
+                        Provider.of<CustomerForecastList>(context,
+                                listen: false)
+                            .addCustomerForecast(
+                          forecast.customer,
+                          forecast.medium,
+                          forecast.brand,
+                          forecast.agentur,
+                          currentYear,
+                          selectedVerkaufer.email,
+                          forecast.forecast,
+                        );
+                        Navigator.of(context).pop();
+                        setState(() {
+                          forecast = forecast;
+                        });
+                      }
+                    : null,
               ),
               FlatButton(
                 child: Text('Abbrechen'),
@@ -366,8 +369,12 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                     return e.value;
                   }).reduce((a, b) => a + b)));
                   return DataRow(cells: [
-                    DataCell(
-                        Container(width: 80, child: Text(forecast.customer))),
+                    DataCell(Container(
+                        width: 80,
+                        child: Tooltip(
+                          child: Text(forecast.customer),
+                          message: forecast.agentur,
+                        ))),
                     DataCell(Container(child: Text(forecast.medium))),
                     DataCell(Container(width: 80, child: Text(forecast.brand))),
                     DataCell(Container(
