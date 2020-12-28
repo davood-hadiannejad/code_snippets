@@ -49,6 +49,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
   int maxPages;
   int currentPage;
+  String dialogDropdownValue = 'Gesamtjahresumme';
 
   @override
   void initState() {
@@ -61,6 +62,43 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
 
+    void updateForecast(
+        forecast, gesamtSumme, activeMonth, countActiveMonth, sumLastYear,
+        {updateKind = 'gleich'}) {
+      if (dialogDropdownValue == 'Gesamtjahresumme') {
+        // gesamtForecast - istGesamt
+        gesamtSumme = gesamtSumme -
+            forecast.ist.entries.map((e) => e.value).reduce((a, b) => a + b);
+      }
+
+      if (updateKind == 'gleich') {
+        activeMonth.forEach((monthKey) {
+          forecast.forecast[monthKey] = (gesamtSumme / countActiveMonth);
+        });
+      } else {
+        activeMonth.forEach((monthKey) {
+          num montlyAmount =
+              (gesamtSumme * forecast.istLastYear[monthKey] / sumLastYear);
+          forecast.forecast[monthKey] = montlyAmount;
+        });
+      }
+
+      Provider.of<CustomerForecastList>(context, listen: false)
+          .addCustomerForecast(
+        forecast.customer,
+        forecast.medium,
+        forecast.brand,
+        forecast.agentur,
+        currentYear,
+        selectedVerkaufer.email,
+        forecast.forecast,
+      );
+      Navigator.of(context).pop();
+      setState(() {
+        forecast = forecast;
+      });
+    }
+
     Future<void> _showGesamtDialog(
         num gesamtSumme, CustomerForecast forecast) async {
       List<String> activeMonth = _month.sublist(currentMonth - 1);
@@ -72,75 +110,73 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
           .toList()
           .reduce((a, b) => a + b);
       return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Wie soll die Gesamtsumme verteilt werden?'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Gleichverteilt'),
-                onPressed: () {
-                  activeMonth.forEach((monthKey) {
-                    forecast.forecast[monthKey] =
-                        (gesamtSumme / countActiveMonth);
-                  });
-                  Provider.of<CustomerForecastList>(context, listen: false)
-                      .addCustomerForecast(
-                    forecast.customer,
-                    forecast.medium,
-                    forecast.brand,
-                    forecast.agentur,
-                    currentYear,
-                    selectedVerkaufer.email,
-                    forecast.forecast,
-                  );
-                  Navigator.of(context).pop();
-                  setState(() {
-                    forecast = forecast;
-                  });
-                },
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Wie soll die Gesamtsumme verteilt werden?'),
+              content: Row(
+                children: [
+                  Text(formatter.format(gesamtSumme) + ' verteilen als '),
+                  StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return Container(
+                        width: 158,
+                        height: 50,
+                        child: DropdownButton(
+                            value: dialogDropdownValue,
+                            items: [
+                              DropdownMenuItem(
+                                child: Text('Restjahressumme'),
+                                value: 'Restjahressumme',
+                              ),
+                              DropdownMenuItem(
+                                child: Text('Gesamtjahresumme'),
+                                value: 'Gesamtjahresumme',
+                              ),
+                            ],
+                            onChanged: (String newValue) {
+                              if (this.mounted) {
+                                setState(
+                                  () {
+                                    dialogDropdownValue = newValue;
+                                  },
+                                );
+                              }
+                            }),
+                      );
+                    }
+                  )
+                ],
               ),
-              FlatButton(
-                child: Text('Wie Vorjahr'),
-                onPressed: (sumLastYear > 0)
-                    ? () {
-                        activeMonth.forEach((monthKey) {
-                          num montlyAmount = (gesamtSumme *
-                              forecast.istLastYear[monthKey] /
-                              sumLastYear);
-//                  int idx = _month.indexOf(monthKey);
-//                  _controllerList[forecast][idx].text = montlyAmount.toString();
-                          forecast.forecast[monthKey] = montlyAmount;
-                        });
-                        Provider.of<CustomerForecastList>(context,
-                                listen: false)
-                            .addCustomerForecast(
-                          forecast.customer,
-                          forecast.medium,
-                          forecast.brand,
-                          forecast.agentur,
-                          currentYear,
-                          selectedVerkaufer.email,
-                          forecast.forecast,
-                        );
-                        Navigator.of(context).pop();
-                        setState(() {
-                          forecast = forecast;
-                        });
-                      }
-                    : null,
-              ),
-              FlatButton(
-                child: Text('Abbrechen'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Gleichverteilt'),
+                  onPressed: () {
+                    updateForecast(forecast, gesamtSumme, activeMonth,
+                        countActiveMonth, sumLastYear,
+                        updateKind: 'gleich');
+                  },
+                ),
+                FlatButton(
+                  child: Text('Wie Vorjahr'),
+                  onPressed: (sumLastYear > 0)
+                      ? () {
+                          updateForecast(forecast, gesamtSumme, activeMonth,
+                              countActiveMonth, sumLastYear,
+                              updateKind: 'vorjahr');
+                        }
+                      : null,
+                ),
+                FlatButton(
+                  child: Text('Abbrechen'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
     }
 
     return Card(
