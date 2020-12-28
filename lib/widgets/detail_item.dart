@@ -166,7 +166,7 @@ class DetailItem extends StatelessWidget {
                                   Row(
                                     children: [
                                       Text(
-                                        'Cash Rabatt: ',
+                                        'Cash-Rabatt: ',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6,
@@ -188,7 +188,7 @@ class DetailItem extends StatelessWidget {
                                   Row(
                                     children: [
                                       Text(
-                                        'Natural Rabatt: ',
+                                        'Naturalrabatt: ',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6,

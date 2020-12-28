@@ -633,16 +633,16 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                 child: TextFormField(
                   controller: _cashRabattPercentController,
                   decoration: InputDecoration(
-                    hintText: 'Cash Rabatt',
+                    hintText: 'Cash-Rabatt',
                     helperText:
-                    (cashRabattPercent != null) ? 'Cash Rabatt' : null,
+                    (cashRabattPercent != null) ? 'Cash-Rabatt' : null,
                     suffixText: '%',
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Bitte Cash Rabatt angeben.';
+                      return 'Bitte Cash-Rabatt angeben.';
                     }
                     return null;
                   },
@@ -653,9 +653,9 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                 child: TextFormField(
                   controller: _naturalRabattPercentController,
                   decoration: InputDecoration(
-                    hintText: 'Natural Rabatt',
+                    hintText: 'Naturalrabatt',
                     helperText: (naturalRabattPercent != null)
-                        ? 'Natural Rabatt'
+                        ? 'Naturalrabatt'
                         : null,
                     suffixText: '%',
                   ),
@@ -663,7 +663,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Bitte Natural Rabatt angeben.';
+                      return 'Bitte Naturalrabatt angeben.';
                     }
                     return null;
                   },
@@ -767,7 +767,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                             child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Natural Rabatt',
+                            'Naturalrabatt',
                           ),
                         )),
                         TableCell(
@@ -803,7 +803,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                               child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Cash Rabatt',
+                              'Cash-Rabatt',
                             ),
                           )),
                           TableCell(
