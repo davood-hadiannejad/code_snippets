@@ -157,53 +157,72 @@ class DetailItem extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('aktueller Stand gebuchte Konditionen', style: Theme.of(context).textTheme.headline5,),
+                              Text(
+                                'aktueller Stand gebuchte Konditionen',
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
                               Row(
                                 children: [
                                   Row(
                                     children: [
                                       Text(
                                         'Cash Rabatt: ',
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       ),
                                       Text(
                                         (detailData.cashRabatt != null)
-                                            ? formatterPercent
-                                                .format(detailData.cashRabatt / 100)
+                                            ? formatterPercent.format(
+                                                detailData.cashRabatt / 100)
                                             : 'N/A',
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       )
                                     ],
                                   ),
-                                  SizedBox(width: 15,),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
                                   Row(
                                     children: [
                                       Text(
                                         'Natural Rabatt: ',
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       ),
                                       Text(
                                         (detailData.naturalRabatt != null)
                                             ? formatterPercent.format(
                                                 detailData.naturalRabatt / 100)
                                             : 'N/A',
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       )
                                     ],
                                   ),
-                                  SizedBox(width: 15,),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
                                   Row(
                                     children: [
                                       Text(
                                         'Global Rate: ',
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       ),
                                       Text(
                                         (detailData.globalRate != null)
-                                            ? formatterPercent
-                                                .format(detailData.globalRate / 100)
+                                            ? formatterPercent.format(
+                                                detailData.globalRate / 100)
                                             : 'N/A',
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       )
                                     ],
                                   ),
@@ -322,25 +341,25 @@ class DetailItem extends StatelessWidget {
         )),
         DataColumn(
             label: Expanded(
-              child: Text(
-          'Februar',
-                textAlign: TextAlign.end,
-        ),
-            )),
+          child: Text(
+            'Februar',
+            textAlign: TextAlign.end,
+          ),
+        )),
         DataColumn(
             label: Expanded(
-              child: Text(
-          'März',
-                textAlign: TextAlign.end,
-        ),
-            )),
+          child: Text(
+            'März',
+            textAlign: TextAlign.end,
+          ),
+        )),
         DataColumn(
             label: Expanded(
-              child: Text(
-          'April',
-                textAlign: TextAlign.end,
-        ),
-            )),
+          child: Text(
+            'April',
+            textAlign: TextAlign.end,
+          ),
+        )),
         DataColumn(
             label: Expanded(
           child: Text(
@@ -635,12 +654,10 @@ class DetailItem extends StatelessWidget {
         ),
       ),
       DataColumn(
-          label: Center(
-        child: Expanded(
-          child: Text(
-            'Januar',
-            textAlign: TextAlign.end,
-          ),
+          label: Expanded(
+        child: Text(
+          'Januar',
+          textAlign: TextAlign.end,
         ),
       )),
       DataColumn(
