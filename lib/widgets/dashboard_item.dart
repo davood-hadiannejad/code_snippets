@@ -38,7 +38,7 @@ class DashboardItem extends StatelessWidget {
                   height: 40,
                   child: AutoSizeText(
                     summaryItem.name,
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headline5,
                     maxLines: 1,
                   ),
                 ),
@@ -364,7 +364,7 @@ class DashboardItem extends StatelessWidget {
               children: [
                 Text(
                   'Goal',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 Container(
                     width: 300,
@@ -395,7 +395,7 @@ class DashboardItem extends StatelessWidget {
                 children: [
                   Text(
                     'Global Rate',
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   SizedBox(height: 20),
                   Container(

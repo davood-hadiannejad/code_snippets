@@ -151,61 +151,62 @@ class DetailItem extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      width: 300,
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text('aktueller Stand gebuchte Konditionen', style: Theme.of(context).textTheme.headline5,),
                               Row(
                                 children: [
-                                  Text(
-                                    'Cash Rabatt: ',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Cash Rabatt: ',
+                                        style: Theme.of(context).textTheme.headline6,
+                                      ),
+                                      Text(
+                                        (detailData.cashRabatt != null)
+                                            ? formatterPercent
+                                                .format(detailData.cashRabatt / 100)
+                                            : 'N/A',
+                                        style: Theme.of(context).textTheme.headline6,
+                                      )
+                                    ],
                                   ),
-                                  Text(
-                                    (detailData.cashRabatt != null)
-                                        ? formatterPercent
-                                            .format(detailData.cashRabatt / 100)
-                                        : 'N/A',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Natural Rabatt: ',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
+                                  SizedBox(width: 15,),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Natural Rabatt: ',
+                                        style: Theme.of(context).textTheme.headline6,
+                                      ),
+                                      Text(
+                                        (detailData.naturalRabatt != null)
+                                            ? formatterPercent.format(
+                                                detailData.naturalRabatt / 100)
+                                            : 'N/A',
+                                        style: Theme.of(context).textTheme.headline6,
+                                      )
+                                    ],
                                   ),
-                                  Text(
-                                    (detailData.naturalRabatt != null)
-                                        ? formatterPercent.format(
-                                            detailData.naturalRabatt / 100)
-                                        : 'N/A',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Global Rate: ',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
+                                  SizedBox(width: 15,),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Global Rate: ',
+                                        style: Theme.of(context).textTheme.headline6,
+                                      ),
+                                      Text(
+                                        (detailData.globalRate != null)
+                                            ? formatterPercent
+                                                .format(detailData.globalRate / 100)
+                                            : 'N/A',
+                                        style: Theme.of(context).textTheme.headline6,
+                                      )
+                                    ],
                                   ),
-                                  Text(
-                                    (detailData.globalRate != null)
-                                        ? formatterPercent
-                                            .format(detailData.globalRate / 100)
-                                        : 'N/A',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
-                                  )
                                 ],
                               ),
                             ],
