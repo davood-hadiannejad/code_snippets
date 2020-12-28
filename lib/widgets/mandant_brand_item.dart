@@ -43,7 +43,7 @@ class MandantBrandItem extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 detailData.name,
-                style: Theme.of(context).textTheme.headline3,
+                style: Theme.of(context).textTheme.headline4,
               ),
             ),
             SizedBox(height: 20),
@@ -52,7 +52,7 @@ class MandantBrandItem extends StatelessWidget {
               children: [
                 Text(
                   'Monatlicher Umsatz',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
                 Container(
                   width: 1200,
