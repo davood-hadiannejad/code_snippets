@@ -98,28 +98,43 @@ class MandantBrandItem extends StatelessWidget {
           ),
         ),
         DataColumn(
-          label: Text(
-            'Goal',
+          label: Expanded(
+            child: Text(
+              'Goal',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'IST-Stichtag',
+          label: Expanded(
+            child: Text(
+              'IST-Stichtag',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'Kunden-Forecast',
+          label: Expanded(
+            child: Text(
+              'Kunden-Forecast',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'Projekt-Forecast',
+          label: Expanded(
+            child: Text(
+              'Projekt-Forecast',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'IST + Forecast',
+          label: Expanded(
+            child: Text(
+              'IST + Forecast',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
@@ -140,15 +155,40 @@ class MandantBrandItem extends StatelessWidget {
                       },
                       cells: [
                         DataCell(Text(brand['name'])),
-                        DataCell(Text(formatter.format(brand['goal']))),
-                        DataCell(Text(formatter.format(brand['ist_stichtag']))),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['goal'])),
+                          ],
+                        )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['ist_stichtag'])),
+                          ],
+                        )),
                         DataCell(
-                            Text(formatter.format(brand['kunden_forecast']))),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(formatter.format(brand['kunden_forecast'])),
+                              ],
+                            )),
                         DataCell(
-                            Text(formatter.format(brand['projekt_forecast']))),
-                        DataCell(Text(formatter.format(brand['ist_stichtag'] +
-                            brand['projekt_forecast'] +
-                            brand['kunden_forecast']))),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(formatter.format(brand['projekt_forecast'])),
+                              ],
+                            )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['ist_stichtag'] +
+                                brand['projekt_forecast'] +
+                                brand['kunden_forecast'])),
+                          ],
+                        )),
                         DataCell(
                           CircularPercentIndicator(
                             radius: 42.0,
@@ -192,23 +232,35 @@ class MandantBrandItem extends StatelessWidget {
           ),
         ),
         DataColumn(
-          label: Text(
-            'Goal',
+          label: Expanded(
+            child: Text(
+              'Goal',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'IST-Stichtag',
+          label: Expanded(
+            child: Text(
+              'IST-Stichtag',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'Kunden-Forecast',
+          label: Expanded(
+            child: Text(
+              'Kunden-Forecast',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'IST + Forecast',
+          label: Expanded(
+            child: Text(
+              'IST + Forecast',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
@@ -229,14 +281,34 @@ class MandantBrandItem extends StatelessWidget {
                       },
                       cells: [
                         DataCell(Text(customer['name'])),
-                        DataCell(Text(formatter.format(customer['goal']))),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(customer['goal'])),
+                          ],
+                        )),
                         DataCell(
-                            Text(formatter.format(customer['ist_stichtag']))),
-                        DataCell(Text(
-                            formatter.format(customer['kunden_forecast']))),
-                        DataCell(Text(formatter.format(
-                            customer['ist_stichtag'] +
-                                customer['kunden_forecast']))),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(formatter.format(customer['ist_stichtag'])),
+                              ],
+                            )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                                formatter.format(customer['kunden_forecast'])),
+                          ],
+                        )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(
+                                customer['ist_stichtag'] +
+                                    customer['kunden_forecast'])),
+                          ],
+                        )),
                         DataCell(
                           CircularPercentIndicator(
                             radius: 42.0,
@@ -292,13 +364,19 @@ class MandantBrandItem extends StatelessWidget {
           ),
         ),
         DataColumn(
-          label: Text(
-            'MN3 bewertet',
+          label: Expanded(
+            child: Text(
+              'MN3 bewertet',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'Bewertung',
+          label: Expanded(
+            child: Text(
+              'Bewertung',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
@@ -332,10 +410,20 @@ class MandantBrandItem extends StatelessWidget {
                       DataCell(Text(project['brand'])),
                       DataCell(Container(
                         width: 110,
-                        child: Text(formatter.format(
-                            project['mn3'] * project['bewertung'] / 100)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(
+                                project['mn3'] * project['bewertung'] / 100)),
+                          ],
+                        ),
                       )),
-                      DataCell(Text(project['bewertung'].toString() + '%')),
+                      DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(project['bewertung'].toString() + '%'),
+                        ],
+                      )),
                       DataCell(Text(project['dueDate'])),
                       DataCell(Text(project['status'])),
                     ],

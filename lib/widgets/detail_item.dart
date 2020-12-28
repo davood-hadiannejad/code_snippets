@@ -250,18 +250,18 @@ class DetailItem extends StatelessWidget {
                     ),
                     (pageType != 'Kunde')
                         ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 80),
-                      child: RaisedButton(
-                          onPressed: () {
-                            _showRelatedDialog(context);
-                          },
-                          child: (pageType == 'Agenturnetzwerk')
-                              ? Text('Agenturliste')
-                              : Text('Kundenliste')),
-                    )
+                            padding: const EdgeInsets.symmetric(horizontal: 80),
+                            child: RaisedButton(
+                                onPressed: () {
+                                  _showRelatedDialog(context);
+                                },
+                                child: (pageType == 'Agenturnetzwerk')
+                                    ? Text('Agenturliste')
+                                    : Text('Kundenliste')),
+                          )
                         : SizedBox(
-                      width: 50,
-                    ),
+                            width: 50,
+                          ),
                   ],
                 ),
                 Padding(
@@ -313,68 +313,111 @@ class DetailItem extends StatelessWidget {
           ),
         ),
         DataColumn(
-            label: Center(
+            label: Expanded(
           child: Text(
             'Januar',
+            textAlign: TextAlign.end,
           ),
         )),
         DataColumn(
-            label: Text(
+            label: Expanded(
+              child: Text(
           'Februar',
-        )),
+                textAlign: TextAlign.end,
+        ),
+            )),
         DataColumn(
-            label: Text(
+            label: Expanded(
+              child: Text(
           'März',
-        )),
+                textAlign: TextAlign.end,
+        ),
+            )),
         DataColumn(
-            label: Text(
+            label: Expanded(
+              child: Text(
           'April',
+                textAlign: TextAlign.end,
+        ),
+            )),
+        DataColumn(
+            label: Expanded(
+          child: Text(
+            'Mai',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'Mai',
+            label: Expanded(
+          child: Text(
+            'Juni',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'Juni',
+            label: Expanded(
+          child: Text(
+            'Juli',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'Juli',
+            label: Expanded(
+          child: Text(
+            'August',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'August',
+            label: Expanded(
+          child: Text(
+            'September',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'September',
+            label: Expanded(
+          child: Text(
+            'Oktober',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'Oktober',
+            label: Expanded(
+          child: Text(
+            'November',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'November',
+            label: Expanded(
+          child: Text(
+            'Dezember',
+            textAlign: TextAlign.end,
+          ),
         )),
         DataColumn(
-            label: Text(
-          'Dezember',
-        )),
-        DataColumn(
-          label: Text(
-            'Summe Jahr',
+          label: Expanded(
+            child: Text(
+              'Summe Jahr',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'Global Rate',
+          label: Expanded(
+            child: Text(
+              'Global Rate',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'GR(letztes Jahr)',
+          label: Expanded(
+            child: Text(
+              'GR(letztes Jahr)',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
       ],
@@ -385,20 +428,40 @@ class DetailItem extends StatelessWidget {
                     DataCell(Text('TV')),
                     DataCell(Text(sales['name'])),
                     ..._month
-                        .map((month) =>
-                            DataCell(Text(formatter.format(sales[month]))))
+                        .map((month) => DataCell(Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(formatter.format(sales[month])),
+                              ],
+                            )))
                         .toList(),
-                    DataCell(Text(formatter.format(_month
-                        .map((month) => sales[month])
-                        .toList()
-                        .reduce((a, b) => a + b)))),
-                    DataCell(Text((sales['global_rate'] != null)
-                        ? formatterPercent.format(sales['global_rate'] / 100)
-                        : 'N/A')),
-                    DataCell(Text((sales['global_rate_letztes_jahr'] != null)
-                        ? formatterPercent
-                            .format(sales['global_rate_letztes_jahr'] / 100)
-                        : 'N/A')),
+                    DataCell(Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(formatter.format(_month
+                            .map((month) => sales[month])
+                            .toList()
+                            .reduce((a, b) => a + b))),
+                      ],
+                    )),
+                    DataCell(Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text((sales['global_rate'] != null)
+                            ? formatterPercent
+                                .format(sales['global_rate'] / 100)
+                            : 'N/A'),
+                      ],
+                    )),
+                    DataCell(Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text((sales['global_rate_letztes_jahr'] != null)
+                            ? formatterPercent
+                                .format(sales['global_rate_letztes_jahr'] / 100)
+                            : 'N/A'),
+                      ],
+                    )),
                   ],
                 ))
             .toList(),
@@ -409,18 +472,28 @@ class DetailItem extends StatelessWidget {
               DataCell(Text('TV')),
               DataCell(Text('Gesamt')),
               ..._month
-                  .map((month) => DataCell(Text(formatter.format(detailData.tv
-                      .map((e) => e[month])
-                      .toList()
-                      .reduce((a, b) => a + b)))))
+                  .map((month) => DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(formatter.format(detailData.tv
+                              .map((e) => e[month])
+                              .toList()
+                              .reduce((a, b) => a + b))),
+                        ],
+                      )))
                   .toList(),
-              DataCell(Text(formatter.format(_month
-                  .map((month) => detailData.tv
-                      .map((e) => e[month])
+              DataCell(Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(formatter.format(_month
+                      .map((month) => detailData.tv
+                          .map((e) => e[month])
+                          .toList()
+                          .reduce((a, b) => a + b))
                       .toList()
-                      .reduce((a, b) => a + b))
-                  .toList()
-                  .reduce((a, b) => a + b)))),
+                      .reduce((a, b) => a + b))),
+                ],
+              )),
               DataCell(Text('')),
               DataCell(Text('')),
             ]),
@@ -430,20 +503,40 @@ class DetailItem extends StatelessWidget {
                     DataCell(Text('Online')),
                     DataCell(Text(sales['name'])),
                     ..._month
-                        .map((month) =>
-                            DataCell(Text(formatter.format(sales[month]))))
+                        .map((month) => DataCell(Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(formatter.format(sales[month])),
+                              ],
+                            )))
                         .toList(),
-                    DataCell(Text(formatter.format(_month
-                        .map((month) => sales[month])
-                        .toList()
-                        .reduce((a, b) => a + b)))),
-                    DataCell(Text((sales['global_rate'] != null)
-                        ? formatterPercent.format(sales['global_rate'] / 100)
-                        : 'N/A')),
-                    DataCell(Text((sales['global_rate_letztes_jahr'] != null)
-                        ? formatterPercent
-                            .format(sales['global_rate_letztes_jahr'] / 100)
-                        : 'N/A')),
+                    DataCell(Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(formatter.format(_month
+                            .map((month) => sales[month])
+                            .toList()
+                            .reduce((a, b) => a + b))),
+                      ],
+                    )),
+                    DataCell(Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text((sales['global_rate'] != null)
+                            ? formatterPercent
+                                .format(sales['global_rate'] / 100)
+                            : 'N/A'),
+                      ],
+                    )),
+                    DataCell(Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text((sales['global_rate_letztes_jahr'] != null)
+                            ? formatterPercent
+                                .format(sales['global_rate_letztes_jahr'] / 100)
+                            : 'N/A'),
+                      ],
+                    )),
                   ],
                 ))
             .toList(),
@@ -454,19 +547,28 @@ class DetailItem extends StatelessWidget {
               DataCell(Text('Online')),
               DataCell(Text('Gesamt')),
               ..._month
-                  .map((month) => DataCell(Text(formatter.format(detailData
-                      .online
-                      .map((e) => e[month])
-                      .toList()
-                      .reduce((a, b) => a + b)))))
+                  .map((month) => DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(formatter.format(detailData.online
+                              .map((e) => e[month])
+                              .toList()
+                              .reduce((a, b) => a + b))),
+                        ],
+                      )))
                   .toList(),
-              DataCell(Text(formatter.format(_month
-                  .map((month) => detailData.online
-                      .map((e) => e[month])
+              DataCell(Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(formatter.format(_month
+                      .map((month) => detailData.online
+                          .map((e) => e[month])
+                          .toList()
+                          .reduce((a, b) => a + b))
                       .toList()
-                      .reduce((a, b) => a + b))
-                  .toList()
-                  .reduce((a, b) => a + b)))),
+                      .reduce((a, b) => a + b))),
+                ],
+              )),
               DataCell(Text('')),
               DataCell(Text('')),
             ]),
@@ -477,33 +579,47 @@ class DetailItem extends StatelessWidget {
               DataCell(Text('Kunde')),
               DataCell(Text('Gesamt')),
               ..._month
-                  .map((month) => DataCell(Text(formatter.format(detailData
-                          .online
-                          .map((e) => e[month])
+                  .map((month) => DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(formatter.format(detailData.online
+                                  .map((e) => e[month])
+                                  .toList()
+                                  .reduce((a, b) => a + b) +
+                              detailData.tv
+                                  .map((e) => e[month])
+                                  .toList()
+                                  .reduce((a, b) => a + b))),
+                        ],
+                      )))
+                  .toList(),
+              DataCell(Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(formatter.format(_month
+                          .map((month) => detailData.online
+                              .map((e) => e[month])
+                              .toList()
+                              .reduce((a, b) => a + b))
                           .toList()
                           .reduce((a, b) => a + b) +
-                      detailData.tv
-                          .map((e) => e[month])
+                      _month
+                          .map((month) => detailData.tv
+                              .map((e) => e[month])
+                              .toList()
+                              .reduce((a, b) => a + b))
                           .toList()
-                          .reduce((a, b) => a + b)))))
-                  .toList(),
-              DataCell(Text(formatter.format(_month
-                      .map((month) => detailData.online
-                          .map((e) => e[month])
-                          .toList()
-                          .reduce((a, b) => a + b))
-                      .toList()
-                      .reduce((a, b) => a + b) +
-                  _month
-                      .map((month) => detailData.tv
-                          .map((e) => e[month])
-                          .toList()
-                          .reduce((a, b) => a + b))
-                      .toList()
-                      .reduce((a, b) => a + b)))),
-              DataCell(Text((detailData.globalRate != null)
-                  ? formatterPercent.format(detailData.globalRate / 100)
-                  : 'N/A')),
+                          .reduce((a, b) => a + b))),
+                ],
+              )),
+              DataCell(Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text((detailData.globalRate != null)
+                      ? formatterPercent.format(detailData.globalRate / 100)
+                      : 'N/A'),
+                ],
+              )),
               DataCell(Text('')),
             ]),
       ],
@@ -519,57 +635,96 @@ class DetailItem extends StatelessWidget {
       ),
       DataColumn(
           label: Center(
-        child: Text(
-          'Januar',
+        child: Expanded(
+          child: Text(
+            'Januar',
+            textAlign: TextAlign.end,
+          ),
         ),
       )),
       DataColumn(
-          label: Text(
-        'Februar',
+          label: Expanded(
+        child: Text(
+          'Februar',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'März',
+          label: Expanded(
+        child: Text(
+          'März',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'April',
+          label: Expanded(
+        child: Text(
+          'April',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'Mai',
+          label: Expanded(
+        child: Text(
+          'Mai',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'Juni',
+          label: Expanded(
+        child: Text(
+          'Juni',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'Juli',
+          label: Expanded(
+        child: Text(
+          'Juli',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'August',
+          label: Expanded(
+        child: Text(
+          'August',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'September',
+          label: Expanded(
+        child: Text(
+          'September',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'Oktober',
+          label: Expanded(
+        child: Text(
+          'Oktober',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'November',
+          label: Expanded(
+        child: Text(
+          'November',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-          label: Text(
-        'Dezember',
+          label: Expanded(
+        child: Text(
+          'Dezember',
+          textAlign: TextAlign.end,
+        ),
       )),
       DataColumn(
-        label: Text(
-          'Summe Jahr',
+        label: Expanded(
+          child: Text(
+            'Summe Jahr',
+            textAlign: TextAlign.end,
+          ),
         ),
       ),
     ], rows: [
@@ -577,55 +732,94 @@ class DetailItem extends StatelessWidget {
         cells: [
           DataCell(Text('Goal')),
           ..._month
-              .map((month) => DataCell(
-                  Text(formatter.format(detailData.goalGesamt[month]))))
+              .map((month) => DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(formatter.format(detailData.goalGesamt[month])),
+                    ],
+                  )))
               .toList(),
-          DataCell(Text(formatter.format(_month
-              .map((month) => detailData.goalGesamt[month])
-              .toList()
-              .reduce((a, b) => a + b))))
+          DataCell(Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(formatter.format(_month
+                  .map((month) => detailData.goalGesamt[month])
+                  .toList()
+                  .reduce((a, b) => a + b))),
+            ],
+          ))
         ],
       ),
       DataRow(
         cells: [
           DataCell(Text('IST')),
           ..._month
-              .map((month) => DataCell(
-                  Text(formatter.format(detailData.istStichtagGesamt[month]))))
+              .map((month) => DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(formatter
+                          .format(detailData.istStichtagGesamt[month])),
+                    ],
+                  )))
               .toList(),
-          DataCell(Text(formatter.format(_month
-              .map((month) => detailData.istStichtagGesamt[month])
-              .toList()
-              .reduce((a, b) => a + b))))
+          DataCell(Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(formatter.format(_month
+                  .map((month) => detailData.istStichtagGesamt[month])
+                  .toList()
+                  .reduce((a, b) => a + b))),
+            ],
+          ))
         ],
       ),
       DataRow(
         cells: [
           DataCell(Text('Kundenforecast')),
           ..._month
-              .map((month) => DataCell(Text(
-                  formatter.format(detailData.kundenForecastGesamt[month]))))
+              .map((month) => DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(formatter
+                          .format(detailData.kundenForecastGesamt[month])),
+                    ],
+                  )))
               .toList(),
-          DataCell(Text(formatter.format(_month
-              .map((month) => detailData.kundenForecastGesamt[month])
-              .toList()
-              .reduce((a, b) => a + b))))
+          DataCell(Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(formatter.format(_month
+                  .map((month) => detailData.kundenForecastGesamt[month])
+                  .toList()
+                  .reduce((a, b) => a + b))),
+            ],
+          ))
         ],
       ),
       DataRow(
         cells: [
           DataCell(Text('IST + Forecast')),
           ..._month
-              .map((month) => DataCell(Text(formatter.format(
-                  detailData.kundenForecastGesamt[month] +
-                      detailData.istStichtagGesamt[month]))))
+              .map((month) => DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(formatter.format(
+                          detailData.kundenForecastGesamt[month] +
+                              detailData.istStichtagGesamt[month])),
+                    ],
+                  )))
               .toList(),
-          DataCell(Text(formatter.format(_month
-              .map((month) =>
-                  detailData.kundenForecastGesamt[month] +
-                  detailData.istStichtagGesamt[month])
-              .toList()
-              .reduce((a, b) => a + b))))
+          DataCell(Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(formatter.format(_month
+                  .map((month) =>
+                      detailData.kundenForecastGesamt[month] +
+                      detailData.istStichtagGesamt[month])
+                  .toList()
+                  .reduce((a, b) => a + b))),
+            ],
+          ))
         ],
       ),
     ]);
@@ -651,13 +845,19 @@ class DetailItem extends StatelessWidget {
           ),
         ),
         DataColumn(
-          label: Text(
-            'MN3 bewertet',
+          label: Expanded(
+            child: Text(
+              'MN3 bewertet',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            'Bewertung',
+          label: Expanded(
+            child: Text(
+              'Bewertung',
+              textAlign: TextAlign.end,
+            ),
           ),
         ),
         DataColumn(
@@ -690,10 +890,20 @@ class DetailItem extends StatelessWidget {
                       DataCell(Text(project['brand'])),
                       DataCell(Container(
                         width: 110,
-                        child: Text(formatter.format(
-                            project['mn3'] * project['bewertung'] / 100)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(
+                                project['mn3'] * project['bewertung'] / 100)),
+                          ],
+                        ),
                       )),
-                      DataCell(Text(project['bewertung'].toString() + '%')),
+                      DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(project['bewertung'].toString() + '%'),
+                        ],
+                      )),
                       DataCell(Text(project['dueDate'])),
                       DataCell(Text(project['status'])),
                     ],

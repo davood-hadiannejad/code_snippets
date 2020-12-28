@@ -101,8 +101,11 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           ),
         ),
         DataColumn(
-          label: Text(
-            'MN3 bewertet',
+          label: Expanded(
+            child: Text(
+              'MN3 bewertet',
+              textAlign: TextAlign.end,
+            ),
           ),
           onSort: (idx, asc) {
             setState(() {
@@ -113,8 +116,11 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           },
         ),
         DataColumn(
-          label: Text(
-            'Bewertung',
+          label: Expanded(
+            child: Text(
+              'Bewertung',
+              textAlign: TextAlign.end,
+            ),
           ),
           onSort: (idx, asc) {
             setState(() {
@@ -161,10 +167,20 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                   DataCell(Text(project.brand)),
                   DataCell(Container(
                     width: 110,
-                    child: Text(formatter
-                        .format(project.mn3 * project.bewertung / 100)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(formatter
+                            .format(project.mn3 * project.bewertung / 100)),
+                      ],
+                    ),
                   )),
-                  DataCell(Text(project.bewertung.toString() + '%')),
+                  DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(project.bewertung.toString() + '%'),
+                    ],
+                  )),
                   DataCell(Row(
                     children: [
                       Text(project.dueDate),

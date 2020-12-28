@@ -28,7 +28,7 @@ class _AobItemState extends State<AobItem> {
     return Container(
       width: 1000,
       child: DataTable(
-        columns: const <DataColumn>[
+        columns: <DataColumn>[
           DataColumn(
             label: Text(
               'Medium',
@@ -40,23 +40,35 @@ class _AobItemState extends State<AobItem> {
             ),
           ),
           DataColumn(
-            label: Text(
-              'Goal (MN3)',
+            label: Expanded(
+              child: Text(
+                'Goal (MN3)',
+                textAlign: TextAlign.end,
+              ),
             ),
           ),
           DataColumn(
-            label: Text(
-              'Offene Projekte (MN3 bewertet)',
+            label: Expanded(
+              child: Text(
+                'Offene Projekte (MN3 bewertet)',
+                textAlign: TextAlign.end,
+              ),
             ),
           ),
           DataColumn(
-            label: Text(
-              'Gebuchte Projekte (MN3)',
+            label: Expanded(
+              child: Text(
+                'Gebuchte Projekte (MN3)',
+                textAlign: TextAlign.end,
+              ),
             ),
           ),
           DataColumn(
-            label: Text(
-              'Differenz',
+            label: Expanded(
+              child: Text(
+                'Differenz',
+                textAlign: TextAlign.end,
+              ),
             ),
           ),
         ],
@@ -64,11 +76,31 @@ class _AobItemState extends State<AobItem> {
             .map((aob) => DataRow(cells: [
                   DataCell(Text(aob.medium)),
                   DataCell(Text(aob.brand)),
-                  DataCell(Text(formatter.format(aob.goal))),
-                  DataCell(Text(formatter.format(aob.offen))),
-                  DataCell(Text(formatter.format(aob.gebucht))),
-                  DataCell(Text(
-                      formatter.format(aob.goal - aob.offen - aob.gebucht))),
+                  DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(formatter.format(aob.goal)),
+                    ],
+                  )),
+                  DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(formatter.format(aob.offen)),
+                    ],
+                  )),
+                  DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(formatter.format(aob.gebucht)),
+                    ],
+                  )),
+                  DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                          formatter.format(aob.goal - aob.offen - aob.gebucht)),
+                    ],
+                  )),
                 ]))
             .toList(),
       ),

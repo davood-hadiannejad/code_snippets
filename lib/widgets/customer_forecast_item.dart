@@ -295,9 +295,10 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                     ),
                   ),
                   DataColumn(
-                    label: Center(
+                    label: Expanded(
                       child: Text(
                         'Januar',
+                        textAlign: TextAlign.end,
                       ),
                     ),
                     onSort: (idx, asc) {
@@ -305,96 +306,132 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'Februar',
+                    label: Expanded(
+                      child: Text(
+                        'Februar',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'März',
+                    label: Expanded(
+                      child: Text(
+                        'März',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'April',
+                    label: Expanded(
+                      child: Text(
+                        'April',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'Mai',
+                    label: Expanded(
+                      child: Text(
+                        'Mai',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'Juni',
+                    label: Expanded(
+                      child: Text(
+                        'Juni',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'Juli',
+                    label: Expanded(
+                      child: Text(
+                        'Juli',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'August',
+                    label: Expanded(
+                      child: Text(
+                        'August',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'September',
+                    label: Expanded(
+                      child: Text(
+                        'September',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'Oktober',
+                    label: Expanded(
+                      child: Text(
+                        'Oktober',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'November',
+                    label: Expanded(
+                      child: Text(
+                        'November',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'Dezember',
+                    label: Expanded(
+                      child: Text(
+                        'Dezember',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     onSort: (idx, asc) {
                       setState(() {});
                     },
                   ),
                   DataColumn(
-                    label: Text(
-                      'Summe Jahr',
+                    label: Expanded(
+                      child: Text(
+                        'Summe Jahr',
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                   ),
                 ],
@@ -426,7 +463,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           Divider(),
                           Text('IST (VJ)'),
                           Divider(),
-                          Text('Delta'),
+                          Tooltip(child: Text('Delta'), message: 'Δ FC+IST zu Goal',),
                           SizedBox(height: 8),
                         ],
                       ),
@@ -442,6 +479,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           child: Column(
                             children: [
                               TextFormField(
+                                textAlign: TextAlign.end,
                                 readOnly: !(idx + 1 >= currentMonth),
                                 controller: _controllerList[forecast][idx],
                                 decoration: InputDecoration(
@@ -483,25 +521,45 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               ),
                               Container(
                                   width: double.infinity,
-                                  child: Text(formatter
-                                      .format(forecast.goal[monthKey]))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(formatter
+                                          .format(forecast.goal[monthKey])),
+                                    ],
+                                  )),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(formatter
-                                      .format(forecast.ist[monthKey]))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(formatter
+                                          .format(forecast.ist[monthKey])),
+                                    ],
+                                  )),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(formatter
-                                      .format(forecast.istLastYear[monthKey]))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(formatter
+                                          .format(forecast.istLastYear[monthKey])),
+                                    ],
+                                  )),
                               Divider(),
                               Container(
                                   width: double.infinity,
-                                  child: Text(formatter.format(
-                                      forecast.forecast[monthKey] +
-                                          forecast.ist[monthKey] -
-                                          forecast.goal[monthKey]))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(formatter.format(
+                                          forecast.forecast[monthKey] +
+                                              forecast.ist[monthKey] -
+                                              forecast.goal[monthKey])),
+                                    ],
+                                  )),
                               SizedBox(height: 4),
                             ],
                           ),
@@ -514,6 +572,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         child: Column(
                           children: [
                             TextFormField(
+                              textAlign: TextAlign.end,
                               controller: _controllerSummary[forecast],
                               readOnly: false,
                               decoration: InputDecoration(
@@ -544,24 +603,39 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                             ),
                             Container(
                                 width: double.infinity,
-                                child: Text(formatter.format(forecast
-                                    .goal.entries
-                                    .map((e) => e.value)
-                                    .reduce((a, b) => a + b)))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(formatter.format(forecast
+                                        .goal.entries
+                                        .map((e) => e.value)
+                                        .reduce((a, b) => a + b))),
+                                  ],
+                                )),
                             Divider(),
                             Container(
                                 width: double.infinity,
-                                child: Text(formatter.format(forecast
-                                    .ist.entries
-                                    .map((e) => e.value)
-                                    .reduce((a, b) => a + b)))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(formatter.format(forecast
+                                        .ist.entries
+                                        .map((e) => e.value)
+                                        .reduce((a, b) => a + b))),
+                                  ],
+                                )),
                             Divider(),
                             Container(
                                 width: double.infinity,
-                                child: Text(formatter.format(forecast
-                                    .istLastYear.entries
-                                    .map((e) => e.value)
-                                    .reduce((a, b) => a + b)))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(formatter.format(forecast
+                                        .istLastYear.entries
+                                        .map((e) => e.value)
+                                        .reduce((a, b) => a + b))),
+                                  ],
+                                )),
                             Divider(),
                             Container(width: double.infinity, child: Text('')),
                             SizedBox(height: 4),
