@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
 import '../providers/verkaeufer.dart';
 import '../providers/verkaeufer_list.dart';
@@ -25,6 +26,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final ScrollController _scrollController = ScrollController();
   Verkaeufer selectedVerkaufer;
   String activeTab = 'Mandant';
   String isSelected = 'Gesamt';
@@ -100,11 +102,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: 1250,
                         child: Consumer<SummaryList>(
                           builder: (ctx, summaryData, child) =>
-                              ListView.builder(
-                                itemCount: summaryData.items.length,
-                                itemBuilder: (ctx, i) =>
-                                    DashboardItem(
-                                        summaryData.items[i], activeTab),
+                              DraggableScrollbar.rrect(
+                                alwaysVisibleScrollThumb: true,
+                                controller: _scrollController,
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount: summaryData.items.length,
+                                  itemBuilder: (ctx, i) =>
+                                      DashboardItem(
+                                          summaryData.items[i], activeTab),
+                                ),
                               ),
                         ),
                       );

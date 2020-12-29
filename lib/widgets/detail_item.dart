@@ -6,6 +6,7 @@ import './monthly_chart.dart';
 import './monthly_chart_detail.dart';
 import '../screens/project_forecast_screen.dart';
 import '../screens/detail_screen.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
 final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
@@ -30,6 +31,8 @@ List<String> _month = [
 class DetailItem extends StatelessWidget {
   final Detail detailData;
   final String pageType;
+  final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController2 = ScrollController();
 
   Future<void> _showRelatedDialog(context) async {
     String futurePageType;
@@ -91,162 +94,167 @@ class DetailItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             width: double.infinity,
             height: double.infinity,
-            child: ListView(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FlatButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      label: Text('Zurück'),
-                      icon: Icon(Icons.arrow_back_ios),
-                    ),
-                    (pageType != 'Kunde')
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 80),
-                            child: RaisedButton(
-                                onPressed: () {
-                                  _showRelatedDialog(context);
-                                },
-                                child: (pageType == 'Agenturnetzwerk')
-                                    ? Text('Agenturliste')
-                                    : Text('Kundenliste')),
-                          )
-                        : SizedBox(
-                            width: 50,
-                          ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '$pageType: ${detailData.name}',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Monatlicher Umsatz',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    Container(
-                      width: 1200,
-                      height: 300,
-                      child: MonthlyChart.withData(
-                        detailData.goalGesamt,
-                        detailData.istStichtagGesamt,
-                        detailData.kundenForecastGesamt,
-                        detailData.projektForecastGesamt,
-                        showProjekt: false,
+            child: DraggableScrollbar.rrect(
+              alwaysVisibleScrollThumb: true,
+              controller: _scrollController,
+              child: ListView(
+                controller: _scrollController,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FlatButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        label: Text('Zurück'),
+                        icon: Icon(Icons.arrow_back_ios),
                       ),
+                      (pageType != 'Kunde')
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 80),
+                              child: RaisedButton(
+                                  onPressed: () {
+                                    _showRelatedDialog(context);
+                                  },
+                                  child: (pageType == 'Agenturnetzwerk')
+                                      ? Text('Agenturliste')
+                                      : Text('Kundenliste')),
+                            )
+                          : SizedBox(
+                              width: 50,
+                            ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '$pageType: ${detailData.name}',
+                      style: Theme.of(context).textTheme.headline4,
                     ),
-                  ],
-                ),
-                SizedBox(height: 50),
-                Row(
-                  children: [
-                    Container(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'aktueller Stand gebuchte Konditionen',
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
-                              Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Cash-Rabatt: ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6,
-                                      ),
-                                      Text(
-                                        (detailData.cashRabatt != null)
-                                            ? formatterPercent.format(
-                                                detailData.cashRabatt / 100)
-                                            : 'N/A',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6,
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Naturalrabatt: ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6,
-                                      ),
-                                      Text(
-                                        (detailData.naturalRabatt != null)
-                                            ? formatterPercent.format(
-                                                detailData.naturalRabatt / 100)
-                                            : 'N/A',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6,
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Global Rate: ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6,
-                                      ),
-                                      Text(
-                                        (detailData.globalRate != null)
-                                            ? formatterPercent.format(
-                                                detailData.globalRate / 100)
-                                            : 'N/A',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Monatlicher Umsatz',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      Container(
+                        width: 1200,
+                        height: 300,
+                        child: MonthlyChart.withData(
+                          detailData.goalGesamt,
+                          detailData.istStichtagGesamt,
+                          detailData.kundenForecastGesamt,
+                          detailData.projektForecastGesamt,
+                          showProjekt: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50),
+                  Row(
+                    children: [
+                      Container(
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'aktueller Stand gebuchte Konditionen',
+                                  style: Theme.of(context).textTheme.headline5,
+                                ),
+                                Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Cash-Rabatt: ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                        Text(
+                                          (detailData.cashRabatt != null)
+                                              ? formatterPercent.format(
+                                                  detailData.cashRabatt / 100)
+                                              : 'N/A',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Naturalrabatt: ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                        Text(
+                                          (detailData.naturalRabatt != null)
+                                              ? formatterPercent.format(
+                                                  detailData.naturalRabatt / 100)
+                                              : 'N/A',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Global Rate: ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                        Text(
+                                          (detailData.globalRate != null)
+                                              ? formatterPercent.format(
+                                                  detailData.globalRate / 100)
+                                              : 'N/A',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 50),
-                Container(
-                  width: 1200,
-                  child: buildCustomerTable(context),
-                ),
-                Container(
+                    ],
+                  ),
+                  SizedBox(height: 50),
+                  Container(
                     width: 1200,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 50),
-                      child: buildProjectTable(context),
-                    )),
-              ],
+                    child: buildCustomerTable(context),
+                  ),
+                  Container(
+                      width: 1200,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 50),
+                        child: buildProjectTable(context),
+                      )),
+                ],
+              ),
             ),
           ),
         ),
@@ -256,61 +264,66 @@ class DetailItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             width: double.infinity,
             height: double.infinity,
-            child: ListView(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FlatButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      label: Text('Zurück'),
-                      icon: Icon(Icons.arrow_back_ios),
-                    ),
-                    (pageType != 'Kunde')
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 80),
-                            child: RaisedButton(
-                                onPressed: () {
-                                  _showRelatedDialog(context);
-                                },
-                                child: (pageType == 'Agenturnetzwerk')
-                                    ? Text('Agenturliste')
-                                    : Text('Kundenliste')),
-                          )
-                        : SizedBox(
-                            width: 50,
-                          ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    detailData.name,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 1200,
-                      height: 300,
-                      child: MonthlyChartDetail.withData(
-                        detailData.tv,
-                        detailData.online,
+            child: DraggableScrollbar.rrect(
+              alwaysVisibleScrollThumb: true,
+              controller: _scrollController2,
+              child: ListView(
+                controller: _scrollController2,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FlatButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        label: Text('Zurück'),
+                        icon: Icon(Icons.arrow_back_ios),
                       ),
+                      (pageType != 'Kunde')
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 80),
+                              child: RaisedButton(
+                                  onPressed: () {
+                                    _showRelatedDialog(context);
+                                  },
+                                  child: (pageType == 'Agenturnetzwerk')
+                                      ? Text('Agenturliste')
+                                      : Text('Kundenliste')),
+                            )
+                          : SizedBox(
+                              width: 50,
+                            ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      detailData.name,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
-                  ],
-                ),
-                SizedBox(height: 50),
-                Container(
-                  width: 1200,
-                  child: buildDetailTable(context),
-                ),
-              ],
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 1200,
+                        height: 300,
+                        child: MonthlyChartDetail.withData(
+                          detailData.tv,
+                          detailData.online,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50),
+                  Container(
+                    width: 1200,
+                    child: buildDetailTable(context),
+                  ),
+                ],
+              ),
             ),
           ),
         )

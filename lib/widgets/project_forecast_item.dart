@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../providers/project_list.dart';
 import './project_forecast_dialog.dart';
 import './aob_item.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
 final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
@@ -22,6 +23,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
   int columnSort;
   bool ascSort = false;
   final today = DateTime.now();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,45 +33,50 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
         padding: const EdgeInsets.all(8.0),
         width: double.infinity,
         height: double.infinity,
-        child: ListView(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                FlatButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  label: Text('Zurück'),
-                  icon: Icon(Icons.arrow_back_ios),
+        child: DraggableScrollbar.rrect(
+          alwaysVisibleScrollThumb: true,
+          controller: _scrollController,
+          child: ListView(
+            controller: _scrollController,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  FlatButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    label: Text('Zurück'),
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'AOB Überblick',
+                  style: Theme.of(context).textTheme.headline5,
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'AOB Überblick',
-                style: Theme.of(context).textTheme.headline5,
               ),
-            ),
-            SizedBox(height: 20),
-            AobItem(),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Projekte',
-                style: Theme.of(context).textTheme.headline5,
+              SizedBox(height: 20),
+              AobItem(),
+              SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Projekte',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
               ),
-            ),
-            Container(
-              width: 1350,
-              child: buildProjectTable(context),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
+              Container(
+                width: 1350,
+                child: buildProjectTable(context),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

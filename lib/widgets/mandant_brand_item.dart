@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
 import '../providers/detail.dart';
 import './monthly_chart.dart';
@@ -14,6 +15,7 @@ final formatterPercent =
 class MandantBrandItem extends StatelessWidget {
   final Detail detailData;
   final String pageType;
+  final ScrollController _scrollController = ScrollController();
 
   MandantBrandItem(this.detailData, this.pageType);
 
@@ -25,64 +27,69 @@ class MandantBrandItem extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         width: double.infinity,
         height: double.infinity,
-        child: ListView(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                FlatButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  label: Text('Zurück'),
-                  icon: Icon(Icons.arrow_back_ios),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                detailData.name,
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ),
-            SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Monatlicher Umsatz',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                Container(
-                  width: 1200,
-                  height: 300,
-                  child: MonthlyChart.withData(
-                    detailData.goalGesamt,
-                    detailData.istStichtagGesamt,
-                    detailData.kundenForecastGesamt,
-                    detailData.projektForecastGesamt,
+        child: DraggableScrollbar.rrect(
+          alwaysVisibleScrollThumb: true,
+          controller: _scrollController,
+          child: ListView(
+            controller: _scrollController,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  FlatButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    label: Text('Zurück'),
+                    icon: Icon(Icons.arrow_back_ios),
                   ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  detailData.name,
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-              ],
-            ),
-            SizedBox(height: 50),
-            Container(
-              width: 1200,
-              child: (pageType == 'Mandant')
-                  ? buildMandantTable(context)
-                  : buildCustomerTable(context),
-            ),
-            Container(
-              width: 1200,
-              child: (pageType == 'Brand')
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 50),
-                      child: buildProjectTable(context),
-                    )
-                  : null,
-            ),
-          ],
+              ),
+              SizedBox(height: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Monatlicher Umsatz',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  Container(
+                    width: 1200,
+                    height: 300,
+                    child: MonthlyChart.withData(
+                      detailData.goalGesamt,
+                      detailData.istStichtagGesamt,
+                      detailData.kundenForecastGesamt,
+                      detailData.projektForecastGesamt,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 50),
+              Container(
+                width: 1200,
+                child: (pageType == 'Mandant')
+                    ? buildMandantTable(context)
+                    : buildCustomerTable(context),
+              ),
+              Container(
+                width: 1200,
+                child: (pageType == 'Brand')
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 50),
+                        child: buildProjectTable(context),
+                      )
+                    : null,
+              ),
+            ],
+          ),
         ),
       ),
     );
