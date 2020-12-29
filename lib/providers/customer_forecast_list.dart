@@ -19,6 +19,9 @@ class CustomerForecastList with ChangeNotifier {
   int maxItemsOnPage = 10;
   String searchString = '';
   String filterKind = '';
+  String sortField = '';
+  int sortColumnIndex;
+  bool sortAscending = false;
   List<String> filterBrandList = [];
   final String authToken;
 
@@ -33,8 +36,11 @@ class CustomerForecastList with ChangeNotifier {
     notifyListeners();
   }
 
-  List<CustomerForecast> sortByField(field, {ascending = false}) {
-    return [..._activeItems];
+  List<CustomerForecast> sortByField(String field, idx, {ascending = false}) {
+    sortField = field;
+    sortAscending = ascending;
+    sortColumnIndex = idx;
+    notifyListeners();
   }
 
   Future<void> searchByName(String currentSearchString) async {
@@ -119,9 +125,58 @@ class CustomerForecastList with ChangeNotifier {
     if (filterBrandList.isNotEmpty) {
       loadedCustomerForecastList = [
         ...loadedCustomerForecastList
-            .where((customerForecast) => filterBrandList.contains(customerForecast.brand))
+            .where((customerForecast) =>
+                filterBrandList.contains(customerForecast.brand))
             .toList()
       ];
+    }
+
+    if (sortField != '') {
+      if (sortField != 'gesamt') {
+        if (sortAscending) {
+          loadedCustomerForecastList.sort((a, b) {
+            num aDelta =
+                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
+            num bDelta =
+                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
+            return aDelta.compareTo(bDelta);
+          });
+        } else {
+          loadedCustomerForecastList.sort((a, b) {
+            num aDelta =
+                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
+            num bDelta =
+                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
+            return bDelta.compareTo(aDelta);
+          });
+        }
+      } else {
+        if (sortAscending) {
+          loadedCustomerForecastList.sort((a, b) {
+            num aDelta =
+                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+            num bDelta =
+                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+            return aDelta.compareTo(bDelta);
+          });
+        } else {
+          loadedCustomerForecastList.sort((a, b) {
+            num aDelta =
+                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+            num bDelta =
+                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+            return bDelta.compareTo(aDelta);
+          });
+        }
+      }
     }
 
     maxPages = (loadedCustomerForecastList.length / maxItemsOnPage).ceil();

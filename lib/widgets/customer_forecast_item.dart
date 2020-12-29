@@ -45,8 +45,6 @@ int currentMonth = DateTime.now().month;
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
   final ScrollController _scrollController = ScrollController();
   Verkaeufer selectedVerkaufer;
-  int columnSort;
-  bool ascSort = false;
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
   int maxPages;
@@ -121,34 +119,33 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                 children: [
                   Text(formatter.format(gesamtSumme) + ' verteilen als '),
                   StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                      return Container(
-                        width: 158,
-                        height: 50,
-                        child: DropdownButton(
-                            value: dialogDropdownValue,
-                            items: [
-                              DropdownMenuItem(
-                                child: Text('Restjahressumme'),
-                                value: 'Restjahressumme',
-                              ),
-                              DropdownMenuItem(
-                                child: Text('Gesamtjahresumme'),
-                                value: 'Gesamtjahresumme',
-                              ),
-                            ],
-                            onChanged: (String newValue) {
-                              if (this.mounted) {
-                                setState(
-                                  () {
-                                    dialogDropdownValue = newValue;
-                                  },
-                                );
-                              }
-                            }),
-                      );
-                    }
-                  )
+                      builder: (BuildContext context, StateSetter setState) {
+                    return Container(
+                      width: 158,
+                      height: 50,
+                      child: DropdownButton(
+                          value: dialogDropdownValue,
+                          items: [
+                            DropdownMenuItem(
+                              child: Text('Restjahressumme'),
+                              value: 'Restjahressumme',
+                            ),
+                            DropdownMenuItem(
+                              child: Text('Gesamtjahresumme'),
+                              value: 'Gesamtjahresumme',
+                            ),
+                          ],
+                          onChanged: (String newValue) {
+                            if (this.mounted) {
+                              setState(
+                                () {
+                                  dialogDropdownValue = newValue;
+                                },
+                              );
+                            }
+                          }),
+                    );
+                  })
                 ],
               ),
               actions: <Widget>[
@@ -218,7 +215,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   ),
                   FlatButton.icon(
                       onPressed: () {
-                        Provider.of<CustomerForecastList>(context, listen: false)
+                        Provider.of<CustomerForecastList>(context,
+                                listen: false)
                             .fetchAndSetCustomerForecastList(
                                 verkaeufer: selectedVerkaufer, refresh: true);
                       },
@@ -269,8 +267,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   showBottomBorder: true,
                   dataRowHeight: 170,
                   columnSpacing: 0,
-                  sortColumnIndex: columnSort,
-                  sortAscending: ascSort,
+                  sortColumnIndex: widget.customerForecastData.sortColumnIndex,
+                  sortAscending: widget.customerForecastData.sortAscending,
                   columns: <DataColumn>[
                     DataColumn(
                       label: Center(
@@ -308,7 +306,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m1', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -319,7 +318,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m2', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -330,7 +330,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m3', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -341,7 +342,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m4', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -352,7 +354,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m5', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -363,7 +366,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m6', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -374,7 +378,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m7', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -385,7 +390,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m8', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -396,7 +402,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m9', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -407,7 +414,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m10', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -418,7 +426,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m11', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -429,7 +438,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         ),
                       ),
                       onSort: (idx, asc) {
-                        setState(() {});
+                        widget.customerForecastData
+                            .sortByField('m12', idx, ascending: asc);
                       },
                     ),
                     DataColumn(
@@ -439,12 +449,17 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           textAlign: TextAlign.end,
                         ),
                       ),
+                      onSort: (idx, asc) {
+                        widget.customerForecastData
+                            .sortByField('gesamt', idx, ascending: asc);
+                      },
                     ),
                   ],
                   rows: widget.customerForecastData.items.map((forecast) {
                     _controllerList[forecast] = [];
                     _controllerSummary[forecast] = TextEditingController(
-                        text: formatter.format(forecast.forecast.entries.map((e) {
+                        text:
+                            formatter.format(forecast.forecast.entries.map((e) {
                       return e.value;
                     }).reduce((a, b) => a + b)));
                     return DataRow(cells: [
@@ -455,7 +470,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                             message: forecast.agentur,
                           ))),
                       DataCell(Container(child: Text(forecast.medium))),
-                      DataCell(Container(width: 80, child: Text(forecast.brand))),
+                      DataCell(
+                          Container(width: 80, child: Text(forecast.brand))),
                       DataCell(Container(
                         height: 170,
                         child: Column(
@@ -469,7 +485,10 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                             Divider(),
                             Text('IST (VJ)'),
                             Divider(),
-                            Tooltip(child: Text('Delta'), message: 'Δ FC+IST zu Goal',),
+                            Tooltip(
+                              child: Text('Delta'),
+                              message: 'Δ FC+IST zu Goal',
+                            ),
                             SizedBox(height: 8),
                           ],
                         ),
@@ -478,7 +497,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         int idx = entry.key;
                         String monthKey = entry.value;
                         _controllerList[forecast].add(TextEditingController(
-                            text: formatter.format(forecast.forecast[monthKey])));
+                            text:
+                                formatter.format(forecast.forecast[monthKey])));
                         return DataCell(
                           Container(
                             height: 170,
@@ -550,8 +570,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Text(formatter
-                                            .format(forecast.istLastYear[monthKey])),
+                                        Text(formatter.format(
+                                            forecast.istLastYear[monthKey])),
                                       ],
                                     )),
                                 Divider(),
@@ -624,8 +644,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text(formatter.format(forecast
-                                          .ist.entries
+                                      Text(formatter.format(forecast.ist.entries
                                           .map((e) => e.value)
                                           .reduce((a, b) => a + b))),
                                     ],
@@ -643,7 +662,23 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     ],
                                   )),
                               Divider(),
-                              Container(width: double.infinity, child: Text('')),
+                              Container(
+                                  width: double.infinity,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(formatter.format(forecast
+                                              .forecast.entries
+                                              .map((e) => e.value)
+                                              .reduce((a, b) => a + b) +
+                                          forecast.ist.entries
+                                              .map((e) => e.value)
+                                              .reduce((a, b) => a + b) -
+                                          forecast.goal.entries
+                                              .map((e) => e.value)
+                                              .reduce((a, b) => a + b))),
+                                    ],
+                                  )),
                               SizedBox(height: 4),
                             ],
                           ),
