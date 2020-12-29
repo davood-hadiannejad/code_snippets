@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatter =
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
 class DashboardChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -18,13 +19,17 @@ class DashboardChart extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final simpleCurrencyFormatter =
+        new charts.BasicNumericTickFormatterSpec.fromNumberFormat(formatter);
+
     return new charts.BarChart(
       seriesList,
       animate: animate,
       barGroupingType: charts.BarGroupingType.groupedStacked,
+      primaryMeasureAxis: new charts.NumericAxisSpec(
+          tickFormatterSpec: simpleCurrencyFormatter),
       behaviors: [
         new charts.SeriesLegend(
           // Positions for "start" and "end" will be left and right respectively
@@ -77,7 +82,8 @@ class DashboardChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: zielData,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 1)),
+        colorFn: (_, __) =>
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Projektforecast',
@@ -85,7 +91,8 @@ class DashboardChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: projektforecastDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(98, 206, 255, 1)),
+        colorFn: (_, __) =>
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(98, 206, 255, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Kundenforecast',
@@ -93,7 +100,8 @@ class DashboardChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: kundenforecastDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(32, 162, 250, 1)),
+        colorFn: (_, __) =>
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(32, 162, 250, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'IST Stichtag',
@@ -101,7 +109,8 @@ class DashboardChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.year,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: stichtagDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(90, 90, 90, 1)),
+        colorFn: (_, __) =>
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(90, 90, 90, 1)),
       ),
     ];
   }

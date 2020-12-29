@@ -35,10 +35,15 @@ class MonthlyChartDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final simpleCurrencyFormatter =
+    new charts.BasicNumericTickFormatterSpec.fromNumberFormat(formatter);
+
     return new charts.BarChart(
       seriesList,
       animate: animate,
       barGroupingType: charts.BarGroupingType.groupedStacked,
+      primaryMeasureAxis: new charts.NumericAxisSpec(
+          tickFormatterSpec: simpleCurrencyFormatter),
       behaviors: [
         new charts.SeriesLegend(
           // Positions for "start" and "end" will be left and right respectively
