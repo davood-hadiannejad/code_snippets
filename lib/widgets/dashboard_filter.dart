@@ -77,6 +77,7 @@ class _DashboardFilterState extends State<DashboardFilter> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,
@@ -99,6 +100,7 @@ class _DashboardFilterState extends State<DashboardFilter> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,

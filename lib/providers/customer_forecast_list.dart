@@ -132,47 +132,54 @@ class CustomerForecastList with ChangeNotifier {
     }
 
     if (sortField != '') {
-      if (sortField != 'gesamt') {
+      if (sortField == 'gesamt') {
         if (sortAscending) {
           loadedCustomerForecastList.sort((a, b) {
             num aDelta =
-                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
+                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
             num bDelta =
-                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
+                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
             return aDelta.compareTo(bDelta);
           });
         } else {
           loadedCustomerForecastList.sort((a, b) {
             num aDelta =
-                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
+                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
             num bDelta =
-                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
+                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
+                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
+                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
             return bDelta.compareTo(aDelta);
           });
         }
+      } else if (sortField == 'kunde') {
+        if (sortAscending) {
+          loadedCustomerForecastList.sort((a, b) => a.customer.compareTo(b.customer));
+        } else {
+          loadedCustomerForecastList.sort((a, b) => b.customer.compareTo(a.customer));
+        }
+
       } else {
         if (sortAscending) {
           loadedCustomerForecastList.sort((a, b) {
             num aDelta =
-                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
             num bDelta =
-                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
             return aDelta.compareTo(bDelta);
           });
         } else {
           loadedCustomerForecastList.sort((a, b) {
             num aDelta =
-                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
             num bDelta =
-                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
+                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
             return bDelta.compareTo(aDelta);
           });
         }

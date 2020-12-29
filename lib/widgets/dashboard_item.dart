@@ -328,6 +328,7 @@ class DashboardItem extends StatelessWidget {
                           Text(formatter.format(summaryItem.forecast['kunde'])),
                         ],
                       ),
+                      SizedBox(height: 5,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [

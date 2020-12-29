@@ -90,6 +90,7 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,
@@ -113,6 +114,7 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,

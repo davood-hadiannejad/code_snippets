@@ -85,6 +85,7 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,
@@ -108,6 +109,7 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,

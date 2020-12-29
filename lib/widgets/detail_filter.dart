@@ -76,6 +76,7 @@ class _DetailFilterState extends State<DetailFilter> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,
@@ -99,6 +100,7 @@ class _DetailFilterState extends State<DetailFilter> {
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Center(
                 child: FlatButton(
                   minWidth: 200,

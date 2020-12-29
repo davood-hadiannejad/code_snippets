@@ -276,6 +276,10 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           'Kunde',
                         ),
                       ),
+                      onSort: (idx, asc) {
+                        widget.customerForecastData
+                            .sortByField('kunde', idx, ascending: asc);
+                      },
                     ),
                     DataColumn(
                       label: Center(
