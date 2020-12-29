@@ -74,6 +74,7 @@ class VerkaeuferList with ChangeNotifier {
           );
         }
       });
+      loadedVerkaeuferList.sort((a, b) => a.name.compareTo(b.name));
       _items = loadedVerkaeuferList;
 
       notifyListeners();

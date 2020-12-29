@@ -81,6 +81,8 @@ class SummaryList with ChangeNotifier {
           int bIntex = sortList.indexOf(b.name);
           return aIntex.compareTo(bIntex);
         });
+      } else {
+        loadedSummaryList.sort((a, b) => a.name.compareTo(b.name));
       }
       _items = loadedSummaryList;
 
