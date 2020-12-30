@@ -558,7 +558,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                             .format(forecast.goal[monthKey])),
                                       ],
                                     )),
-                                Container(width: double.infinity, child: Divider()),
+                                Container(width: 80, child: Divider()),
                                 Container(
                                     width: double.infinity,
                                     child: Row(
@@ -568,7 +568,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                             .format(forecast.ist[monthKey])),
                                       ],
                                     )),
-                                Container(width: double.infinity, child: Divider()),
+                                Container(width: 80, child: Divider()),
                                 Container(
                                     width: double.infinity,
                                     child: Row(
@@ -578,7 +578,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                             forecast.istLastYear[monthKey])),
                                       ],
                                     )),
-                                Container(width: double.infinity, child: Divider()),
+                                Container(width: 80, child: Divider()),
                                 Container(
                                     width: double.infinity,
                                     child: Row(
