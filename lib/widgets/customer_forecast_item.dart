@@ -480,7 +480,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         height: 170,
                         child: Column(
                           children: [
-                            SizedBox(height: 8),
+                            SizedBox(height: 6),
                             Text('Forecast'),
                             Container(
                                 alignment: Alignment.center,
@@ -684,7 +684,13 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                           .reduce((a, b) => a + b))),
                                     ],
                                   )),
-                              Divider(),
+                              Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(vertical: 8),
+                                  height: 1,
+                                  color: Colors.grey[300]
+                              ),
                               Container(
                                   width: double.infinity,
                                   child: Row(
@@ -695,7 +701,13 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                           .reduce((a, b) => a + b))),
                                     ],
                                   )),
-                              Divider(),
+                              Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(vertical: 8),
+                                  height: 1,
+                                  color: Colors.grey[300]
+                              ),
                               Container(
                                   width: double.infinity,
                                   child: Row(
@@ -707,7 +719,13 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                           .reduce((a, b) => a + b))),
                                     ],
                                   )),
-                              Divider(),
+                              Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(vertical: 8),
+                                  height: 1,
+                                  color: Colors.grey[300]
+                              ),
                               Container(
                                   width: double.infinity,
                                   child: Row(
