@@ -482,13 +482,37 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           children: [
                             SizedBox(height: 8),
                             Text('Forecast'),
-                            Divider(),
+                            Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                height: 1,
+                                color: Colors.grey[300]
+                            ),
                             Text('Goal'),
-                            Divider(),
+                            Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                height: 1,
+                                color: Colors.grey[300]
+                            ),
                             Text('IST'),
-                            Divider(),
+                            Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                height: 1,
+                                color: Colors.grey[300]
+                            ),
                             Text('IST (VJ)'),
-                            Divider(),
+                            Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                height: 1,
+                                color: Colors.grey[300]
+                            ),
                             Tooltip(
                               child: Text('Delta'),
                               message: 'Δ FC+IST zu Goal',
@@ -550,7 +574,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   height: 8,
                                 ),
                                 Container(
-                                    width: 80,
+                                    width: double.infinity,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -558,9 +582,15 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                             .format(forecast.goal[monthKey])),
                                       ],
                                     )),
-                                Container(width: 80, child: Divider()),
                                 Container(
-                                    width: 80,
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    margin: EdgeInsets.symmetric(vertical: 8),
+                                    height: 1,
+                                    color: Colors.grey[300]
+                                ),
+                                Container(
+                                    width: double.infinity,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -568,9 +598,15 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                             .format(forecast.ist[monthKey])),
                                       ],
                                     )),
-                                Container(width: 80, child: Divider()),
                                 Container(
-                                    width: 80,
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    margin: EdgeInsets.symmetric(vertical: 8),
+                                    height: 1,
+                                    color: Colors.grey[300]
+                                ),
+                                Container(
+                                    width: double.infinity,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -578,9 +614,15 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                             forecast.istLastYear[monthKey])),
                                       ],
                                     )),
-                                Container(width: 80, child: Divider()),
                                 Container(
-                                    width: 80,
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    margin: EdgeInsets.symmetric(vertical: 8),
+                                    height: 1,
+                                    color: Colors.grey[300]
+                                ),
+                                Container(
+                                    width: double.infinity,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
