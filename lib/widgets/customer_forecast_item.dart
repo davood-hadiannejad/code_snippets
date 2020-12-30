@@ -508,45 +508,44 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                             height: 170,
                             child: Column(
                               children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    textAlign: TextAlign.end,
-                                    readOnly: !(idx + 1 >= currentMonth),
-                                    controller: _controllerList[forecast][idx],
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: (idx + 1 >= currentMonth)
-                                          ? Colors.blue[50]
-                                          : Colors.grey[300],
-                                      border: InputBorder.none,
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8),
-                                      //Change this value to custom as you like
-                                      isDense: true, // and add this line
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    style: TextStyle(fontSize: 14),
-                                    maxLines: 1,
-                                    onEditingComplete: () {
-                                      FocusScope.of(context).unfocus();
-                                      forecast.forecast[monthKey] = num.parse(
-                                          _controllerList[forecast][idx].text);
-                                      Provider.of<CustomerForecastList>(context,
-                                              listen: false)
-                                          .addCustomerForecast(
-                                        forecast.customer,
-                                        forecast.medium,
-                                        forecast.brand,
-                                        forecast.agentur,
-                                        currentYear,
-                                        selectedVerkaufer.email,
-                                        forecast.forecast,
-                                      );
-                                    },
+                                TextFormField(
+                                  expands: true,
+                                  textAlign: TextAlign.end,
+                                  readOnly: !(idx + 1 >= currentMonth),
+                                  controller: _controllerList[forecast][idx],
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: (idx + 1 >= currentMonth)
+                                        ? Colors.blue[50]
+                                        : Colors.grey[300],
+                                    border: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 16),
+                                    //Change this value to custom as you like
+                                    isDense: true, // and add this line
                                   ),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  style: TextStyle(fontSize: 14),
+                                  maxLines: 1,
+                                  onEditingComplete: () {
+                                    FocusScope.of(context).unfocus();
+                                    forecast.forecast[monthKey] = num.parse(
+                                        _controllerList[forecast][idx].text);
+                                    Provider.of<CustomerForecastList>(context,
+                                            listen: false)
+                                        .addCustomerForecast(
+                                      forecast.customer,
+                                      forecast.medium,
+                                      forecast.brand,
+                                      forecast.agentur,
+                                      currentYear,
+                                      selectedVerkaufer.email,
+                                      forecast.forecast,
+                                    );
+                                  },
                                 ),
                                 SizedBox(
                                   height: 8,
@@ -604,6 +603,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           child: Column(
                             children: [
                               TextFormField(
+                                expands: true,
                                 textAlign: TextAlign.end,
                                 controller: _controllerSummary[forecast],
                                 readOnly: false,
@@ -612,7 +612,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   fillColor: Colors.blue[50],
                                   border: InputBorder.none,
                                   contentPadding:
-                                      EdgeInsets.symmetric(vertical: 8),
+                                      EdgeInsets.symmetric(vertical: 16),
                                   //Change this value to custom as you like
                                   isDense: true, // and add this line
                                 ),
