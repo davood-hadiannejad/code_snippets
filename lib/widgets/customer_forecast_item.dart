@@ -480,7 +480,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                         height: 170,
                         child: Column(
                           children: [
-                            SizedBox(height: 6),
+                            SizedBox(height: 7),
                             Text('Forecast'),
                             Container(
                                 alignment: Alignment.center,
