@@ -54,7 +54,7 @@ class DashboardItem extends StatelessWidget {
                         TableCell(
                             child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Center(child: Text('')),
+                          child: Center(child: Text('alle €-Werte in MN3')),
                         )),
                         TableCell(
                           child: Center(
@@ -157,12 +157,12 @@ class DashboardItem extends StatelessWidget {
                               children: [
                                 Center(
                                     child: Text(
-                                  'Δ Goal',
+                                  'Δ Stichtag',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 Center(
                                     child: Text(
-                                  'Stichtag %',
+                                  'zu Goal in %',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                               ],
@@ -325,7 +325,12 @@ class DashboardItem extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 20),
-                          Text(formatter.format(summaryItem.forecast['kunde'])),
+                          Container(width: 80, child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(formatter.format(summaryItem.forecast['kunde'])),
+                            ],
+                          )),
                         ],
                       ),
                       SizedBox(height: 5,),
@@ -350,8 +355,16 @@ class DashboardItem extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 20),
-                          Text(formatter
-                              .format(summaryItem.forecast['projekt'])),
+                          Container(
+                            width: 80,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(formatter
+                                    .format(summaryItem.forecast['projekt'])),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ],

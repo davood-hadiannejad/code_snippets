@@ -130,7 +130,7 @@ class DetailItem extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       '$pageType: ${detailData.name}',
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -166,26 +166,21 @@ class DetailItem extends StatelessWidget {
                               children: [
                                 Text(
                                   'aktueller Stand gebuchte Konditionen',
-                                  style: Theme.of(context).textTheme.headline5,
+                                  style: Theme.of(context).textTheme.headline6,
                                 ),
+                                SizedBox(height: 5,),
                                 Row(
                                   children: [
                                     Row(
                                       children: [
                                         Text(
                                           'Cash-Rabatt: ',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
                                         ),
                                         Text(
                                           (detailData.cashRabatt != null)
                                               ? formatterPercent.format(
                                                   detailData.cashRabatt / 100)
                                               : 'N/A',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
                                         )
                                       ],
                                     ),
@@ -196,18 +191,12 @@ class DetailItem extends StatelessWidget {
                                       children: [
                                         Text(
                                           'Naturalrabatt: ',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
                                         ),
                                         Text(
                                           (detailData.naturalRabatt != null)
                                               ? formatterPercent.format(
                                                   detailData.naturalRabatt / 100)
                                               : 'N/A',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
                                         )
                                       ],
                                     ),
@@ -218,18 +207,12 @@ class DetailItem extends StatelessWidget {
                                       children: [
                                         Text(
                                           'Global Rate: ',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
                                         ),
                                         Text(
                                           (detailData.globalRate != null)
                                               ? formatterPercent.format(
                                                   detailData.globalRate / 100)
                                               : 'N/A',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
                                         )
                                       ],
                                     ),
@@ -299,8 +282,8 @@ class DetailItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      detailData.name,
-                      style: Theme.of(context).textTheme.headline4,
+                      '$pageType: ${detailData.name}',
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -448,7 +431,7 @@ class DetailItem extends StatelessWidget {
         DataColumn(
           label: Expanded(
             child: Text(
-              'GR(letztes Jahr)',
+              'GR(VJ)',
               textAlign: TextAlign.end,
             ),
           ),
@@ -920,7 +903,7 @@ class DetailItem extends StatelessWidget {
                       DataCell(Text(project['medium'])),
                       DataCell(Text(project['brand'])),
                       DataCell(Container(
-                        width: 110,
+                        width: double.infinity,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

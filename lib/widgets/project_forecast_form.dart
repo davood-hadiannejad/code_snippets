@@ -739,10 +739,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               children: [
                 SizedBox(height: 40),
                 Container(
-                  width: 250,
+                  width: 270,
                   child: Table(
                     columnWidths: {
-                      0: FixedColumnWidth(100.0),
+                      0: FixedColumnWidth(120.0),
                       1: FixedColumnWidth(150.0)
                     },
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,

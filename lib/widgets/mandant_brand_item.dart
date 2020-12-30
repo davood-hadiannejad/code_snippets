@@ -48,8 +48,8 @@ class MandantBrandItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  detailData.name,
-                  style: Theme.of(context).textTheme.headline4,
+                  '$pageType: ${detailData.name}',
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ),
               SizedBox(height: 20),
@@ -123,7 +123,7 @@ class MandantBrandItem extends StatelessWidget {
         DataColumn(
           label: Expanded(
             child: Text(
-              'Kunden-Forecast',
+              'Kundenforecast',
               textAlign: TextAlign.end,
             ),
           ),
@@ -131,7 +131,7 @@ class MandantBrandItem extends StatelessWidget {
         DataColumn(
           label: Expanded(
             child: Text(
-              'Projekt-Forecast',
+              'Projektforecast',
               textAlign: TextAlign.end,
             ),
           ),
@@ -257,7 +257,7 @@ class MandantBrandItem extends StatelessWidget {
         DataColumn(
           label: Expanded(
             child: Text(
-              'Kunden-Forecast',
+              'Kundenforecast',
               textAlign: TextAlign.end,
             ),
           ),
