@@ -549,15 +549,17 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 SizedBox(
                                   height: 8,
                                 ),
-                                Container(
-                                    width: double.infinity,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(formatter
-                                            .format(forecast.goal[monthKey])),
-                                      ],
-                                    )),
+                                Expanded(
+                                  child: Container(
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Text(formatter
+                                              .format(forecast.goal[monthKey])),
+                                        ],
+                                      )),
+                                ),
                                 Divider(),
                                 Container(
                                     width: double.infinity,
