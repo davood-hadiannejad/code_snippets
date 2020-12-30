@@ -550,7 +550,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   height: 8,
                                 ),
                                 Container(
-                                    width: double.infinity,
+                                    width: 80,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -560,7 +560,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     )),
                                 Container(width: 80, child: Divider()),
                                 Container(
-                                    width: double.infinity,
+                                    width: 80,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -570,7 +570,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     )),
                                 Container(width: 80, child: Divider()),
                                 Container(
-                                    width: double.infinity,
+                                    width: 80,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -580,7 +580,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     )),
                                 Container(width: 80, child: Divider()),
                                 Container(
-                                    width: double.infinity,
+                                    width: 80,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
