@@ -509,7 +509,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                             child: Column(
                               children: [
                                 TextFormField(
-                                  expands: true,
                                   textAlign: TextAlign.end,
                                   readOnly: !(idx + 1 >= currentMonth),
                                   controller: _controllerList[forecast][idx],
@@ -520,7 +519,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                         : Colors.grey[300],
                                     border: InputBorder.none,
                                     contentPadding:
-                                        EdgeInsets.symmetric(vertical: 8),
+                                        EdgeInsets.symmetric(vertical: 16),
                                     //Change this value to custom as you like
                                     isDense: true, // and add this line
                                   ),
@@ -603,7 +602,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                           child: Column(
                             children: [
                               TextFormField(
-                                expands: true,
                                 textAlign: TextAlign.end,
                                 controller: _controllerSummary[forecast],
                                 readOnly: false,
@@ -612,7 +610,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   fillColor: Colors.blue[50],
                                   border: InputBorder.none,
                                   contentPadding:
-                                      EdgeInsets.symmetric(vertical: 8),
+                                      EdgeInsets.symmetric(vertical: 16),
                                   //Change this value to custom as you like
                                   isDense: true, // and add this line
                                 ),
