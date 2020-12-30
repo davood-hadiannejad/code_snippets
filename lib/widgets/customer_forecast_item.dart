@@ -520,7 +520,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                         : Colors.grey[300],
                                     border: InputBorder.none,
                                     contentPadding:
-                                        EdgeInsets.symmetric(vertical: 12),
+                                        EdgeInsets.symmetric(vertical: 8),
                                     //Change this value to custom as you like
                                     isDense: true, // and add this line
                                   ),
@@ -612,7 +612,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   fillColor: Colors.blue[50],
                                   border: InputBorder.none,
                                   contentPadding:
-                                      EdgeInsets.symmetric(vertical: 12),
+                                      EdgeInsets.symmetric(vertical: 8),
                                   //Change this value to custom as you like
                                   isDense: true, // and add this line
                                 ),
