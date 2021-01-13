@@ -196,6 +196,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   FlatButton.icon(
                     onPressed: () {
                       Navigator.of(context).pop();
+                      widget.customerForecastData.resetItems();
                     },
                     label: Text('Zurück'),
                     icon: Icon(Icons.arrow_back_ios),

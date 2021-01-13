@@ -11,10 +11,20 @@ import '../providers/verkaeufer.dart';
 import '../providers/verkaeufer_list.dart';
 import '../providers/brand_list.dart';
 
-class CustomerForecastScreen extends StatelessWidget {
+class CustomerForecastScreen extends StatefulWidget {
   static const routeName = '/customer-forecast';
-  Verkaeufer selectedVerkaufer;
 
+  @override
+  _CustomerForecastScreenState createState() => _CustomerForecastScreenState();
+}
+
+class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
+  Verkaeufer selectedVerkaufer;
+  @override
+  void initState() {
+    Provider.of<CustomerForecastList>(context, listen: false).resetItems();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
@@ -47,7 +57,15 @@ class CustomerForecastScreen extends StatelessWidget {
             FutureBuilder(
               future: Provider.of<CustomerForecastList>(context)
                   .fetchAndSetCustomerForecastList(
-                      init: true, verkaeufer: selectedVerkaufer),
+                init: true,
+                verkaeufer: selectedVerkaufer,
+                pageType: (args != null && args.containsKey('pageType'))
+                    ? args['pageType']
+                    : null,
+                id: (args != null && args.containsKey('id'))
+                    ? args['id']
+                    : null,
+              ),
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(

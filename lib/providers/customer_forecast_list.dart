@@ -31,6 +31,21 @@ class CustomerForecastList with ChangeNotifier {
     return [..._activeItems];
   }
 
+  Future<void> resetItems() async {
+    _items = [];
+    _activeItems = [];
+    _addToActiveItems = null;
+    currentPage = 1;
+    maxPages = null;
+    maxItemsOnPage = 10;
+    searchString = '';
+    filterKind = '';
+    sortField = '';
+    sortColumnIndex = null;
+    sortAscending = false;
+    filterBrandList = [];
+  }
+
   Future<void> changePage(int pageNumber) async {
     currentPage = pageNumber;
     notifyListeners();
@@ -61,13 +76,18 @@ class CustomerForecastList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetCustomerForecastList(
-      {bool init = false, Verkaeufer verkaeufer, bool refresh = false}) async {
+  Future<void> fetchAndSetCustomerForecastList (
+      {bool init = false, Verkaeufer verkaeufer,bool refresh = false, String pageType, String id}) async {
     Map<String, String> uriQuery = {};
     List<CustomerForecast> loadedCustomerForecastList = [];
     if (verkaeufer != null && verkaeufer.email != null) {
       uriQuery['email'] = verkaeufer.email;
     }
+
+    if (pageType != null && id != null) {
+      uriQuery[pageType.toLowerCase()] = id;
+    }
+
     if (_items.isEmpty || refresh) {
       var uri = Uri.http('hammbwdsc02:96', '/api/customer-forecast/', uriQuery);
       print(uri);
