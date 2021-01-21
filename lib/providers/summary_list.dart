@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../main.dart';
 import './verkaeufer.dart';
 import './summary.dart';
 
@@ -45,7 +46,7 @@ class SummaryList with ChangeNotifier {
     }
 
     var uri = Uri.http(
-        'hammbwdsc02:96', '/api/dashboard/$searchType/', uriQuery);
+        APIHOST, '/api/dashboard/$searchType/', uriQuery);
 
     print(uri);
 

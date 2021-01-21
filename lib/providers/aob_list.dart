@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:visoonfrontend/providers/verkaeufer.dart';
+import '../main.dart';
 
 import './aob.dart';
 
@@ -26,7 +27,7 @@ class AOBList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetAOBList({bool init = false, Verkaeufer verkaeufer}) async {
-    var url = 'http://hammbwdsc02:96/api/aob/';
+    var url = APIPROTOCOL + APIHOST + '/api/aob/';
 
     if (verkaeufer != null) {
       url = url + '?email=' + verkaeufer.email;

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:visoonfrontend/providers/verkaeufer.dart';
+import '../main.dart';
 
 import './agency.dart';
 
@@ -21,7 +21,7 @@ class AgencyList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetAgencyList({bool init = false}) async {
-    var url = 'http://hammbwdsc02:96/api/agenturen/';
+    var url = APIPROTOCOL + APIHOST + '/api/agenturen/';
 
     try {
       final response = await http.get(

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../main.dart';
 import './verkaeufer.dart';
 
 String dummyData =
@@ -41,7 +42,7 @@ class VerkaeuferList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetVerkaeuferList() async {
-    var url = 'http://hammbwdsc02:96/api/verkaeufer/';
+    var url = APIPROTOCOL + APIHOST + '/api/verkaeufer/';
     try {
       final response = await http.get(
         url,

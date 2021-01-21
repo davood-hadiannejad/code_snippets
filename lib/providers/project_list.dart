@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../main.dart';
 import './verkaeufer.dart';
 import './project.dart';
 
@@ -91,7 +92,7 @@ class ProjectList with ChangeNotifier {
       uriQuery['email'] = verkaeufer.email;
     }
 
-    var uri = Uri.http('hammbwdsc02:96', '/api/projects/', uriQuery);
+    var uri = Uri.http(APIHOST, '/api/projects/', uriQuery);
     print(uri);
     try {
       final response = await http.get(
@@ -165,7 +166,7 @@ class ProjectList with ChangeNotifier {
     String dueDate,
     String status,
   ) async {
-    var url = 'http://hammbwdsc02:96/api/projects/';
+    var url = APIPROTOCOL + APIHOST + '/api/projects/';
     try {
       final response = await http.post(url, headers: {
         "Authorization": "Bearer $authToken"
@@ -224,7 +225,7 @@ class ProjectList with ChangeNotifier {
     String dueDate,
     String status,
   ) async {
-    var url = 'http://hammbwdsc02:96/api/projects/${id.toString()}/';
+    var url = APIPROTOCOL + APIHOST + '/api/projects/${id.toString()}/';
     try {
       final response = await http.put(url, headers: {
         "Authorization": "Bearer $authToken"

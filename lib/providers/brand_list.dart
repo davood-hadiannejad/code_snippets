@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:visoonfrontend/providers/verkaeufer.dart';
+import '../main.dart';
 
 import './brand.dart';
 
@@ -21,7 +21,7 @@ class BrandList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetBrandList({bool init = false}) async {
-    var url = 'http://hammbwdsc02:96/api/brands/';
+    var url = APIPROTOCOL + APIHOST + '/api/brands/';
 
     try {
       final response = await http.get(

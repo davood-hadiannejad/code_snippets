@@ -10,12 +10,25 @@ import '../widgets/detail_filter.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
 import '../widgets/main_drawer.dart';
+import '../providers/detail.dart';
 
 final tabList = ['Goal und Forecast', 'Detailansicht'];
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   static const routeName = '/detail';
+
+  @override
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
   Verkaeufer selectedVerkaufer;
+
+  @override
+  void initState() {
+    Provider.of<Detail>(context, listen: false).resetFilter();
+    super.initState();
+  }
 
   void gotoDashboard(BuildContext context) async {
     await Navigator.of(context).pushReplacementNamed('/');

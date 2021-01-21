@@ -11,8 +11,9 @@ class DetailFilter extends StatefulWidget {
   final Verkaeufer selectedUser;
   List<String> brandList;
   List<String> customerList;
-  DetailFilter(this.pageType, this.detailId, this.selectedUser, {this.brandList, this.customerList});
 
+  DetailFilter(this.pageType, this.detailId, this.selectedUser,
+      {this.brandList, this.customerList});
 
   @override
   _DetailFilterState createState() => _DetailFilterState();
@@ -43,16 +44,38 @@ class _DetailFilterState extends State<DetailFilter> {
                 'Filter',
                 style: Theme.of(context).textTheme.headline5,
               ),
-              (widget.brandList != null) ?
-              Center(child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: SelectMenu('detail', widget.brandList, 'Brand'),
-              )) : SizedBox(height: 1,),
-              (widget.customerList != null) ?
-              Center(child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: SelectMenu('detail', widget.customerList, 'Kunde'),
-              )) : SizedBox(height: 1,),
+              (widget.brandList != null)
+                  ? Center(
+                      child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: SelectMenu(
+                        'detail',
+                        widget.brandList,
+                        'Brand',
+                        pageType: widget.pageType,
+                        detailId: widget.detailId,
+                        selectedUser: widget.selectedUser,
+                      ),
+                    ))
+                  : SizedBox(
+                      height: 1,
+                    ),
+              (widget.customerList != null)
+                  ? Center(
+                      child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: SelectMenu(
+                        'detail',
+                        widget.customerList,
+                        'Kunde',
+                        pageType: widget.pageType,
+                        detailId: widget.detailId,
+                        selectedUser: widget.selectedUser,
+                      ),
+                    ))
+                  : SizedBox(
+                      height: 1,
+                    ),
               Center(
                 child: FlatButton(
                   minWidth: 200,
@@ -65,8 +88,10 @@ class _DetailFilterState extends State<DetailFilter> {
                       setState(() {
                         isSelected = 'Gesamt';
                         Provider.of<Detail>(context, listen: false)
+                            .filterByMedium(null);
+                        Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                            verkaeufer: widget.selectedUser);
+                                verkaeufer: widget.selectedUser);
                       });
                     }
                   },
@@ -76,7 +101,9 @@ class _DetailFilterState extends State<DetailFilter> {
                   ),
                 ),
               ),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               Center(
                 child: FlatButton(
                   minWidth: 200,
@@ -89,8 +116,10 @@ class _DetailFilterState extends State<DetailFilter> {
                       setState(() {
                         isSelected = 'TV';
                         Provider.of<Detail>(context, listen: false)
+                            .filterByMedium(isSelected);
+                        Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                            verkaeufer: widget.selectedUser, medium: 'TV');
+                                verkaeufer: widget.selectedUser);
                       });
                     }
                   },
@@ -100,7 +129,9 @@ class _DetailFilterState extends State<DetailFilter> {
                   ),
                 ),
               ),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               Center(
                 child: FlatButton(
                   minWidth: 200,
@@ -113,8 +144,10 @@ class _DetailFilterState extends State<DetailFilter> {
                       setState(() {
                         isSelected = 'Online';
                         Provider.of<Detail>(context, listen: false)
+                            .filterByMedium(isSelected);
+                        Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                            verkaeufer: widget.selectedUser, medium: 'Online');
+                                verkaeufer: widget.selectedUser);
                       });
                     }
                   },

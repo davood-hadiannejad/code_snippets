@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../main.dart';
 
 import './verkaeufer.dart';
-
-
 
 class Detail with ChangeNotifier {
   final String authToken;
@@ -24,22 +23,36 @@ class Detail with ChangeNotifier {
   num cashRabatt;
   List<dynamic> subType;
 
-  List<dynamic> activeBrands;
+  List<dynamic> globalBrands;
+  List<String> filterBrandList = [];
+  String mediumFilter;
+
   Detail(
     this.authToken,
     this.name,
   );
 
-  Future<void> filterBrands(List<String> brandsList) async {
-    if (brandsList.isEmpty) {
-      activeBrands = brands;
-    } else {
-      activeBrands = brands.where((b) => brandsList.contains(b['name'])).toList();
-    }
+  Future<void> resetFilter() async {
+    globalBrands = null;
+    filterBrandList = [];
+    mediumFilter = '';
+  }
+
+  Future<void> filterByBrandList(List<String> currentFilterBrandList) async {
+    filterBrandList = globalBrands
+        .where((brand) =>
+        currentFilterBrandList.contains(brand['name'].toString()))
+        .map((e) => e['name_slug'].toString()).toList();
     notifyListeners();
   }
 
-  Future<void> fetchAndSetDetail(String kind, String id, {init=false, Verkaeufer verkaeufer, String medium}) async {
+  Future<void> filterByMedium(String currentMediumFilter) async {
+    mediumFilter = currentMediumFilter;
+    notifyListeners();
+  }
+
+  Future<void> fetchAndSetDetail(String kind, String id,
+      {init = false, Verkaeufer verkaeufer}) async {
     var searchType = kind.toLowerCase();
     var subTypeUri;
     Map<String, String> uriQuery = {};
@@ -48,13 +61,21 @@ class Detail with ChangeNotifier {
       uriQuery['email'] = verkaeufer.email;
     }
 
-    if (medium != null) {
-      uriQuery['filter_gattung'] = medium;
+    if (mediumFilter != null) {
+      uriQuery['filter_gattung'] = mediumFilter;
     }
 
-    var uri = Uri.http('hammbwdsc02:96', '/api/detail/$searchType/$id/', uriQuery);
-    if (searchType == 'agentur' || searchType == 'konzern' || searchType == 'agenturnetzwerk') {
-      subTypeUri = Uri.http('hammbwdsc02:96', '/api/subtype/$searchType/$id/', uriQuery);
+    if (filterBrandList.isNotEmpty) {
+      uriQuery['brand'] = filterBrandList.join('+');
+    }
+
+    var uri =
+        Uri.http(APIHOST, '/api/detail/$searchType/$id/', uriQuery);
+    if (searchType == 'agentur' ||
+        searchType == 'konzern' ||
+        searchType == 'agenturnetzwerk') {
+      subTypeUri =
+          Uri.http(APIHOST, '/api/subtype/$searchType/$id/', uriQuery);
       print(subTypeUri);
     }
     print(uri);
@@ -64,7 +85,8 @@ class Detail with ChangeNotifier {
         uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as dynamic;
+      final extractedData =
+          json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       if (extractedData == null) {
         return;
       }
@@ -73,8 +95,10 @@ class Detail with ChangeNotifier {
       istStichtagGesamt = extractedData['ist_stichtag_gesamt'];
       kundenForecastGesamt = extractedData['kunden_forecast_gesamt'];
       projektForecastGesamt = extractedData['projekt_forecast_gesamt'];
+      if (init) {
+        globalBrands = extractedData['brands'];
+      }
       brands = extractedData['brands'];
-      activeBrands = brands;
       customers = extractedData['customers'];
       projects = extractedData['projects'];
       tv = extractedData['TV'];
@@ -88,7 +112,7 @@ class Detail with ChangeNotifier {
           subTypeUri,
           headers: {"Authorization": "Bearer $authToken"},
         );
-        subType = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
+        subType = json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
       }
 
       if (init != true) {

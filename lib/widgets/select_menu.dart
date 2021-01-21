@@ -6,13 +6,19 @@ import '../providers/detail.dart';
 import '../providers/customer_forecast_list.dart';
 import '../providers/brand_list.dart';
 import '../providers/project_list.dart';
+import '../providers/verkaeufer.dart';
+
 
 class SelectMenu extends StatefulWidget {
   List<String> itemList;
   String filterType;
   String providerClass;
+  final String pageType;
+  final String detailId;
+  final Verkaeufer selectedUser;
 
-  SelectMenu(this.providerClass, this.itemList, this.filterType);
+  SelectMenu(this.providerClass, this.itemList, this.filterType,
+      {this.pageType, this.detailId, this.selectedUser});
 
   @override
   _SelectMenuState createState() => _SelectMenuState();
@@ -31,8 +37,10 @@ class _SelectMenuState extends State<SelectMenu> {
 
   void updateList() {
     if (widget.filterType == 'Brand' && widget.providerClass == 'detail') {
-      // TODO Filter with URL
-      Provider.of<Detail>(context, listen: false).filterBrands(filterList);
+      Provider.of<Detail>(context, listen: false).filterByBrandList(filterList);
+      Provider.of<Detail>(context, listen: false).fetchAndSetDetail(
+          widget.pageType, widget.detailId,
+          verkaeufer: widget.selectedUser);
     } else if (widget.filterType == 'Kunde' &&
         widget.providerClass == 'detail') {
     } else if (widget.filterType == 'Brand' &&

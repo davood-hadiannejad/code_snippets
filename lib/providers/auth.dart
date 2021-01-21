@@ -4,6 +4,7 @@ import 'package:jwt_decode/jwt_decode.dart' as Jwt;
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../main.dart';
 
 import '../models/http_exception.dart';
 
@@ -29,7 +30,7 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
       String email, String password) async {
     final url =
-        'http://hammbwdsc02:96/api/token/';
+        APIPROTOCOL + APIHOST + '/api/token/';
     try {
       final response = await http.post(
         url,

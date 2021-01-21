@@ -19,6 +19,9 @@ import './screens/detail_screen.dart';
 import './screens/project_forecast_screen.dart';
 import './screens/customer_forecast_screen.dart';
 
+String APIPROTOCOL = 'http://';
+String APIHOST = 'hammbwdsc02:96';
+
 void main() => runApp(VisoonApp());
 
 class VisoonApp extends StatelessWidget {

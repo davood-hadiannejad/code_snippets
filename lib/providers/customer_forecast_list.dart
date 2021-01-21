@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../main.dart';
 import './verkaeufer.dart';
 import './customer_forecast.dart';
 
@@ -89,7 +90,7 @@ class CustomerForecastList with ChangeNotifier {
     }
 
     if (_items.isEmpty || refresh) {
-      var uri = Uri.http('hammbwdsc02:96', '/api/customer-forecast/', uriQuery);
+      var uri = Uri.http(APIHOST, '/api/customer-forecast/', uriQuery);
       print(uri);
       try {
         final response = await http.get(
@@ -312,7 +313,7 @@ class CustomerForecastList with ChangeNotifier {
       'verkaeufer': verkaeufer,
       'forecast': forecast,
     });
-    var url = 'http://hammbwdsc02:96/api/customer-forecast/';
+    var url = APIPROTOCOL + APIHOST + '/api/customer-forecast/';
     try {
       final response = await http.post(url, headers: headers, body: msg);
       final extractedData = json.decode(response.body) as dynamic;
