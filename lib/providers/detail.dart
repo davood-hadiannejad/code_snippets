@@ -20,6 +20,7 @@ class Detail with ChangeNotifier {
   List<dynamic> online;
   num naturalRabatt;
   num globalRate;
+  num globalRateLastYear;
   num cashRabatt;
   List<dynamic> subType;
 
@@ -106,6 +107,7 @@ class Detail with ChangeNotifier {
       naturalRabatt = extractedData['natural_rabatt_gesamt'];
       cashRabatt = extractedData['cash_rabatt_gesamt'];
       globalRate = extractedData['global_rate_gesamt'];
+      globalRateLastYear = extractedData['global_rate_letztes_jahr'];
 
       if (subTypeUri != null) {
         final response = await http.get(

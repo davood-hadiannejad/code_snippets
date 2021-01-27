@@ -636,7 +636,14 @@ class DetailItem extends StatelessWidget {
                       : 'N/A'),
                 ],
               )),
-              DataCell(Text('')),
+              DataCell(Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text((detailData.globalRateLastYear != null)
+                      ? formatterPercent.format(detailData.globalRateLastYear / 100)
+                      : 'N/A'),
+                ],
+              )),
             ]),
       ],
     );
