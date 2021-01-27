@@ -481,38 +481,38 @@ class DetailItem extends StatelessWidget {
                   ],
                 ))
             .toList(),
-        DataRow(
-            color: MaterialStateProperty.resolveWith(
-                (Set<MaterialState> states) => Colors.grey[300]),
-            cells: [
-              DataCell(Text('TV')),
-              DataCell(Text('Gesamt')),
-              ..._month
-                  .map((month) => DataCell(Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(formatter.format(detailData.tv
-                              .map((e) => e[month])
-                              .toList()
-                              .reduce((a, b) => a + b))),
-                        ],
-                      )))
-                  .toList(),
-              DataCell(Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(formatter.format(_month
-                      .map((month) => detailData.tv
-                          .map((e) => e[month])
-                          .toList()
-                          .reduce((a, b) => a + b))
-                      .toList()
-                      .reduce((a, b) => a + b))),
-                ],
-              )),
-              DataCell(Text('')),
-              DataCell(Text('')),
-            ]),
+//        DataRow(
+//            color: MaterialStateProperty.resolveWith(
+//                (Set<MaterialState> states) => Colors.grey[300]),
+//            cells: [
+//              DataCell(Text('TV')),
+//              DataCell(Text('Gesamt')),
+//              ..._month
+//                  .map((month) => DataCell(Row(
+//                        mainAxisAlignment: MainAxisAlignment.end,
+//                        children: [
+//                          Text(formatter.format(detailData.tv
+//                              .map((e) => e[month])
+//                              .toList()
+//                              .reduce((a, b) => a + b))),
+//                        ],
+//                      )))
+//                  .toList(),
+//              DataCell(Row(
+//                mainAxisAlignment: MainAxisAlignment.end,
+//                children: [
+//                  Text(formatter.format(_month
+//                      .map((month) => detailData.tv
+//                          .map((e) => e[month])
+//                          .toList()
+//                          .reduce((a, b) => a + b))
+//                      .toList()
+//                      .reduce((a, b) => a + b))),
+//                ],
+//              )),
+//              DataCell(Text('')),
+//              DataCell(Text('')),
+//            ]),
         ...detailData.online
             .map((sales) => DataRow(
                   cells: [
@@ -556,38 +556,38 @@ class DetailItem extends StatelessWidget {
                   ],
                 ))
             .toList(),
-        DataRow(
-            color: MaterialStateProperty.resolveWith(
-                (Set<MaterialState> states) => Colors.grey[300]),
-            cells: [
-              DataCell(Text('Online')),
-              DataCell(Text('Gesamt')),
-              ..._month
-                  .map((month) => DataCell(Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(formatter.format(detailData.online
-                              .map((e) => e[month])
-                              .toList()
-                              .reduce((a, b) => a + b))),
-                        ],
-                      )))
-                  .toList(),
-              DataCell(Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(formatter.format(_month
-                      .map((month) => detailData.online
-                          .map((e) => e[month])
-                          .toList()
-                          .reduce((a, b) => a + b))
-                      .toList()
-                      .reduce((a, b) => a + b))),
-                ],
-              )),
-              DataCell(Text('')),
-              DataCell(Text('')),
-            ]),
+//        DataRow(
+//            color: MaterialStateProperty.resolveWith(
+//                (Set<MaterialState> states) => Colors.grey[300]),
+//            cells: [
+//              DataCell(Text('Online')),
+//              DataCell(Text('Gesamt')),
+//              ..._month
+//                  .map((month) => DataCell(Row(
+//                        mainAxisAlignment: MainAxisAlignment.end,
+//                        children: [
+//                          Text(formatter.format(detailData.online
+//                              .map((e) => e[month])
+//                              .toList()
+//                              .reduce((a, b) => a + b))),
+//                        ],
+//                      )))
+//                  .toList(),
+//              DataCell(Row(
+//                mainAxisAlignment: MainAxisAlignment.end,
+//                children: [
+//                  Text(formatter.format(_month
+//                      .map((month) => detailData.online
+//                          .map((e) => e[month])
+//                          .toList()
+//                          .reduce((a, b) => a + b))
+//                      .toList()
+//                      .reduce((a, b) => a + b))),
+//                ],
+//              )),
+//              DataCell(Text('')),
+//              DataCell(Text('')),
+//            ]),
         DataRow(
             color: MaterialStateProperty.resolveWith(
                 (Set<MaterialState> states) => Colors.grey[500]),
