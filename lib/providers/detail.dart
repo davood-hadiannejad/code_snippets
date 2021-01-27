@@ -61,7 +61,7 @@ class Detail with ChangeNotifier {
       uriQuery['email'] = verkaeufer.email;
     }
 
-    if (mediumFilter != null) {
+    if (mediumFilter != '' && mediumFilter != null) {
       uriQuery['filter_gattung'] = mediumFilter;
     }
 
