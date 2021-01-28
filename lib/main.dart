@@ -21,8 +21,8 @@ import './screens/project_forecast_screen.dart';
 import './screens/customer_forecast_screen.dart';
 
 String APIPROTOCOL = 'http://';
-String APIHOST = 'hammbwdsc02:96';
-//String APIHOST = 'salescontrolapi.visoon.de';
+//String APIHOST = 'hammbwdsc02:96';
+String APIHOST = 'salescontrolapi.visoon.de';
 
 void main() => runApp(VisoonApp());
 
