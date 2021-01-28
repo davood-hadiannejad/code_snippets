@@ -26,16 +26,21 @@ class AOBList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetAOBList({bool init = false, Verkaeufer verkaeufer}) async {
-    var url = APIPROTOCOL + APIHOST + '/api/aob/';
+  Future<void> fetchAndSetAOBList({bool init = false, Verkaeufer verkaeufer, String year}) async {
+    Map<String, String> uriQuery = {};
 
-    if (verkaeufer != null) {
-      url = url + '?email=' + verkaeufer.email;
+    if (verkaeufer != null && verkaeufer.email != null) {
+      uriQuery['email'] = verkaeufer.email;
     }
 
+    if (year != null) {
+      uriQuery['jahr'] = year;
+    }
+    var uri = Uri.http(APIHOST, '/api/aob/', uriQuery);
+    print(uri);
     try {
       final response = await http.get(
-        url,
+        uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
       final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;

@@ -29,7 +29,7 @@ class ProjectForecastScreen extends StatelessWidget {
         actions: <Widget>[
           UserSelect(),
           SizedBox(width: 10,),
-          YearSelect(),
+          YearSelect(disable: true,),
           SizedBox(
             width: 30,
           ),

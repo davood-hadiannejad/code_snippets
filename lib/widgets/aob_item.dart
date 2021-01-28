@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 
 import '../providers/aob.dart';
 import '../providers/aob_list.dart';
+import '../providers/verkaeufer_list.dart';
+import '../providers/verkaeufer.dart';
+import '../providers/year.dart';
 
 final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
@@ -19,7 +22,9 @@ class _AobItemState extends State<AobItem> {
   @override
   void initState() {
     super.initState();
-    Provider.of<AOBList>(context, listen: false).fetchAndSetAOBList();
+    Verkaeufer selectedVerkaufer = Provider.of<VerkaeuferList>(context, listen: false).selectedVerkaufer;
+    String selectedYear = Provider.of<Year>(context, listen: false).selectedYear;
+    Provider.of<AOBList>(context, listen: false).fetchAndSetAOBList(verkaeufer: selectedVerkaufer, year: selectedYear);
   }
 
   @override
