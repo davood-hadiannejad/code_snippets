@@ -10,7 +10,8 @@ import '../widgets/detail_filter.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
 import '../widgets/main_drawer.dart';
-import '../providers/detail.dart';
+import '../providers/year.dart';
+import '../widgets/year_select.dart';
 
 final tabList = ['Goal und Forecast', 'Detailansicht'];
 
@@ -23,6 +24,7 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   Verkaeufer selectedVerkaufer;
+  String selectedYear;
 
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
-
+    selectedYear = Provider.of<Year>(context).selectedYear;
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
     if (args == null) {
       loadDashboard(context);
@@ -57,6 +59,8 @@ class _DetailScreenState extends State<DetailScreen> {
             title: Text('Detailansicht'),
             actions: <Widget>[
               UserSelect(),
+              SizedBox(width: 10,),
+              YearSelect(),
               SizedBox(
                 width: 30,
               ),
@@ -77,7 +81,7 @@ class _DetailScreenState extends State<DetailScreen> {
             child: FutureBuilder(
               future: Provider.of<Detail>(context, listen: false)
                   .fetchAndSetDetail(args['pageType'], args['id'],
-                      init: true, verkaeufer: selectedVerkaufer),
+                      init: true, verkaeufer: selectedVerkaufer, year: selectedYear),
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(
@@ -118,6 +122,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   args['pageType'],
                                   args['id'],
                                   selectedVerkaufer,
+                                  selectedYear,
                                   brandList: (detailData.brands != null)
                                       ? detailData.brands
                                           .map((e) => e['name'].toString())

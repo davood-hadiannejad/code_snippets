@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/year.dart';
 import '../screens/customer_forecast_screen.dart';
 import '../screens/project_forecast_screen.dart';
 import '../providers/summary.dart';
@@ -12,10 +14,11 @@ final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 final formatterPercent =
     new NumberFormat.decimalPercentPattern(locale: 'de', decimalDigits: 0);
-final currentYear = '2020';
-final lastYear = '2019';
+
 
 class DashboardItem extends StatelessWidget {
+  String currentYear;
+  String lastYear;
   final Summary summaryItem;
   final String activeTab;
 
@@ -23,6 +26,8 @@ class DashboardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    currentYear = Provider.of<Year>(context).selectedYear;
+    lastYear = (num.parse(currentYear) - 1).toString();
     return Card(
       margin: EdgeInsets.all(12.0),
       child: Container(

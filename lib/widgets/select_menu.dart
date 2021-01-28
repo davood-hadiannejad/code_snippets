@@ -16,9 +16,10 @@ class SelectMenu extends StatefulWidget {
   final String pageType;
   final String detailId;
   final Verkaeufer selectedUser;
+  final String selectedYear;
 
   SelectMenu(this.providerClass, this.itemList, this.filterType,
-      {this.pageType, this.detailId, this.selectedUser});
+      {this.pageType, this.detailId, this.selectedUser, this.selectedYear});
 
   @override
   _SelectMenuState createState() => _SelectMenuState();
@@ -40,7 +41,7 @@ class _SelectMenuState extends State<SelectMenu> {
       Provider.of<Detail>(context, listen: false).filterByBrandList(filterList);
       Provider.of<Detail>(context, listen: false).fetchAndSetDetail(
           widget.pageType, widget.detailId,
-          verkaeufer: widget.selectedUser);
+          verkaeufer: widget.selectedUser, year: widget.selectedYear);
     } else if (widget.filterType == 'Kunde' &&
         widget.providerClass == 'detail') {
     } else if (widget.filterType == 'Brand' &&

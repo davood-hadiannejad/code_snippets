@@ -9,10 +9,12 @@ class DetailFilter extends StatefulWidget {
   final String pageType;
   final String detailId;
   final Verkaeufer selectedUser;
+  final String selectedYear;
   List<String> brandList;
   List<String> customerList;
 
-  DetailFilter(this.pageType, this.detailId, this.selectedUser,
+  DetailFilter(
+      this.pageType, this.detailId, this.selectedUser, this.selectedYear,
       {this.brandList, this.customerList});
 
   @override
@@ -55,6 +57,7 @@ class _DetailFilterState extends State<DetailFilter> {
                         pageType: widget.pageType,
                         detailId: widget.detailId,
                         selectedUser: widget.selectedUser,
+                        selectedYear: widget.selectedYear,
                       ),
                     ))
                   : SizedBox(
@@ -71,6 +74,7 @@ class _DetailFilterState extends State<DetailFilter> {
                         pageType: widget.pageType,
                         detailId: widget.detailId,
                         selectedUser: widget.selectedUser,
+                        selectedYear: widget.selectedYear,
                       ),
                     ))
                   : SizedBox(
@@ -91,7 +95,7 @@ class _DetailFilterState extends State<DetailFilter> {
                             .filterByMedium(null);
                         Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                                verkaeufer: widget.selectedUser);
+                                verkaeufer: widget.selectedUser, year: widget.selectedYear);
                       });
                     }
                   },
@@ -119,7 +123,7 @@ class _DetailFilterState extends State<DetailFilter> {
                             .filterByMedium(isSelected);
                         Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                                verkaeufer: widget.selectedUser);
+                                verkaeufer: widget.selectedUser, year: widget.selectedYear);
                       });
                     }
                   },
@@ -147,7 +151,7 @@ class _DetailFilterState extends State<DetailFilter> {
                             .filterByMedium(isSelected);
                         Provider.of<Detail>(context, listen: false)
                             .fetchAndSetDetail(widget.pageType, widget.detailId,
-                                verkaeufer: widget.selectedUser);
+                                verkaeufer: widget.selectedUser, year: widget.selectedYear);
                       });
                     }
                   },

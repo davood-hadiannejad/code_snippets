@@ -9,15 +9,18 @@ import '../providers/auth.dart';
 import '../widgets/main_drawer.dart';
 import '../providers/verkaeufer.dart';
 import '../providers/verkaeufer_list.dart';
-
+import '../widgets/year_select.dart';
+import '../providers/year.dart';
 
 class ProjectForecastScreen extends StatelessWidget {
   static const routeName = '/project-forecast';
   Verkaeufer selectedVerkaufer;
+  String selectedYear;
 
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
+    selectedYear = Provider.of<Year>(context).selectedYear;
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       drawer: MainDrawer(),
@@ -25,6 +28,8 @@ class ProjectForecastScreen extends StatelessWidget {
         title: Text('Projektforecast'),
         actions: <Widget>[
           UserSelect(),
+          SizedBox(width: 10,),
+          YearSelect(),
           SizedBox(
             width: 30,
           ),
@@ -46,7 +51,7 @@ class ProjectForecastScreen extends StatelessWidget {
           children: [
             FutureBuilder(
               future: Provider.of<ProjectList>(context)
-                  .fetchAndSetProjectList(init: true, verkaeufer: selectedVerkaufer),
+                  .fetchAndSetProjectList(init: true, verkaeufer: selectedVerkaufer, year: selectedYear),
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(

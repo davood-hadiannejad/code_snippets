@@ -7,9 +7,10 @@ import '../providers/summary_list.dart';
 class DashboardFilter extends StatefulWidget {
   final String activeTab;
   final Verkaeufer selectedUser;
+  final String selectedYear;
   String isSelected;
 
-  DashboardFilter(this.activeTab, this.selectedUser, this.isSelected);
+  DashboardFilter(this.activeTab, this.selectedUser, this.selectedYear, this.isSelected);
 
   @override
   _DashboardFilterState createState() => _DashboardFilterState();
@@ -67,7 +68,7 @@ class _DashboardFilterState extends State<DashboardFilter> {
                       setState(() {
                         widget.isSelected = 'Gesamt';
                         Provider.of<SummaryList>(context, listen: false)
-                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser);
+                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, year: widget.selectedYear);
                       });
                     }
                   },
@@ -90,7 +91,7 @@ class _DashboardFilterState extends State<DashboardFilter> {
                       setState(() {
                         widget.isSelected = 'TV';
                         Provider.of<SummaryList>(context, listen: false)
-                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'TV');
+                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'TV', year: widget.selectedYear);
                       });
                     }
                   },
@@ -113,7 +114,7 @@ class _DashboardFilterState extends State<DashboardFilter> {
                       setState(() {
                         widget.isSelected = 'Online';
                         Provider.of<SummaryList>(context, listen: false)
-                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'Online');
+                            .fetchAndSetSummaryList(widget.activeTab, verkaeufer: widget.selectedUser, medium: 'Online', year: widget.selectedYear);
                       });
                     }
                   },

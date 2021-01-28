@@ -78,11 +78,15 @@ class CustomerForecastList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetCustomerForecastList (
-      {bool init = false, Verkaeufer verkaeufer,bool refresh = false, String pageType, String id}) async {
+      {bool init = false, Verkaeufer verkaeufer,bool refresh = false, String pageType, String id, String year}) async {
     Map<String, String> uriQuery = {};
     List<CustomerForecast> loadedCustomerForecastList = [];
     if (verkaeufer != null && verkaeufer.email != null) {
       uriQuery['email'] = verkaeufer.email;
+    }
+
+    if (year != null) {
+      uriQuery['jahr'] = year;
     }
 
     if (pageType != null && id != null) {

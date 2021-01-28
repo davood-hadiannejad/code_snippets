@@ -9,7 +9,8 @@ import '../widgets/customer_forecast_side_item.dart';
 import '../widgets/customer_forecast_item.dart';
 import '../providers/verkaeufer.dart';
 import '../providers/verkaeufer_list.dart';
-import '../providers/brand_list.dart';
+import '../providers/year.dart';
+import '../widgets/year_select.dart';
 
 class CustomerForecastScreen extends StatefulWidget {
   static const routeName = '/customer-forecast';
@@ -20,6 +21,8 @@ class CustomerForecastScreen extends StatefulWidget {
 
 class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
   Verkaeufer selectedVerkaufer;
+  String selectedYear;
+
   @override
   void initState() {
     Provider.of<CustomerForecastList>(context, listen: false).resetItems();
@@ -28,6 +31,7 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
+    selectedYear = Provider.of<Year>(context).selectedYear;
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       drawer: MainDrawer(),
@@ -35,6 +39,8 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
         title: Text('Kundenforecast'),
         actions: <Widget>[
           UserSelect(),
+          SizedBox(width: 10,),
+          YearSelect(disable: true,),
           SizedBox(
             width: 30,
           ),
@@ -59,6 +65,7 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
                   .fetchAndSetCustomerForecastList(
                 init: true,
                 verkaeufer: selectedVerkaufer,
+                year: selectedYear,
                 pageType: (args != null && args.containsKey('pageType'))
                     ? args['pageType']
                     : null,

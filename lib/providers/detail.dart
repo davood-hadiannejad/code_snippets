@@ -53,7 +53,7 @@ class Detail with ChangeNotifier {
   }
 
   Future<void> fetchAndSetDetail(String kind, String id,
-      {init = false, Verkaeufer verkaeufer}) async {
+      {init = false, Verkaeufer verkaeufer, String year}) async {
     var searchType = kind.toLowerCase();
     var subTypeUri;
     Map<String, String> uriQuery = {};
@@ -64,6 +64,10 @@ class Detail with ChangeNotifier {
 
     if (mediumFilter != '' && mediumFilter != null) {
       uriQuery['filter_gattung'] = mediumFilter;
+    }
+
+    if (year != null) {
+      uriQuery['jahr'] = year;
     }
 
     if (filterBrandList.isNotEmpty) {

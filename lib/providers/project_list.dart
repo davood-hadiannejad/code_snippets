@@ -85,11 +85,15 @@ class ProjectList with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProjectList(
-      {bool init = false, Verkaeufer verkaeufer}) async {
+      {bool init = false, Verkaeufer verkaeufer, String year}) async {
     Map<String, String> uriQuery = {};
 
     if (verkaeufer != null && verkaeufer.email != null) {
       uriQuery['email'] = verkaeufer.email;
+    }
+
+    if (year != null) {
+      uriQuery['jahr'] = year;
     }
 
     var uri = Uri.http(APIHOST, '/api/projects/', uriQuery);

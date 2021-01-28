@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
+import '../widgets/year_select.dart';
 import '../providers/verkaeufer.dart';
 import '../providers/verkaeufer_list.dart';
 import '../providers/summary_list.dart';
@@ -9,6 +10,7 @@ import '../widgets/dashboard_filter.dart';
 import '../widgets/dashboard_item.dart';
 import '../widgets/user_select.dart';
 import '../providers/auth.dart';
+import '../providers/year.dart';
 import '../widgets/main_drawer.dart';
 
 final tabList = [
@@ -28,12 +30,14 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final ScrollController _scrollController = ScrollController();
   Verkaeufer selectedVerkaufer;
+  String selectedYear;
   String activeTab = 'Mandant';
   String isSelected = 'Gesamt';
 
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
+    selectedYear = Provider.of<Year>(context).selectedYear;
     return DefaultTabController(
       length: tabList.length,
       child: Scaffold(
@@ -46,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 isSelected = 'Gesamt';
               });
               Provider.of<SummaryList>(context, listen: false)
-                  .fetchAndSetSummaryList(activeTab, verkaeufer: selectedVerkaufer);
+                  .fetchAndSetSummaryList(activeTab, verkaeufer: selectedVerkaufer, year: selectedYear);
             },
             tabs: tabList
                 .map((e) =>
@@ -58,6 +62,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: Text('Visoon Forecasting'),
           actions: <Widget>[
             UserSelect(),
+            SizedBox(width: 10,),
+            YearSelect(),
             SizedBox(
               width: 30,
             ),
@@ -79,7 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               FutureBuilder(
                 future: Provider.of<SummaryList>(context, listen: false)
-                    .fetchAndSetSummaryList(activeTab, init: true, verkaeufer: selectedVerkaufer),
+                    .fetchAndSetSummaryList(activeTab, init: true, verkaeufer: selectedVerkaufer, year: selectedYear),
                 builder: (ctx, dataSnapshot) {
                   if (dataSnapshot.connectionState == ConnectionState.waiting) {
                     return Container(
@@ -119,7 +125,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   }
                 },
               ),
-              DashboardFilter(activeTab, selectedVerkaufer, isSelected),
+              DashboardFilter(activeTab, selectedVerkaufer, selectedYear, isSelected),
             ],
           )),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import './providers/year.dart';
 import './providers/agency_list.dart';
 import './providers/aob_list.dart';
 import './providers/brand_list.dart';
@@ -20,8 +21,8 @@ import './screens/project_forecast_screen.dart';
 import './screens/customer_forecast_screen.dart';
 
 String APIPROTOCOL = 'http://';
-//String APIHOST = 'hammbwdsc02:96';
-String APIHOST = 'salescontrolapi.visoon.de';
+String APIHOST = 'hammbwdsc02:96';
+//String APIHOST = 'salescontrolapi.visoon.de';
 
 void main() => runApp(VisoonApp());
 
@@ -89,6 +90,9 @@ class VisoonApp extends StatelessWidget {
             auth.token,
             previousAgencyList == null ? [] : previousAgencyList.items,
           ),
+        ),
+        ChangeNotifierProxyProvider<Auth, Year>(
+          update: (ctx, auth, previousYear) => Year(),
         ),
       ],
       child: Consumer<Auth>(

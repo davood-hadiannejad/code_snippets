@@ -8,6 +8,7 @@ import '../providers/customer_forecast_list.dart';
 import '../providers/customer_forecast.dart';
 import '../providers/verkaeufer_list.dart';
 import '../providers/verkaeufer.dart';
+import '../providers/year.dart';
 
 final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
@@ -37,8 +38,7 @@ List<String> _month = [
   'm11',
   'm12'
 ];
-int currentYear = 2020;
-int lastYear = currentYear - 1;
+
 
 int currentMonth = DateTime.now().month;
 
@@ -61,6 +61,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
+    int currentYear = num.parse(Provider.of<Year>(context).selectedYear);
+    int lastYear = currentYear - 1;
 
     void updateForecast(
         forecast, gesamtSumme, activeMonth, countActiveMonth, sumLastYear,
