@@ -20,9 +20,9 @@ class CustomerForecastList with ChangeNotifier {
   int maxItemsOnPage = 10;
   String searchString = '';
   String filterKind = '';
-  String sortField = '';
-  int sortColumnIndex;
-  bool sortAscending = false;
+  String sortField = 'kunde';
+  int sortColumnIndex = 0;
+  bool sortAscending = true;
   List<String> filterBrandList = [];
   final String authToken;
 
@@ -41,9 +41,9 @@ class CustomerForecastList with ChangeNotifier {
     maxItemsOnPage = 10;
     searchString = '';
     filterKind = '';
-    sortField = '';
-    sortColumnIndex = null;
-    sortAscending = false;
+    sortField = 'kunde';
+    sortColumnIndex = 0;
+    sortAscending = true;
     filterBrandList = [];
   }
 
