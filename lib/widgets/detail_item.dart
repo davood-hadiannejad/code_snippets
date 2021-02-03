@@ -599,11 +599,11 @@ class DetailItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(formatter.format(detailData.online
-                                  .map((e) => e[month])
+                                  .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                                   .toList()
                                   .reduce((a, b) => a + b) +
                               detailData.tv
-                                  .map((e) => e[month])
+                                  .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                                   .toList()
                                   .reduce((a, b) => a + b))),
                         ],
@@ -614,14 +614,14 @@ class DetailItem extends StatelessWidget {
                 children: [
                   Text(formatter.format(_month
                           .map((month) => detailData.online
-                              .map((e) => e[month])
+                              .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                               .toList()
                               .reduce((a, b) => a + b))
                           .toList()
                           .reduce((a, b) => a + b) +
                       _month
                           .map((month) => detailData.tv
-                              .map((e) => e[month])
+                              .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                               .toList()
                               .reduce((a, b) => a + b))
                           .toList()
