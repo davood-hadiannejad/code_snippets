@@ -388,7 +388,7 @@ class DashboardItem extends StatelessWidget {
                 Container(
                     width: 300,
                     height: 300,
-                    child: DashboardChart.withData(summaryItem)),
+                    child: DashboardChart.withData(summaryItem, currentYear)),
                 FlatButton(
                   color: Theme.of(context).accentColor,
                   textColor: Colors.white,

@@ -11,9 +11,9 @@ class DashboardChart extends StatelessWidget {
 
   DashboardChart(this.seriesList, {this.animate});
 
-  factory DashboardChart.withData(summaryData) {
+  factory DashboardChart.withData(summaryData, selectedYear) {
     return new DashboardChart(
-      createData(summaryData),
+      createData(summaryData, selectedYear),
       // Disable animations for image tests.
       animate: false,
     );
@@ -58,21 +58,21 @@ class DashboardChart extends StatelessWidget {
   }
 
   /// Create series list with multiple series
-  static List<charts.Series<OrdinalSales, String>> createData(summaryData) {
+  static List<charts.Series<OrdinalSales, String>> createData(summaryData, selectedYear) {
     final zielData = [
-      new OrdinalSales('2020', summaryData.goal['goal']),
+      new OrdinalSales(selectedYear, summaryData.goal['goal']),
     ];
 
     final kundenforecastDataB = [
-      new OrdinalSales('2020', summaryData.forecast['kunde']),
+      new OrdinalSales(selectedYear, summaryData.forecast['kunde']),
     ];
 
     final projektforecastDataB = [
-      new OrdinalSales('2020', summaryData.forecast['projekt']),
+      new OrdinalSales(selectedYear, summaryData.forecast['projekt']),
     ];
 
     final stichtagDataB = [
-      new OrdinalSales('2020', summaryData.stichtag['ist']),
+      new OrdinalSales(selectedYear, summaryData.stichtag['ist']),
     ];
 
     return [
