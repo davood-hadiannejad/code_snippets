@@ -228,8 +228,9 @@ class ProjectList with ChangeNotifier {
     String comment,
     String dueDate,
     String status,
+    String year,
   ) async {
-    var url = APIPROTOCOL + APIHOST + '/api/projects/${id.toString()}/';
+    var url = APIPROTOCOL + APIHOST + '/api/projects/${id.toString()}/?jahr=$year';
     try {
       final response = await http.put(url, headers: {
         "Authorization": "Bearer $authToken"
@@ -252,7 +253,7 @@ class ProjectList with ChangeNotifier {
       final extractedData =
           json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       _items.removeWhere((project) => project.id == id);
-
+      print(url);
       _items.add(Project(
         id: extractedData['id'],
         name: name,

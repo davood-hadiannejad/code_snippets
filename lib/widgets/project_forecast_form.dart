@@ -10,6 +10,7 @@ import '../providers/project.dart';
 import '../providers/brand_list.dart';
 import '../providers/customer_list.dart';
 import '../providers/verkaeufer_list.dart';
+import '../providers/year.dart';
 
 final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
@@ -36,6 +37,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   List<String> agencyDropdownList = [];
   List<String> agencyDropdownListComplete = [];
   String selectedVerkauferEmail;
+  String selectedYear;
 
   int mN3;
   int cashRabattPercent;
@@ -102,6 +104,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   @override
   void didChangeDependencies() {
     selectedVerkauferEmail = Provider.of<VerkaeuferList>(context).selectedVerkaufer.email;
+    selectedYear = Provider.of<Year>(context).selectedYear;
     brandDropdownList = Provider.of<BrandList>(context).items.map((e) => e.name).toList();
     customerDropdownList = Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
     if (widget.projectId == null) {
@@ -140,6 +143,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
     selectedVerkauferEmail = Provider.of<VerkaeuferList>(context, listen: false).selectedVerkaufer.email;
+    selectedYear = Provider.of<Year>(context, listen: false).selectedYear;
   }
 
   bool enableNeukunde = false;
@@ -365,6 +369,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
           _commentController.text,
           _dateController.text,
           statusDropdownValue,
+          selectedYear,
         );
       } else {
         Provider.of<ProjectList>(context, listen: false).addProject(
