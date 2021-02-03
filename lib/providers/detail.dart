@@ -119,6 +119,7 @@ class Detail with ChangeNotifier {
           headers: {"Authorization": "Bearer $authToken"},
         );
         subType = json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+        subType.sort((a, b) => a['name'].compareTo(b['name']));
       }
 
       if (init != true) {
