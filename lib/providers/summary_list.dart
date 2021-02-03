@@ -91,11 +91,11 @@ class SummaryList with ChangeNotifier {
       }
       _items = loadedSummaryList;
 
-      if (searchString != '') {
-        loadedSummaryList = loadedSummaryList.where((summary) =>
-            summary.name.toLowerCase().startsWith(searchString.toLowerCase()))
-            .toList();
-      }
+      //if (searchString != '') {
+      //  loadedSummaryList = loadedSummaryList.where((summary) =>
+      //      summary.name.toLowerCase().startsWith(searchString.toLowerCase()))
+      //      .toList();
+      //}
 
       _activeItems = loadedSummaryList;
 

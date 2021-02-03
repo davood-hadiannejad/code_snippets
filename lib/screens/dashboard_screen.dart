@@ -33,6 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String selectedYear;
   String activeTab = 'Mandant';
   String isSelected = 'Gesamt';
+  String searchText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               setState(() {
                 activeTab = tabList[selectedTab];
                 isSelected = 'Gesamt';
+                searchText = '';
               });
               Provider.of<SummaryList>(context, listen: false)
                   .fetchAndSetSummaryList(activeTab, verkaeufer: selectedVerkaufer, year: selectedYear);
@@ -125,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   }
                 },
               ),
-              DashboardFilter(activeTab, selectedVerkaufer, selectedYear, isSelected),
+              DashboardFilter(activeTab, selectedVerkaufer, selectedYear, isSelected, searchText),
             ],
           )),
         ),

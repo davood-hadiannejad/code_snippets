@@ -9,17 +9,21 @@ class DashboardFilter extends StatefulWidget {
   final Verkaeufer selectedUser;
   final String selectedYear;
   String isSelected;
+  String searchText;
 
-  DashboardFilter(this.activeTab, this.selectedUser, this.selectedYear, this.isSelected);
+  DashboardFilter(this.activeTab, this.selectedUser, this.selectedYear, this.isSelected, this.searchText);
 
   @override
   _DashboardFilterState createState() => _DashboardFilterState();
 }
 
 class _DashboardFilterState extends State<DashboardFilter> {
+  TextEditingController searchController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
+    searchController.text = widget.searchText;
     return Container(
       width: 250,
       height: double.infinity,
@@ -48,6 +52,7 @@ class _DashboardFilterState extends State<DashboardFilter> {
                   Provider.of<SummaryList>(context, listen: false)
                       .searchByName(text);
                 },
+                controller: searchController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Suche...',
