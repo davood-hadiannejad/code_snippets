@@ -24,6 +24,7 @@ String APIPROTOCOL = 'http://';
 //String APIHOST = 'hammbwdsc02:96';
 String APIHOST = 'salescontrolapi.visoon.de';
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() => runApp(VisoonApp());
 
 class VisoonApp extends StatelessWidget {
@@ -103,6 +104,7 @@ class VisoonApp extends StatelessWidget {
             accentColor: const Color(0xffe20644),
             fontFamily: 'Futura',
           ),
+          navigatorObservers: [routeObserver],
           home: auth.isAuth
               ? DashboardScreen()
               : FutureBuilder(

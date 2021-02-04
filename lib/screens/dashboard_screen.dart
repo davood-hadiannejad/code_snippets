@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
+import '../main.dart';
 import '../widgets/year_select.dart';
 import '../providers/verkaeufer.dart';
 import '../providers/verkaeufer_list.dart';
@@ -27,13 +28,28 @@ class DashboardScreen extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
   final ScrollController _scrollController = ScrollController();
   Verkaeufer selectedVerkaufer;
   String selectedYear;
   String activeTab = 'Mandant';
   String isSelected = 'Gesamt';
   String searchText = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      Provider.of<SummaryList>(context, listen: false)
+          .fetchAndSetSummaryList(activeTab, verkaeufer: selectedVerkaufer, year: selectedYear);
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
