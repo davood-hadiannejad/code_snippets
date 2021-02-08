@@ -352,6 +352,7 @@ class DashboardItem extends StatelessWidget {
                                   arguments: {
                                     'pageType': activeTab,
                                     'id': summaryItem.id,
+                                    'pageName': summaryItem.name,
                                   });
                             },
                             child: Text(

@@ -12,8 +12,11 @@ final formatterPercent =
 
 class ProjectForecastItem extends StatefulWidget {
   final ProjectList forecastData;
+  String pageType;
+  String pageId;
+  String pageName;
 
-  ProjectForecastItem(this.forecastData);
+  ProjectForecastItem(this.forecastData, {this.pageType, this.pageId, this.pageName});
 
   @override
   _ProjectForecastItemState createState() => _ProjectForecastItemState();
@@ -59,7 +62,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                 ),
               ),
               SizedBox(height: 20),
-              AobItem(),
+              AobItem(pageType: widget.pageType, pageId: widget.pageId),
               SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -196,7 +199,18 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                       ),
                       Center(
                           child: CircleAvatar(
-                        backgroundColor: (today.difference(DateTime.parse(project.dueDate)).inDays < 0) ? (today.difference(DateTime.parse(project.dueDate)).inDays < -7) ? Colors.green : Colors.yellow : Colors.red,
+                        backgroundColor: (today
+                                    .difference(DateTime.parse(project.dueDate))
+                                    .inDays <
+                                0)
+                            ? (today
+                                        .difference(
+                                            DateTime.parse(project.dueDate))
+                                        .inDays <
+                                    -7)
+                                ? Colors.green
+                                : Colors.yellow
+                            : Colors.red,
                         radius: 12,
                       )),
                     ],

@@ -12,6 +12,11 @@ final formatter =
     new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
 class AobItem extends StatefulWidget {
+  String pageType;
+  String pageId;
+
+  AobItem({this.pageType, this.pageId});
+
   @override
   _AobItemState createState() => _AobItemState();
 }
@@ -22,9 +27,12 @@ class _AobItemState extends State<AobItem> {
   @override
   void initState() {
     super.initState();
-    Verkaeufer selectedVerkaufer = Provider.of<VerkaeuferList>(context, listen: false).selectedVerkaufer;
-    String selectedYear = Provider.of<Year>(context, listen: false).selectedYear;
-    Provider.of<AOBList>(context, listen: false).fetchAndSetAOBList(verkaeufer: selectedVerkaufer, year: selectedYear);
+    Verkaeufer selectedVerkaufer =
+        Provider.of<VerkaeuferList>(context, listen: false).selectedVerkaufer;
+    String selectedYear =
+        Provider.of<Year>(context, listen: false).selectedYear;
+    Provider.of<AOBList>(context, listen: false)
+        .fetchAndSetAOBList(verkaeufer: selectedVerkaufer, year: selectedYear, pageType: widget.pageType, id: widget.pageId);
   }
 
   @override

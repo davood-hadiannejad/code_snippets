@@ -22,14 +22,26 @@ class ProjectForecastScreen extends StatelessWidget {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
     selectedYear = Provider.of<Year>(context).selectedYear;
     final Map<String, String> args = ModalRoute.of(context).settings.arguments;
+    String pageType = (args != null && args.containsKey('pageType'))
+        ? args['pageType']
+        : null;
+    String pageId =
+        (args != null && args.containsKey('id')) ? args['id'] : null;
+    String pageName =
+        (args != null && args.containsKey('pageName')) ? args['pageName'] : null;
+
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        title: Text('Projektforecast'),
+        title: Text('Projektforecast ${(pageName != null) ? ' -  ' + pageName : ''}'),
         actions: <Widget>[
           UserSelect(),
-          SizedBox(width: 10,),
-          YearSelect(disable: true,),
+          SizedBox(
+            width: 10,
+          ),
+          YearSelect(
+            disable: true,
+          ),
           SizedBox(
             width: 30,
           ),
@@ -50,8 +62,13 @@ class ProjectForecastScreen extends StatelessWidget {
         child: (Row(
           children: [
             FutureBuilder(
-              future: Provider.of<ProjectList>(context)
-                  .fetchAndSetProjectList(init: true, verkaeufer: selectedVerkaufer, year: selectedYear),
+              future: Provider.of<ProjectList>(context).fetchAndSetProjectList(
+                init: true,
+                verkaeufer: selectedVerkaufer,
+                year: selectedYear,
+                pageType: pageType,
+                id: pageId,
+              ),
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(
@@ -74,7 +91,11 @@ class ProjectForecastScreen extends StatelessWidget {
                       width: 1350,
                       child: Consumer<ProjectList>(
                         builder: (ctx, forecastData, child) => Center(
-                          child: ProjectForecastItem(forecastData),
+                          child: ProjectForecastItem(
+                            forecastData,
+                            pageType: pageType,
+                            pageId: pageId,
+                          ),
                         ),
                       ),
                     );

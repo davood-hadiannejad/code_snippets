@@ -26,7 +26,7 @@ class AOBList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetAOBList({bool init = false, Verkaeufer verkaeufer, String year}) async {
+  Future<void> fetchAndSetAOBList({bool init = false, Verkaeufer verkaeufer, String year, String pageType, String id,}) async {
     Map<String, String> uriQuery = {};
 
     if (verkaeufer != null && verkaeufer.email != null) {
@@ -36,6 +36,11 @@ class AOBList with ChangeNotifier {
     if (year != null) {
       uriQuery['jahr'] = year;
     }
+
+    if (pageType != null && id != null) {
+      uriQuery[pageType.toLowerCase()] = id;
+    }
+
     var uri = Uri.http(APIHOST, '/api/aob/', uriQuery);
     print(uri);
     try {
