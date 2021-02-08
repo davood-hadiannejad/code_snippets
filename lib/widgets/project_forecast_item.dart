@@ -16,7 +16,8 @@ class ProjectForecastItem extends StatefulWidget {
   String pageId;
   String pageName;
 
-  ProjectForecastItem(this.forecastData, {this.pageType, this.pageId, this.pageName});
+  ProjectForecastItem(this.forecastData,
+      {this.pageType, this.pageId, this.pageName});
 
   @override
   _ProjectForecastItemState createState() => _ProjectForecastItemState();
@@ -54,16 +55,27 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'AOB Überblick',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ),
-              SizedBox(height: 20),
-              AobItem(pageType: widget.pageType, pageId: widget.pageId),
-              SizedBox(height: 50),
+              (widget.pageType == 'Mandant' ||
+                      widget.pageType == 'Brand' ||
+                      widget.pageType == 'Agenturnetzwerk' ||
+                      widget.pageType == null)
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'AOB Überblick',
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        AobItem(
+                            pageType: widget.pageType, pageId: widget.pageId),
+                        SizedBox(height: 50),
+                      ],
+                    )
+                  : SizedBox(height: 1),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
