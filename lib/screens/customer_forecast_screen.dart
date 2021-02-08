@@ -28,6 +28,7 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
     Provider.of<CustomerForecastList>(context, listen: false).resetItems();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
@@ -36,11 +37,16 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        title: Text('Kundenforecast'),
+        title: Text(
+            'Kundenforecast ${(args != null && args.containsKey('pageName')) ? ' -  ' + args['pageName'] : ''}'),
         actions: <Widget>[
           UserSelect(),
-          SizedBox(width: 10,),
-          YearSelect(disable: true,),
+          SizedBox(
+            width: 10,
+          ),
+          YearSelect(
+            disable: true,
+          ),
           SizedBox(
             width: 30,
           ),

@@ -322,6 +322,7 @@ class DashboardItem extends StatelessWidget {
                                   arguments: {
                                     'pageType': activeTab,
                                     'id': summaryItem.id,
+                                    'pageName': summaryItem.name,
                                   });
                             },
                             child: Text(
@@ -398,6 +399,7 @@ class DashboardItem extends StatelessWidget {
                         .pushNamed(DetailScreen.routeName, arguments: {
                       'pageType': activeTab,
                       'id': summaryItem.id,
+                      'pageName': summaryItem.name,
                     });
                   },
                   child: Text(
