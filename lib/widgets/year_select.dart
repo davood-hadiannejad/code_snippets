@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../providers/year.dart';
 
-
 class YearSelect extends StatefulWidget {
   bool disable;
 
@@ -27,7 +26,10 @@ class _YearSelectState extends State<YearSelect> {
       //icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
-      disabledHint: Text(selectedYear, style: TextStyle(color: Colors.white),),
+      disabledHint: Text(
+        selectedYear,
+        style: TextStyle(color: Colors.white),
+      ),
       style: Theme.of(context)
           .textTheme
           .bodyText1
@@ -37,15 +39,19 @@ class _YearSelectState extends State<YearSelect> {
         height: 1,
         color: Theme.of(context).accentColor,
       ),
-      onChanged: (widget.disable) ? null : (String year) {
-        Provider.of<Year>(context, listen: false).changeYear(year);
-      },
-      items: yearList.map<DropdownMenuItem<String>>((String year) {
-        return DropdownMenuItem<String>(
-          value: year,
-          child: Text(year),
-        );
-      }).toList(),
+      onChanged: (widget.disable)
+          ? null
+          : (String year) {
+              Provider.of<Year>(context, listen: false).changeYear(year);
+            },
+      items: (widget.disable)
+          ? [DropdownMenuItem(value: selectedYear, child: Text(selectedYear))]
+          : yearList.map<DropdownMenuItem<String>>((String year) {
+              return DropdownMenuItem<String>(
+                value: year,
+                child: Text(year),
+              );
+            }).toList(),
     );
   }
 }

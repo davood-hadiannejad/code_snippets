@@ -27,7 +27,7 @@ class _UserSelectState extends State<UserSelect> {
     verkaeuferList = Provider.of<VerkaeuferList>(context).items;
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
     return DropdownButton<String>(
-      value: (selectedVerkaufer != null) ? selectedVerkaufer.email : null,
+      value: (selectedVerkaufer != null) ? selectedVerkaufer.email : 'Gesamt',
       //icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
