@@ -22,14 +22,10 @@ class _YearSelectState extends State<YearSelect> {
     yearList = Provider.of<Year>(context).yearList;
     selectedYear = Provider.of<Year>(context).selectedYear;
     return DropdownButton<String>(
-      value: (selectedYear != null) ? selectedYear : null,
+      value: selectedYear,
       //icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
-      disabledHint: Text(
-        selectedYear,
-        style: TextStyle(color: Colors.white),
-      ),
       style: Theme.of(context)
           .textTheme
           .bodyText1
@@ -40,7 +36,7 @@ class _YearSelectState extends State<YearSelect> {
         color: Theme.of(context).accentColor,
       ),
       onChanged: (widget.disable)
-          ? null
+          ? (String year) {}
           : (String year) {
               Provider.of<Year>(context, listen: false).changeYear(year);
             },
