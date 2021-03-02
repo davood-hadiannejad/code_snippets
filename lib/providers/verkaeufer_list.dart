@@ -41,6 +41,18 @@ class VerkaeuferList with ChangeNotifier {
     notifyListeners();
   }
 
+  void selectVerkaeuferByName(String name) {
+    _items.forEach((verkaeufer) {
+      if (verkaeufer.name == name) {
+        verkaeufer.selected = true;
+      } else {
+        verkaeufer.selected = false;
+      }
+    });
+    notifyListeners();
+  }
+
+
   Future<void> fetchAndSetVerkaeuferList() async {
     var url = APIPROTOCOL + APIHOST + '/api/verkaeufer/';
     try {
