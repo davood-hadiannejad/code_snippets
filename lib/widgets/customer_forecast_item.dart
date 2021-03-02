@@ -39,7 +39,6 @@ List<String> _month = [
   'm12'
 ];
 
-
 int currentMonth = DateTime.now().month;
 
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
@@ -61,8 +60,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
-    int currentYear = num.parse(Provider.of<Year>(context).selectedYear);
-    int lastYear = currentYear - 1;
+    int selectedYear = num.parse(Provider.of<Year>(context).selectedYear);
+    int currentYear = DateTime.now().year;
+    int lastYear = selectedYear - 1;
 
     void updateForecast(
         forecast, gesamtSumme, activeMonth, countActiveMonth, sumLastYear,
@@ -91,7 +91,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         forecast.medium,
         forecast.brand,
         forecast.agentur,
-        currentYear,
+        selectedYear,
         selectedVerkaufer.email,
         forecast.forecast,
       );
@@ -490,32 +490,28 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 width: double.infinity,
                                 margin: EdgeInsets.symmetric(vertical: 8),
                                 height: 1,
-                                color: Colors.grey[300]
-                            ),
+                                color: Colors.grey[300]),
                             Text('Goal'),
                             Container(
                                 alignment: Alignment.center,
                                 width: double.infinity,
                                 margin: EdgeInsets.symmetric(vertical: 8),
                                 height: 1,
-                                color: Colors.grey[300]
-                            ),
+                                color: Colors.grey[300]),
                             Text('IST'),
                             Container(
                                 alignment: Alignment.center,
                                 width: double.infinity,
                                 margin: EdgeInsets.symmetric(vertical: 8),
                                 height: 1,
-                                color: Colors.grey[300]
-                            ),
+                                color: Colors.grey[300]),
                             Text('IST (VJ)'),
                             Container(
                                 alignment: Alignment.center,
                                 width: double.infinity,
                                 margin: EdgeInsets.symmetric(vertical: 8),
                                 height: 1,
-                                color: Colors.grey[300]
-                            ),
+                                color: Colors.grey[300]),
                             Tooltip(
                               child: Text('Delta'),
                               message: 'Δ FC+IST zu Goal',
@@ -537,13 +533,18 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               children: [
                                 TextFormField(
                                   textAlign: TextAlign.end,
-                                  readOnly: !(idx + 1 >= currentMonth),
+                                  readOnly: (currentYear == selectedYear)
+                                      ? !(idx + 1 >= currentMonth)
+                                      : (selectedYear > currentYear)
+                                          ? false
+                                          : true,
                                   controller: _controllerList[forecast][idx],
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: (idx + 1 >= currentMonth)
-                                        ? Colors.blue[50]
-                                        : Colors.grey[300],
+                                    fillColor: (currentYear == selectedYear)  ? (idx + 1 >= currentMonth) ? Colors.blue[50] : Colors.grey[300]
+                                        : (selectedYear > currentYear)
+                                            ? Colors.blue[50]
+                                            : Colors.grey[300],
                                     border: InputBorder.none,
                                     contentPadding:
                                         EdgeInsets.symmetric(vertical: 12),
@@ -567,7 +568,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                       forecast.medium,
                                       forecast.brand,
                                       forecast.agentur,
-                                      currentYear,
+                                      selectedYear,
                                       selectedVerkaufer.email,
                                       forecast.forecast,
                                     );
@@ -590,8 +591,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     width: double.infinity,
                                     margin: EdgeInsets.symmetric(vertical: 8),
                                     height: 1,
-                                    color: Colors.grey[300]
-                                ),
+                                    color: Colors.grey[300]),
                                 Container(
                                     width: double.infinity,
                                     child: Row(
@@ -606,8 +606,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     width: double.infinity,
                                     margin: EdgeInsets.symmetric(vertical: 8),
                                     height: 1,
-                                    color: Colors.grey[300]
-                                ),
+                                    color: Colors.grey[300]),
                                 Container(
                                     width: double.infinity,
                                     child: Row(
@@ -622,8 +621,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     width: double.infinity,
                                     margin: EdgeInsets.symmetric(vertical: 8),
                                     height: 1,
-                                    color: Colors.grey[300]
-                                ),
+                                    color: Colors.grey[300]),
                                 Container(
                                     width: double.infinity,
                                     child: Row(
@@ -649,10 +647,12 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               TextFormField(
                                 textAlign: TextAlign.end,
                                 controller: _controllerSummary[forecast],
-                                readOnly: false,
+                                readOnly: (selectedYear >= currentYear)
+                                    ? false
+                                    : true,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: (selectedYear >= currentYear) ? Colors.blue[50] : Colors.grey[300],
                                   border: InputBorder.none,
                                   contentPadding:
                                       EdgeInsets.symmetric(vertical: 12),
@@ -692,8 +692,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   width: double.infinity,
                                   margin: EdgeInsets.symmetric(vertical: 8),
                                   height: 1,
-                                  color: Colors.grey[300]
-                              ),
+                                  color: Colors.grey[300]),
                               Container(
                                   width: double.infinity,
                                   child: Row(
@@ -709,8 +708,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   width: double.infinity,
                                   margin: EdgeInsets.symmetric(vertical: 8),
                                   height: 1,
-                                  color: Colors.grey[300]
-                              ),
+                                  color: Colors.grey[300]),
                               Container(
                                   width: double.infinity,
                                   child: Row(
@@ -727,8 +725,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   width: double.infinity,
                                   margin: EdgeInsets.symmetric(vertical: 8),
                                   height: 1,
-                                  color: Colors.grey[300]
-                              ),
+                                  color: Colors.grey[300]),
                               Container(
                                   width: double.infinity,
                                   child: Row(
