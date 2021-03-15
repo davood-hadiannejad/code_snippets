@@ -71,6 +71,14 @@ class AOBList with ChangeNotifier {
             .where((aob) => filterBrandList.contains(aob.brand))
             .toList();
       }
+
+      loadedAOBList.sort((a, b) {
+        if (a.medium == b.medium) {
+          return a.brand.compareTo(b.brand);
+        } else {
+          return b.medium.compareTo(a.medium);
+        }
+      });
       _activeItems = loadedAOBList;
 
       if (init != true) {
