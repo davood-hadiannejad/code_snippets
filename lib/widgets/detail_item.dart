@@ -112,7 +112,8 @@ class DetailItem extends StatelessWidget {
                       ),
                       (pageType != 'Kunde')
                           ? Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 80),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 80),
                               child: RaisedButton(
                                   onPressed: () {
                                     _showRelatedDialog(context);
@@ -168,7 +169,9 @@ class DetailItem extends StatelessWidget {
                                   'aktueller Stand gebuchte Konditionen',
                                   style: Theme.of(context).textTheme.headline6,
                                 ),
-                                SizedBox(height: 5,),
+                                SizedBox(
+                                  height: 5,
+                                ),
                                 Row(
                                   children: [
                                     Row(
@@ -195,7 +198,8 @@ class DetailItem extends StatelessWidget {
                                         Text(
                                           (detailData.naturalRabatt != null)
                                               ? formatterPercent.format(
-                                                  detailData.naturalRabatt / 100)
+                                                  detailData.naturalRabatt /
+                                                      100)
                                               : 'N/A',
                                         )
                                       ],
@@ -265,7 +269,8 @@ class DetailItem extends StatelessWidget {
                       ),
                       (pageType != 'Kunde')
                           ? Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 80),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 80),
                               child: RaisedButton(
                                   onPressed: () {
                                     _showRelatedDialog(context);
@@ -440,6 +445,10 @@ class DetailItem extends StatelessWidget {
       rows: [
         ...detailData.tv
             .map((sales) => DataRow(
+                  color: (sales['name'] == 'Gesamt')
+                      ? MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => Colors.grey[300])
+                      : null,
                   cells: [
                     DataCell(Text('TV')),
                     DataCell(Text(sales['name'])),
@@ -515,6 +524,10 @@ class DetailItem extends StatelessWidget {
 //            ]),
         ...detailData.online
             .map((sales) => DataRow(
+                  color: (sales['name'] == 'Gesamt')
+                      ? MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) => Colors.grey[300])
+                      : null,
                   cells: [
                     DataCell(Text('Online')),
                     DataCell(Text(sales['name'])),
@@ -599,11 +612,13 @@ class DetailItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(formatter.format(detailData.online
-                                  .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
+                                  .map((e) =>
+                                      (e['name'] != 'Gesamt') ? e[month] : 0)
                                   .toList()
                                   .reduce((a, b) => a + b) +
                               detailData.tv
-                                  .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
+                                  .map((e) =>
+                                      (e['name'] != 'Gesamt') ? e[month] : 0)
                                   .toList()
                                   .reduce((a, b) => a + b))),
                         ],
@@ -614,14 +629,16 @@ class DetailItem extends StatelessWidget {
                 children: [
                   Text(formatter.format(_month
                           .map((month) => detailData.online
-                              .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
+                              .map(
+                                  (e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                               .toList()
                               .reduce((a, b) => a + b))
                           .toList()
                           .reduce((a, b) => a + b) +
                       _month
                           .map((month) => detailData.tv
-                              .map((e) => (e['name'] != 'Gesamt') ? e[month] : 0)
+                              .map(
+                                  (e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                               .toList()
                               .reduce((a, b) => a + b))
                           .toList()
@@ -640,7 +657,8 @@ class DetailItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text((detailData.globalRateLastYear != null)
-                      ? formatterPercent.format(detailData.globalRateLastYear / 100)
+                      ? formatterPercent
+                          .format(detailData.globalRateLastYear / 100)
                       : 'N/A'),
                 ],
               )),
