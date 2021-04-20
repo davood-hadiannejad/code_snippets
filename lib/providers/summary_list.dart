@@ -87,7 +87,7 @@ class SummaryList with ChangeNotifier {
           return aIntex.compareTo(bIntex);
         });
       } else if (searchType == 'brand') {
-        List<String> sortList = ['WELT', 'N24 DOKU', 'COMEDY', 'NICKELODEON', 'MTV', 'PLUTOTV', 'NETZKINO', 'WATCH4', 'ZEE.ONE'];
+        List<String> sortList = ['WELT', 'N24 DOKU', 'COMEDY', 'NICKELODEON', 'MTV', 'PLUTOTV', 'MEDIAIMPACT ','VISOON', 'NETZKINO', 'WATCH4', 'ZEE.ONE'];
 
         loadedSummaryList.sort((a, b) {
           int aIntex = sortList.indexOf(a.name);
