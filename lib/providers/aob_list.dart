@@ -59,6 +59,7 @@ class AOBList with ChangeNotifier {
             goal: aob['goal'],
             medium: aob['medium'],
             brand: aob['brand'],
+            agency: aob['agentur'],
             offen: aob['offen'],
             gebucht: aob['gebucht'],
           ),

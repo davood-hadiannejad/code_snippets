@@ -39,7 +39,7 @@ class _AobItemState extends State<AobItem> {
   Widget build(BuildContext context) {
     myAobList = Provider.of<AOBList>(context).items;
     return Container(
-      width: 1000,
+      width: 1200,
       child: DataTable(
         columns: <DataColumn>[
           DataColumn(
@@ -50,6 +50,11 @@ class _AobItemState extends State<AobItem> {
           DataColumn(
             label: Text(
               'Brand',
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Agentur',
             ),
           ),
           DataColumn(
@@ -89,6 +94,7 @@ class _AobItemState extends State<AobItem> {
             .map((aob) => DataRow(cells: [
                   DataCell(Text(aob.medium)),
                   DataCell(Text(aob.brand)),
+                  DataCell(Text(aob.agency)),
                   DataCell(Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
