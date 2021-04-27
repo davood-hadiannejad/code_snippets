@@ -71,6 +71,7 @@ class VerkaeuferList with ChangeNotifier {
         email: null,
         selected: true,
         isCurrentUser: false,
+        isGroup: true,
       )];
       extractedData.forEach((verkaeufer) {
         if (verkaeufer['status'] == 'AKTIV') {
@@ -83,6 +84,7 @@ class VerkaeuferList with ChangeNotifier {
               email: verkaeufer['email'],
               selected: verkaeufer['is_current_user'],
               isCurrentUser: verkaeufer['is_current_user'],
+              isGroup: verkaeufer['email'].startsWith('gruppe_'),
             ),
           );
         }

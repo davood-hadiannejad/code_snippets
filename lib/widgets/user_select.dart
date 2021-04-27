@@ -51,7 +51,7 @@ class _UserSelectState extends State<UserSelect> {
       items: verkaeuferList.map<DropdownMenuItem<String>>((Verkaeufer verkaeufer) {
         return DropdownMenuItem<String>(
           value: (verkaeufer.name != 'Gesamt') ? verkaeufer.email : 'Gesamt',
-          child: Text(verkaeufer.name),
+          child: Text(verkaeufer.name, style: TextStyle(fontWeight: verkaeufer.isGroup ? FontWeight.w800 : FontWeight.normal),),
         );
       }).toList(),
     );

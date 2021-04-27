@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/verkaeufer.dart';
 import '../providers/year.dart';
 import '../screens/customer_forecast_screen.dart';
 import '../screens/project_forecast_screen.dart';
@@ -21,8 +22,9 @@ class DashboardItem extends StatelessWidget {
   String lastYear;
   final Summary summaryItem;
   final String activeTab;
+  final Verkaeufer selectedVerkaeufer;
 
-  DashboardItem(this.summaryItem, this.activeTab);
+  DashboardItem(this.summaryItem, this.activeTab, this.selectedVerkaeufer);
 
   @override
   Widget build(BuildContext context) {
@@ -316,7 +318,7 @@ class DashboardItem extends StatelessWidget {
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
                             minWidth: 120,
-                            onPressed: () {
+                            onPressed: this.selectedVerkaeufer.isGroup ? null : () {
                               Navigator.of(context).pushNamed(
                                   CustomerForecastScreen.routeName,
                                   arguments: {
@@ -347,7 +349,7 @@ class DashboardItem extends StatelessWidget {
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
                             minWidth: 120,
-                            onPressed: () {
+                            onPressed: this.selectedVerkaeufer.isGroup ? null : () {
                               Navigator.of(context).pushNamed(
                                   ProjectForecastScreen.routeName,
                                   arguments: {

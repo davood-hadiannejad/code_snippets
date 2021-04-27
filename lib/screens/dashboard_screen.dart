@@ -134,7 +134,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
                                   itemCount: summaryData.items.length,
                                   itemBuilder: (ctx, i) =>
                                       DashboardItem(
-                                          summaryData.items[i], activeTab),
+                                          summaryData.items[i], activeTab, selectedVerkaufer),
                                 ),
                               ),
                         ),
