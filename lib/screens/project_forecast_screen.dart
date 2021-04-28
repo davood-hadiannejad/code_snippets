@@ -103,7 +103,7 @@ class ProjectForecastScreen extends StatelessWidget {
                 }
               },
             ),
-            ProjectForecastSideItem(),
+            ProjectForecastSideItem(selectedVerkaufer),
           ],
         )),
       ),

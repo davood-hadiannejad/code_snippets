@@ -109,7 +109,7 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
                 }
               },
             ),
-            CustomerForecastSideItem(),
+            CustomerForecastSideItem(selectedVerkaufer),
           ],
         )),
       ),

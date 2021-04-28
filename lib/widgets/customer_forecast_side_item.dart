@@ -4,9 +4,12 @@ import 'package:provider/provider.dart';
 import '../providers/customer_forecast_list.dart';
 import './select_menu.dart';
 import 'customer_forecast_dialog.dart';
-import '../providers/brand_list.dart';
+import '../providers/verkaeufer.dart';
 
 class CustomerForecastSideItem extends StatefulWidget {
+  final Verkaeufer selectedVerkaeufer;
+  CustomerForecastSideItem(this.selectedVerkaeufer);
+
   @override
   _CustomerForecastSideItemState createState() =>
       _CustomerForecastSideItemState();
@@ -38,7 +41,7 @@ class _CustomerForecastSideItemState extends State<CustomerForecastSideItem> {
               ),
               Center(
                 child: RaisedButton.icon(
-                  onPressed: () => showAddDialog(context),
+                  onPressed: widget.selectedVerkaeufer.isGroup ? null : () => showAddDialog(context),
                   label: Text('Neuer Forecast'),
                   icon: Icon(Icons.add),
                 ),

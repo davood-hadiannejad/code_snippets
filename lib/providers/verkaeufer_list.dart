@@ -90,6 +90,12 @@ class VerkaeuferList with ChangeNotifier {
         }
       });
       loadedVerkaeuferList.sort((a, b) => a.name.compareTo(b.name));
+      loadedVerkaeuferList.sort((a, b) {
+        if(b.isGroup) {
+          return 1;
+        }
+        return -1;
+      });
       _items = loadedVerkaeuferList;
 
       notifyListeners();

@@ -534,9 +534,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 TextFormField(
                                   textAlign: TextAlign.end,
                                   readOnly: (currentYear == selectedYear)
-                                      ? !(idx + 1 >= currentMonth)
+                                      ? !(idx + 1 >= currentMonth && !selectedVerkaufer.isGroup)
                                       : (selectedYear > currentYear)
-                                          ? false
+                                          ? selectedVerkaufer.isGroup
                                           : true,
                                   controller: _controllerList[forecast][idx],
                                   decoration: InputDecoration(
@@ -648,7 +648,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 textAlign: TextAlign.end,
                                 controller: _controllerSummary[forecast],
                                 readOnly: (selectedYear >= currentYear)
-                                    ? false
+                                    ? selectedVerkaufer.isGroup
                                     : true,
                                 decoration: InputDecoration(
                                   filled: true,

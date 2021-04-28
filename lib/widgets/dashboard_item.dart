@@ -318,7 +318,7 @@ class DashboardItem extends StatelessWidget {
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
                             minWidth: 120,
-                            onPressed: this.selectedVerkaeufer.isGroup ? null : () {
+                            onPressed: () {
                               Navigator.of(context).pushNamed(
                                   CustomerForecastScreen.routeName,
                                   arguments: {
@@ -349,7 +349,7 @@ class DashboardItem extends StatelessWidget {
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
                             minWidth: 120,
-                            onPressed: this.selectedVerkaeufer.isGroup ? null : () {
+                            onPressed: () {
                               Navigator.of(context).pushNamed(
                                   ProjectForecastScreen.routeName,
                                   arguments: {

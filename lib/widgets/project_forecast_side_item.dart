@@ -4,9 +4,12 @@ import 'package:provider/provider.dart';
 import '../providers/project_list.dart';
 import './select_menu.dart';
 import './project_forecast_dialog.dart';
-
+import '../providers/verkaeufer.dart';
 
 class ProjectForecastSideItem extends StatefulWidget {
+  final Verkaeufer selectedVerkaeufer;
+
+  ProjectForecastSideItem(this.selectedVerkaeufer);
   @override
   _ProjectForecastSideItemState createState() =>
       _ProjectForecastSideItemState();
@@ -36,7 +39,7 @@ class _ProjectForecastSideItemState extends State<ProjectForecastSideItem> {
               SizedBox(height: 20,),
               Center(
                 child: RaisedButton.icon(
-                  onPressed: () => projectForecastDialog(context),
+                  onPressed: widget.selectedVerkaeufer.isGroup ? null : ()  => projectForecastDialog(context),
                   label: Text('Neues Projekt'),
                   icon: Icon(Icons.add),
                 ),
