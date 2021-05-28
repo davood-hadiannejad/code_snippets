@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:latinize/latinize.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -48,7 +48,7 @@ class CustomerList with ChangeNotifier {
           ),
         );
       });
-      loadedCustomerList.sort((a, b) => a.name.compareTo(b.name));
+      loadedCustomerList.sort((a, b) => latinize(a.name).compareTo(latinize(b.name)));
       _items = loadedCustomerList;
 
       if (init != true) {

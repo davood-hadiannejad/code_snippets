@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:latinize/latinize.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +43,7 @@ class AgencyList with ChangeNotifier {
           ),
         );
       });
-      loadedAgencyList.sort((a, b) => a.name.compareTo(b.name));
+      loadedAgencyList.sort((a, b) => latinize(a.name).compareTo(latinize(b.name)));
       _items = loadedAgencyList;
 
       if (init != true) {
