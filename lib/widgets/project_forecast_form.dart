@@ -457,12 +457,12 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                         } else {
                           enableNeukunde = false;
                           agencyDropdownValue = null;
-                          List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
-                          if (customerAgencies.isNotEmpty){
-                            agencyDropdownList = customerAgencies;
-                          } else {
-                            agencyDropdownList = agencyDropdownListComplete;
-                          }
+                          //List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                          //if (customerAgencies.isNotEmpty){
+                          //  agencyDropdownList = customerAgencies;
+                          //} else {
+                          //  agencyDropdownList = agencyDropdownListComplete;
+                          //}
 
                         }
                       });
