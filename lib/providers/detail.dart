@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:latinize/latinize.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
@@ -112,6 +112,18 @@ class Detail with ChangeNotifier {
       cashRabatt = extractedData['cash_rabatt_gesamt'];
       globalRate = extractedData['global_rate_gesamt'];
       globalRateLastYear = extractedData['global_rate_letztes_jahr'];
+
+      brands.sort((a, b) {
+        if (a['mandant'] == b['mandant']) {
+          if (b['brand'] == 'Gesamt') {
+            return -1;
+          } else {
+            return latinize(a['brand']).compareTo(latinize(b['brand']));
+          }
+        } else {
+          return latinize(a['mandant']).compareTo(latinize(b['mandant']));
+        }
+      });
 
       if (subTypeUri != null) {
         final response = await http.get(
