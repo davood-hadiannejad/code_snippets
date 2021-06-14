@@ -534,14 +534,18 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                 TextFormField(
                                   textAlign: TextAlign.end,
                                   readOnly: (currentYear == selectedYear)
-                                      ? !(idx + 1 >= currentMonth && !selectedVerkaufer.isGroup)
+                                      ? !(idx + 1 >= currentMonth &&
+                                          !selectedVerkaufer.isGroup)
                                       : (selectedYear > currentYear)
                                           ? selectedVerkaufer.isGroup
                                           : true,
                                   controller: _controllerList[forecast][idx],
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: (currentYear == selectedYear)  ? (idx + 1 >= currentMonth) ? Colors.blue[50] : Colors.grey[300]
+                                    fillColor: (currentYear == selectedYear)
+                                        ? (idx + 1 >= currentMonth)
+                                            ? Colors.blue[50]
+                                            : Colors.grey[300]
                                         : (selectedYear > currentYear)
                                             ? Colors.blue[50]
                                             : Colors.grey[300],
@@ -652,7 +656,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     : true,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: (selectedYear >= currentYear) ? Colors.blue[50] : Colors.grey[300],
+                                  fillColor: (selectedYear >= currentYear)
+                                      ? Colors.blue[50]
+                                      : Colors.grey[300],
                                   border: InputBorder.none,
                                   contentPadding:
                                       EdgeInsets.symmetric(vertical: 12),
@@ -750,6 +756,36 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                       )
                     ]);
                   }).toList(),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List<Container>.generate(
+                    maxPages,
+                    (i) => Container(
+                      width: 25,
+                      height: 25,
+                      child: FlatButton(
+                        color: ((i + 1) == currentPage)
+                            ? Theme.of(context).accentColor
+                            : null,
+                        padding: EdgeInsets.all(1.0),
+                        child: Text((i + 1).toString(),
+                            style: TextStyle(
+                              fontSize: 8,
+                            )),
+                        onPressed: () {
+                          Provider.of<CustomerForecastList>(context,
+                                  listen: false)
+                              .changePage(i + 1);
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(
