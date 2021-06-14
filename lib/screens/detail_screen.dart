@@ -13,7 +13,7 @@ import '../widgets/main_drawer.dart';
 import '../providers/year.dart';
 import '../widgets/year_select.dart';
 
-final tabList = ['Goal und Forecast', 'Detailansicht'];
+final tabList = ['Brandansicht', 'Goal und Forecast', 'Detailansicht'];
 
 class DetailScreen extends StatefulWidget {
   static const routeName = '/detail';

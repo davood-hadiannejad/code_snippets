@@ -11,9 +11,9 @@ class MonthlyChart extends StatelessWidget {
   MonthlyChart(this.seriesList, {this.animate});
 
   factory MonthlyChart.withData(goalData, istData, kundenData, projektData,
-      {showProjekt: true}) {
+      {showProjekt: true, onlyIst: false}) {
     return new MonthlyChart(
-      createData(goalData, istData, kundenData, projektData, showProjekt),
+      createData(goalData, istData, kundenData, projektData, showProjekt, onlyIst),
       // Disable animations for image tests.
       animate: true,
     );
@@ -59,7 +59,7 @@ class MonthlyChart extends StatelessWidget {
 
   /// Create series list with multiple series
   static List<charts.Series<OrdinalSales, String>> createData(
-      goalData, istData, kundenData, projektData, bool showProjekt) {
+      goalData, istData, kundenData, projektData, bool showProjekt, bool onlyIst) {
     final zielData = [
       new OrdinalSales('Januar', goalData['m1']),
       new OrdinalSales('Februar', goalData['m2']),
@@ -158,6 +158,12 @@ class MonthlyChart extends StatelessWidget {
         colorFn: (_, __) =>
             charts.ColorUtil.fromDartColor(Color.fromRGBO(98, 206, 255, 1)),
       ));
+    }
+
+    if (onlyIst) {
+      while (chartList.length > 1) {
+        chartList.removeAt(0);
+      }
     }
 
     return chartList;

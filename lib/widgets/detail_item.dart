@@ -101,6 +101,71 @@ class DetailItem extends StatelessWidget {
                 controller: _scrollController,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FlatButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        label: Text('Zurück'),
+                        icon: Icon(Icons.arrow_back_ios),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '$pageType: ${detailData.name}',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Monatlicher Umsatz',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      Container(
+                        width: 1200,
+                        height: 300,
+                        child: MonthlyChart.withData(
+                          detailData.goalGesamt,
+                          detailData.istStichtagGesamt,
+                          detailData.kundenForecastGesamt,
+                          detailData.projektForecastGesamt,
+                          onlyIst: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50),
+                  Container(
+                    width: 1200,
+                    child: SizedBox(
+                      height: 100,
+                    ),
+                  ),
+                  Container(width: 1200, child: buildBrandTable(context)),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Card(
+          margin: EdgeInsets.all(12.0),
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            width: double.infinity,
+            height: double.infinity,
+            child: DraggableScrollbar.rrect(
+              alwaysVisibleScrollThumb: true,
+              controller: _scrollController,
+              child: ListView(
+                controller: _scrollController,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FlatButton.icon(
@@ -950,6 +1015,154 @@ class DetailItem extends StatelessWidget {
               .toList()
           : [],
     );
+  }
+
+  DataTable buildBrandTable(context) {
+    return DataTable(
+        columnSpacing: 0,
+        showCheckboxColumn: false,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Brand',
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Mandant',
+            ),
+          ),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'Januar',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'Februar',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'März',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'April',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'Mai',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'Juni',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'Juli',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'August',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'September',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'Oktober',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'November',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: Text(
+              'Dezember',
+              textAlign: TextAlign.end,
+            ),
+          )),
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'Summe Jahr',
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ),
+        ],
+        rows: [
+          ...detailData.brands
+              .map((brand) => DataRow(
+                    onSelectChanged: (bool) {
+                      Navigator.of(context)
+                          .pushNamed(DetailScreen.routeName, arguments: {
+                        'pageType': 'Brand',
+                        'id': brand['brand_slug'].toString(),
+                      });
+                    },
+                    color: (brand['brand'] == 'Gesamt')
+                        ? MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) => Colors.grey[300])
+                        : null,
+                    cells: [
+                      DataCell(Text(brand['brand'])),
+                      DataCell(Text(brand['mandant'])),
+                      ..._month
+                          .map((month) => DataCell(Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(formatter.format(brand[month])),
+                                ],
+                              )))
+                          .toList(),
+                      DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(formatter.format(_month
+                              .map((month) => brand[month])
+                              .toList()
+                              .reduce((a, b) => a + b))),
+                        ],
+                      )),
+                    ],
+                  ))
+              .toList(),
+        ]);
   }
 
   Color getProgressColor(double percent) {
