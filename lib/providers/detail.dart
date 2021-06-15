@@ -74,13 +74,11 @@ class Detail with ChangeNotifier {
       uriQuery['brand'] = filterBrandList.join('+');
     }
 
-    var uri =
-        Uri.http(APIHOST, '/api/detail/$searchType/$id/', uriQuery);
+    var uri = Uri.http(APIHOST, '/api/detail/$searchType/$id/', uriQuery);
     if (searchType == 'agentur' ||
         searchType == 'konzern' ||
         searchType == 'agenturnetzwerk') {
-      subTypeUri =
-          Uri.http(APIHOST, '/api/subtype/$searchType/$id/', uriQuery);
+      subTypeUri = Uri.http(APIHOST, '/api/subtype/$searchType/$id/', uriQuery);
       print(subTypeUri);
     }
     print(uri);
@@ -112,18 +110,34 @@ class Detail with ChangeNotifier {
       cashRabatt = extractedData['cash_rabatt_gesamt'];
       globalRate = extractedData['global_rate_gesamt'];
       globalRateLastYear = extractedData['global_rate_letztes_jahr'];
-
-      brands.sort((a, b) {
-        if (a['mandant'] == b['mandant']) {
-          if (b['brand'] == 'Gesamt') {
-            return -1;
+      if (brands != null) {
+        brands = brands.map((e) {
+          if (!e.containsKey('name')) {
+            e['name'] = e['brand'];
+            e['name_slug'] = e['brand_slug'];
+            return e;
           } else {
-            return latinize(a['brand']).compareTo(latinize(b['brand']));
+            return e;
           }
-        } else {
-          return latinize(a['mandant']).compareTo(latinize(b['mandant']));
-        }
-      });
+        }).toList();
+
+        brands.sort((a, b) {
+          if (a.containsKey('mandant')) {
+            if (a['mandant'] == b['mandant']) {
+              if (b['brand'] == 'Gesamt') {
+                return -1;
+              } else {
+                return latinize(a['brand']).compareTo(latinize(b['brand']));
+              }
+            } else {
+              return latinize(a['mandant']).compareTo(latinize(b['mandant']));
+            }
+          } else {
+            return latinize(a['name']).compareTo(latinize(b['name']));
+          }
+        });
+      }
+
 
       if (subTypeUri != null) {
         final response = await http.get(
