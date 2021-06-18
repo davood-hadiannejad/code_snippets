@@ -89,7 +89,7 @@ class _SelectMenuState extends State<SelectMenu> {
                 updateList();
               });
             },
-            items: dropdownList.map<DropdownMenuItem<String>>((String item) {
+            items: dropdownList.where((element) => element != 'Gesamt').map<DropdownMenuItem<String>>((String item) {
               return DropdownMenuItem<String>(
                 value: item,
                 child: Container(width: 175, child: Text(item)),
