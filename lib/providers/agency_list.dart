@@ -30,7 +30,7 @@ class AgencyList with ChangeNotifier {
         headers: {"Authorization": "Bearer $authToken"},
       );
       final extractedData =
-          json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+      json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
       if (extractedData == null) {
         return;
       }
@@ -43,7 +43,12 @@ class AgencyList with ChangeNotifier {
           ),
         );
       });
-      loadedAgencyList.sort((a, b) => latinize(a.name).compareTo(latinize(b.name)));
+      loadedAgencyList.sort((a, b) {
+        if(b.name == 'KEINE AGENTUR') {
+          return 1;
+        }
+        return latinize(a.name).compareTo(latinize(b.name));
+      });
       _items = loadedAgencyList;
 
       if (init != true) {
