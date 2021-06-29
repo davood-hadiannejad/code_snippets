@@ -50,6 +50,12 @@ class _SelectMenuState extends State<SelectMenu> {
       Provider.of<Detail>(context, listen: false).fetchAndSetDetail(
           widget.pageType, widget.detailId,
           verkaeufer: widget.selectedUser, year: widget.selectedYear);
+    } else if (widget.filterType == 'Mandant' &&
+        widget.providerClass == 'detail') {
+      Provider.of<Detail>(context, listen: false).filterByMandantList(filterList);
+      Provider.of<Detail>(context, listen: false).fetchAndSetDetail(
+          widget.pageType, widget.detailId,
+          verkaeufer: widget.selectedUser, year: widget.selectedYear);
     } else if (widget.filterType == 'Brand' &&
         widget.providerClass == 'customer-forecast') {
       Provider.of<CustomerForecastList>(context, listen: false)

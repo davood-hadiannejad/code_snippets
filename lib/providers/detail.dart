@@ -26,8 +26,10 @@ class Detail with ChangeNotifier {
 
   List<dynamic> globalBrands;
   List<dynamic> globalCustomers;
+  List<dynamic> globalMandant;
   List<String> filterBrandList = [];
   List<String> filterCustomerList = [];
+  List<String> filterMandantList = [];
   String mediumFilter;
 
   Detail(
@@ -38,8 +40,10 @@ class Detail with ChangeNotifier {
   Future<void> resetFilter() async {
     globalBrands = null;
     globalCustomers = null;
+    globalMandant = null;
     filterBrandList = [];
     filterCustomerList = [];
+    filterMandantList = [];
     mediumFilter = '';
   }
 
@@ -56,6 +60,14 @@ class Detail with ChangeNotifier {
         .where((customer) =>
         currentFilterCustomerList.contains(customer['name'].toString()))
         .map((e) => e['name_slug'].toString()).toList();
+    notifyListeners();
+  }
+
+  Future<void> filterByMandantList(List<String> currentFilterMandantList) async {
+    filterMandantList = globalMandant
+        .where((mandant) =>
+        currentFilterMandantList.contains(mandant['mandant'].toString()))
+        .map((e) => e['mandant_slug'].toString()).toSet().toList();
     notifyListeners();
   }
 
@@ -90,6 +102,10 @@ class Detail with ChangeNotifier {
       uriQuery['kunde'] = filterCustomerList.join('+');
     }
 
+    if (filterMandantList.isNotEmpty) {
+      uriQuery['mandant'] = filterMandantList.join('+');
+    }
+
     var uri = Uri.http(APIHOST, '/api/detail/$searchType/$id/', uriQuery);
     if (searchType == 'agentur' ||
         searchType == 'konzern' ||
@@ -116,6 +132,7 @@ class Detail with ChangeNotifier {
       projektForecastGesamt = extractedData['projekt_forecast_gesamt'];
       if (init) {
         globalBrands = extractedData['brands'];
+        globalMandant = extractedData['brands'];
         globalCustomers = extractedData['customers'];
       }
       brands = extractedData['brands'];

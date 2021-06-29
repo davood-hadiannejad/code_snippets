@@ -128,6 +128,11 @@ class _DetailScreenState extends State<DetailScreen> {
                                           .map((e) => e['name'].toString())
                                           .toList()
                                       : null,
+                                  mandantList: (detailData.brands != null && args['pageType'] != 'Mandant')
+                                      ? detailData.brands
+                                      .map((e) => e['mandant'].toString()).toSet()
+                                      .toList()
+                                      : null,
                                   customerList: (detailData.customers != null)
                                       ? detailData.customers
                                           .map((e) => e['name'].toString())

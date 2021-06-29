@@ -12,10 +12,11 @@ class DetailFilter extends StatefulWidget {
   final String selectedYear;
   List<String> brandList;
   List<String> customerList;
+  List<String> mandantList;
 
   DetailFilter(
       this.pageType, this.detailId, this.selectedUser, this.selectedYear,
-      {this.brandList, this.customerList});
+      {this.brandList, this.customerList, this.mandantList});
 
   @override
   _DetailFilterState createState() => _DetailFilterState();
@@ -80,6 +81,23 @@ class _DetailFilterState extends State<DetailFilter> {
                   : SizedBox(
                       height: 1,
                     ),
+              (widget.mandantList != null)
+                  ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: SelectMenu(
+                      'detail',
+                      widget.mandantList,
+                      'Mandant',
+                      pageType: widget.pageType,
+                      detailId: widget.detailId,
+                      selectedUser: widget.selectedUser,
+                      selectedYear: widget.selectedYear,
+                    ),
+                  ))
+                  : SizedBox(
+                height: 1,
+              ),
               Center(
                 child: FlatButton(
                   minWidth: 200,
