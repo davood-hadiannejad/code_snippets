@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../providers/aob_list.dart';
 import '../providers/detail.dart';
@@ -27,6 +28,7 @@ class SelectMenu extends StatefulWidget {
 
 class _SelectMenuState extends State<SelectMenu> {
   List<String> filterList = [];
+  List<int> selectedItems = [];
   List<String> dropdownList = [];
 
   @override
@@ -44,6 +46,10 @@ class _SelectMenuState extends State<SelectMenu> {
           verkaeufer: widget.selectedUser, year: widget.selectedYear);
     } else if (widget.filterType == 'Kunde' &&
         widget.providerClass == 'detail') {
+      Provider.of<Detail>(context, listen: false).filterByCustomerList(filterList);
+      Provider.of<Detail>(context, listen: false).fetchAndSetDetail(
+          widget.pageType, widget.detailId,
+          verkaeufer: widget.selectedUser, year: widget.selectedYear);
     } else if (widget.filterType == 'Brand' &&
         widget.providerClass == 'customer-forecast') {
       Provider.of<CustomerForecastList>(context, listen: false)
@@ -75,46 +81,74 @@ class _SelectMenuState extends State<SelectMenu> {
     return Column(
       children: [
         Container(
-          width: 200,
-          child: DropdownButton<String>(
-            value: null,
-            hint: Text('Filter ${widget.filterType}...'),
-            //icon: Icon(Icons.arrow_downward),
-            iconSize: 24,
-            elevation: 16,
-            onChanged: (String item) {
+          width: 300,
+          child: SearchableDropdown.multiple(
+            items: dropdownList.where((element) => element != 'Gesamt').map<DropdownMenuItem<String>>((String item) {
+         return DropdownMenuItem<String>(
+           value: item,
+           child: Container(width: 155, child: Text(item)),
+         );
+       }).toList(),
+            selectedItems: selectedItems,
+            hint: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Filter ${widget.filterType}..."),
+            ),
+            searchHint: "Filter ${widget.filterType}...",
+            onChanged: (List<int> values) {
               setState(() {
-                filterList.add(item);
-                dropdownList.remove(item);
+                selectedItems = values;
+                filterList = values.map((e) => dropdownList[e]).toList();
+                print(filterList);
                 updateList();
               });
             },
-            items: dropdownList.where((element) => element != 'Gesamt').map<DropdownMenuItem<String>>((String item) {
-              return DropdownMenuItem<String>(
-                value: item,
-                child: Container(width: 175, child: Text(item)),
-              );
-            }).toList(),
+            closeButton: (selectedItems) {
+              return (selectedItems.isNotEmpty
+                  ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
+                  : "Zurück ohne Auswahl");
+            },
+            isExpanded: false,
           ),
+          // DropdownButton<String>(
+          //   value: null,
+          //   hint: Text('Filter ${widget.filterType}...'),
+          //   //icon: Icon(Icons.arrow_downward),
+          //   iconSize: 24,
+          //   elevation: 16,
+          //   onChanged: (String item) {
+          //     setState(() {
+          //       filterList.add(item);
+          //       dropdownList.remove(item);
+          //       updateList();
+          //     });
+          //   },
+          //   items: dropdownList.where((element) => element != 'Gesamt').map<DropdownMenuItem<String>>((String item) {
+          //     return DropdownMenuItem<String>(
+          //       value: item,
+          //       child: Container(width: 175, child: Text(item)),
+          //     );
+          //   }).toList(),
+          // ),
         ),
-        Container(
-          width: 200,
-          child: Column(
-            children: filterList.map((String item) {
-              return InputChip(
-                onDeleted: () {
-                  setState(() {
-                    dropdownList.add(item);
-                    filterList.remove(item);
-                    updateList();
-                  });
-                },
-                deleteIconColor: Colors.black54,
-                label: Text(item),
-              );
-            }).toList(),
-          ),
-        )
+        // Container(
+        //   width: 200,
+        //   child: Column(
+        //     children: filterList.map((String item) {
+        //       return InputChip(
+        //         onDeleted: () {
+        //           setState(() {
+        //             dropdownList.add(item);
+        //             filterList.remove(item);
+        //             updateList();
+        //           });
+        //         },
+        //         deleteIconColor: Colors.black54,
+        //         label: Text(item),
+        //       );
+        //     }).toList(),
+        //   ),
+        // )
       ],
     );
   }
