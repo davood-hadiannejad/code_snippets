@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../providers/agency_list.dart';
 import '../providers/project_list.dart';
@@ -12,7 +13,8 @@ import '../providers/customer_list.dart';
 import '../providers/verkaeufer_list.dart';
 import '../providers/year.dart';
 
-final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatter =
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
 class ProjectForecastForm extends StatefulWidget {
   final int projectId;
@@ -103,15 +105,19 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
 
   @override
   void didChangeDependencies() {
-    selectedVerkauferEmail = Provider.of<VerkaeuferList>(context).selectedVerkaufer.email;
+    selectedVerkauferEmail =
+        Provider.of<VerkaeuferList>(context).selectedVerkaufer.email;
     selectedYear = Provider.of<Year>(context).selectedYear;
-    brandDropdownList = Provider.of<BrandList>(context).items.map((e) => e.name).toList();
-    customerDropdownList = Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
+    brandDropdownList =
+        Provider.of<BrandList>(context).items.map((e) => e.name).toList();
+    customerDropdownList =
+        Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
     if (widget.projectId == null) {
       customerDropdownList.insert(0, 'Neukunde');
     }
 
-    agencyDropdownList = Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
+    agencyDropdownList =
+        Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
     agencyDropdownListComplete = [...agencyDropdownList];
     if (widget.projectId != null) {
       Project project = Provider.of<ProjectList>(context, listen: false)
@@ -142,7 +148,9 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     _mN3Controller.addListener(_addMN3);
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
-    selectedVerkauferEmail = Provider.of<VerkaeuferList>(context, listen: false).selectedVerkaufer.email;
+    selectedVerkauferEmail = Provider.of<VerkaeuferList>(context, listen: false)
+        .selectedVerkaufer
+        .email;
     selectedYear = Provider.of<Year>(context, listen: false).selectedYear;
   }
 
@@ -400,7 +408,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     Navigator.of(context).pop();
 
     if (customerDropdownValue == 'Neukunde') {
-      Provider.of<CustomerList>(context, listen: false).fetchAndSetCustomerList();
+      Provider.of<CustomerList>(context, listen: false)
+          .fetchAndSetCustomerList();
     }
   }
 
@@ -443,11 +452,19 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               ),
               Container(
                 width: 450,
-                child: DropdownButton<String>(
+                child: SearchableDropdown.single(
+                  items: customerDropdownList
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                   value: customerDropdownValue,
-                  hint: Text('Bitte Kunde auswählen...'),
-                  iconSize: 24,
-                  elevation: 16,
+                  hint: Container(
+                    child: Text("Bitte Kunde auswählen..."),
+                  ),
+                  searchHint: "Bitte Kunde auswählen...",
                   onChanged: (String newValue) {
                     if (this.mounted) {
                       setState(() {
@@ -468,13 +485,40 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       });
                     }
                   },
-                  items: customerDropdownList.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                  isExpanded: true,
                 ),
+                // DropdownButton<String>(
+                //   value: customerDropdownValue,
+                //   hint: Text('Bitte Kunde auswählen...'),
+                //   iconSize: 24,
+                //   elevation: 16,
+                //   onChanged: (String newValue) {
+                //     if (this.mounted) {
+                //       setState(() {
+                //         customerDropdownValue = newValue;
+                //         if (newValue == 'Neukunde') {
+                //           enableNeukunde = true;
+                //         } else {
+                //           enableNeukunde = false;
+                //           agencyDropdownValue = null;
+                //           //List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                //           //if (customerAgencies.isNotEmpty){
+                //           //  agencyDropdownList = customerAgencies;
+                //           //} else {
+                //           //  agencyDropdownList = agencyDropdownListComplete;
+                //           //}
+                //
+                //         }
+                //       });
+                //     }
+                //   },
+                //   items: customerDropdownList.map<DropdownMenuItem<String>>((String value) {
+                //     return DropdownMenuItem<String>(
+                //       value: value,
+                //       child: Text(value),
+                //     );
+                //   }).toList(),
+                // ),
               ),
               enableNeukunde
                   ? Container(
@@ -496,25 +540,48 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                     ),
               Container(
                 width: 450,
-                child: DropdownButton<String>(
-                  value: agencyDropdownValue,
-                  hint: Text('Bitte Agentur auswählen...'),
-                  iconSize: 24,
-                  elevation: 16,
-                  onChanged: (String newValue) {
-                    if (this.mounted) {
-                      setState(() {
-                        agencyDropdownValue = newValue;
-                      });
-                    }
-                  },
-                  items: agencyDropdownList.map<DropdownMenuItem<String>>((String value) {
+                child:SearchableDropdown.single(
+                  items: agencyDropdownList
+                      .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
                     );
                   }).toList(),
+                  value: agencyDropdownValue,
+                  hint: 'Bitte Agentur auswählen...',
+                  searchHint: 'Bitte Agentur auswählen...',
+                  onChanged: (String newValue) {
+                    if (this.mounted) {
+                      setState(() {
+                        agencyDropdownValue = newValue;
+                        //agencyDropdownValue = null;
+                        //agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                      });
+                    }
+                  },
+                  isExpanded: true,
                 ),
+                // DropdownButton<String>(
+                //   value: agencyDropdownValue,
+                //   hint: Text('Bitte Agentur auswählen...'),
+                //   iconSize: 24,
+                //   elevation: 16,
+                //   onChanged: (String newValue) {
+                //     if (this.mounted) {
+                //       setState(() {
+                //         agencyDropdownValue = newValue;
+                //       });
+                //     }
+                //   },
+                //   items: agencyDropdownList
+                //       .map<DropdownMenuItem<String>>((String value) {
+                //     return DropdownMenuItem<String>(
+                //       value: value,
+                //       child: Text(value),
+                //     );
+                //   }).toList(),
+                // ),
               ),
               Row(
                 children: [
@@ -560,7 +627,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                           });
                         }
                       },
-                      items: brandDropdownList.map<DropdownMenuItem<String>>((String value) {
+                      items: brandDropdownList
+                          .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -640,7 +708,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   decoration: InputDecoration(
                     hintText: 'Cash-Rabatt',
                     helperText:
-                    (cashRabattPercent != null) ? 'Cash-Rabatt' : null,
+                        (cashRabattPercent != null) ? 'Cash-Rabatt' : null,
                     suffixText: '%',
                   ),
                   keyboardType: TextInputType.number,
@@ -659,9 +727,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                   controller: _naturalRabattPercentController,
                   decoration: InputDecoration(
                     hintText: 'Naturalrabatt',
-                    helperText: (naturalRabattPercent != null)
-                        ? 'Naturalrabatt'
-                        : null,
+                    helperText:
+                        (naturalRabattPercent != null) ? 'Naturalrabatt' : null,
                     suffixText: '%',
                   ),
                   keyboardType: TextInputType.number,

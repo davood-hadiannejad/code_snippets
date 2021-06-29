@@ -108,7 +108,7 @@ class _SelectMenuState extends State<SelectMenu> {
                   ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
                   : "Zurück ohne Auswahl");
             },
-            isExpanded: false,
+            isExpanded: true,
           ),
           // DropdownButton<String>(
           //   value: null,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../providers/customer_forecast_list.dart';
 import '../providers/agency_list.dart';
@@ -44,25 +45,12 @@ class _CustomerForecastFormState extends State<CustomerForecastForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 214,
+      height: 254,
       child: Column(
         children: [
           Container(
             width: 450,
-            child: DropdownButton<String>(
-              value: customerDropdownValue,
-              hint: Text('Bitte Kunde auswählen...'),
-              iconSize: 24,
-              elevation: 16,
-              onChanged: (String newValue) {
-                if (this.mounted) {
-                  setState(() {
-                    customerDropdownValue = newValue;
-                    agencyDropdownValue = null;
-                    agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
-                  });
-                }
-              },
+            child: SearchableDropdown.single(
               items: customerDropdownList
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -70,30 +58,87 @@ class _CustomerForecastFormState extends State<CustomerForecastForm> {
                   child: Text(value),
                 );
               }).toList(),
+              value: customerDropdownValue,
+              hint: "Bitte Kunde auswählen...",
+              searchHint: "Bitte Kunde auswählen...",
+              onChanged: (String newValue) {
+                if (this.mounted) {
+                  setState(() {
+                    customerDropdownValue = newValue;
+                    //agencyDropdownValue = null;
+                    //agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                  });
+                }
+              },
+              isExpanded: true,
             ),
+            // DropdownButton<String>(
+            //   value: customerDropdownValue,
+            //   hint: Text('Bitte Kunde auswählen...'),
+            //   iconSize: 24,
+            //   elevation: 16,
+            //   onChanged: (String newValue) {
+            //     if (this.mounted) {
+            //       setState(() {
+            //         customerDropdownValue = newValue;
+            //         agencyDropdownValue = null;
+            //         agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+            //       });
+            //     }
+            //   },
+            //   items: customerDropdownList
+            //       .map<DropdownMenuItem<String>>((String value) {
+            //     return DropdownMenuItem<String>(
+            //       value: value,
+            //       child: Text(value),
+            //     );
+            //   }).toList(),
+            // ),
           ),
           Container(
             width: 450,
-            child: DropdownButton<String>(
+            child: SearchableDropdown.single(
+              items: agencyDropdownList
+                     .map<DropdownMenuItem<String>>((String value) {
+                   return DropdownMenuItem<String>(
+                     value: value,
+                     child: Text(value),
+                   );
+                 }).toList(),
               value: agencyDropdownValue,
-              hint: Text('Bitte Agentur auswählen...'),
-              iconSize: 24,
-              elevation: 16,
+              hint: 'Bitte Agentur auswählen...',
+              searchHint: 'Bitte Agentur auswählen...',
               onChanged: (String newValue) {
                 if (this.mounted) {
                   setState(() {
                     agencyDropdownValue = newValue;
+                    //agencyDropdownValue = null;
+                    //agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
                   });
                 }
               },
-              items: agencyDropdownList
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+              isExpanded: true,
             ),
+            // DropdownButton<String>(
+            //   value: agencyDropdownValue,
+            //   hint: Text('Bitte Agentur auswählen...'),
+            //   iconSize: 24,
+            //   elevation: 16,
+            //   onChanged: (String newValue) {
+            //     if (this.mounted) {
+            //       setState(() {
+            //         agencyDropdownValue = newValue;
+            //       });
+            //     }
+            //   },
+            //   items: agencyDropdownList
+            //       .map<DropdownMenuItem<String>>((String value) {
+            //     return DropdownMenuItem<String>(
+            //       value: value,
+            //       child: Text(value),
+            //     );
+            //   }).toList(),
+            // ),
           ),
           Row(
             children: [
