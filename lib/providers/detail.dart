@@ -109,7 +109,8 @@ class Detail with ChangeNotifier {
     var uri = Uri.http(APIHOST, '/api/detail/$searchType/$id/', uriQuery);
     if (searchType == 'agentur' ||
         searchType == 'konzern' ||
-        searchType == 'agenturnetzwerk') {
+        searchType == 'agenturnetzwerk' ||
+        searchType == 'kunde') {
       subTypeUri = Uri.http(APIHOST, '/api/subtype/$searchType/$id/', uriQuery);
       print(subTypeUri);
     }

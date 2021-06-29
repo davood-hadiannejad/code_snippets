@@ -44,6 +44,9 @@ class DetailItem extends StatelessWidget {
     } else if (pageType == 'Agenturnetzwerk') {
       futurePageType = 'Agentur';
       futurePageTypeTitle = 'Agenturliste';
+    } else if (pageType == 'Kunde') {
+      futurePageType = 'Konzern';
+      futurePageTypeTitle = 'Konzernliste';
     }
 
     return showDialog<void>(
@@ -101,7 +104,7 @@ class DetailItem extends StatelessWidget {
                 controller: _scrollController,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FlatButton.icon(
                         onPressed: () {
@@ -110,8 +113,20 @@ class DetailItem extends StatelessWidget {
                         label: Text('Zurück'),
                         icon: Icon(Icons.arrow_back_ios),
                       ),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 80),
+                        child: RaisedButton(
+                            onPressed: () {
+                              _showRelatedDialog(context);
+                            },
+                            child: (pageType == 'Agenturnetzwerk')
+                                ? Text('Agenturliste')
+                                : (pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                      ),
                     ],
                   ),
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -175,21 +190,18 @@ class DetailItem extends StatelessWidget {
                         label: Text('Zurück'),
                         icon: Icon(Icons.arrow_back_ios),
                       ),
-                      (pageType != 'Kunde')
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 80),
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    _showRelatedDialog(context);
-                                  },
-                                  child: (pageType == 'Agenturnetzwerk')
-                                      ? Text('Agenturliste')
-                                      : Text('Kundenliste')),
-                            )
-                          : SizedBox(
-                              width: 50,
-                            ),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 80),
+                        child: RaisedButton(
+                            onPressed: () {
+                              _showRelatedDialog(context);
+                            },
+                            child: (pageType == 'Agenturnetzwerk')
+                                ? Text('Agenturliste')
+                                : (pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                      ),
+
                     ],
                   ),
                   Padding(
@@ -332,21 +344,17 @@ class DetailItem extends StatelessWidget {
                         label: Text('Zurück'),
                         icon: Icon(Icons.arrow_back_ios),
                       ),
-                      (pageType != 'Kunde')
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 80),
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    _showRelatedDialog(context);
-                                  },
-                                  child: (pageType == 'Agenturnetzwerk')
-                                      ? Text('Agenturliste')
-                                      : Text('Kundenliste')),
-                            )
-                          : SizedBox(
-                              width: 50,
-                            ),
+                      Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 80),
+                        child: RaisedButton(
+                            onPressed: () {
+                              _showRelatedDialog(context);
+                            },
+                            child: (pageType == 'Agenturnetzwerk')
+                                ? Text('Agenturliste')
+                                : (pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                      ),
                     ],
                   ),
                   Padding(
