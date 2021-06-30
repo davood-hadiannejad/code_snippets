@@ -1132,6 +1132,22 @@ class DetailItem extends StatelessWidget {
               ),
             ),
           ),
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'Global Rate',
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'GR (VJ)',
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ),
         ],
         rows: [
           ...detailData.brands
@@ -1165,6 +1181,18 @@ class DetailItem extends StatelessWidget {
                               .map((month) => brand[month])
                               .toList()
                               .reduce((a, b) => a + b))),
+                        ],
+                      )),
+                      DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(brand['rate'].toString()),
+                        ],
+                      )),
+                      DataCell(Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(brand['rate_letztes_jahr'].toString()),
                         ],
                       )),
                     ],
