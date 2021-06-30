@@ -114,6 +114,11 @@ class _SelectMenuState extends State<SelectMenu> {
                   ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
                   : "Zurück ohne Auswahl");
             },
+            doneButton: (selectedItems, done) {
+              return (selectedItems.isNotEmpty
+                  ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
+                  : "Zurück ohne Auswahl");
+            },
             isExpanded: true,
           ),
           // DropdownButton<String>(
