@@ -104,19 +104,19 @@ class _SelectMenuState extends State<SelectMenu> {
             onChanged: (List<int> values) {
               setState(() {
                 selectedItems = values;
-                filterList = values.map((e) => dropdownList[e]).toList();
+                filterList = values.map((e) => dropdownList.where((element) => element != 'Gesamt').toList()[e]).toList();
                 print(filterList);
                 updateList();
               });
             },
             closeButton: (selectedItems) {
               return (selectedItems.isNotEmpty
-                  ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
+                  ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList.where((element) => element != 'Gesamt').toList()[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
                   : "Zurück ohne Auswahl");
             },
             doneButton: (selectedItems, done) {
               return (selectedItems.isNotEmpty
-                  ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
+                  ? "Filter auf ${selectedItems.length == 1 ? '"' + dropdownList.where((element) => element != 'Gesamt').toList()[selectedItems.first] + '"' : '(' + selectedItems.length.toString() + ')'}"
                   : "Zurück ohne Auswahl");
             },
             isExpanded: true,
