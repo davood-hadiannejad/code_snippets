@@ -103,7 +103,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
 
     Future<void> _showGesamtDialog(
         num gesamtSumme, CustomerForecast forecast) async {
-      List<String> activeMonth = _month.sublist(currentMonth - 1);
+      List<String> activeMonth = _month.sublist(currentMonth);
       int countActiveMonth = activeMonth.length;
       num sumLastYear = activeMonth
           .map((monthKey) {
