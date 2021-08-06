@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../providers/detail.dart';
 import './monthly_chart.dart';
@@ -28,23 +29,32 @@ List<String> _month = [
   'm12'
 ];
 
-class DetailItem extends StatelessWidget {
+class DetailItem extends StatefulWidget {
   final Detail detailData;
   final String pageType;
+  DetailItem(this.detailData, this.pageType);
+
+  @override
+  _DetailItemState createState() => _DetailItemState();
+}
+
+class _DetailItemState extends State<DetailItem> {
   final ScrollController _scrollController = ScrollController();
+
   final ScrollController _scrollController2 = ScrollController();
+  List<bool> isSelected = [true, false];
 
   Future<void> _showRelatedDialog(context) async {
     String futurePageType;
     String futurePageTypeTitle;
 
-    if (pageType == 'Konzern' || pageType == 'Agentur') {
+    if (widget.pageType == 'Konzern' || widget.pageType == 'Agentur') {
       futurePageType = 'Kunde';
       futurePageTypeTitle = 'Kundenliste';
-    } else if (pageType == 'Agenturnetzwerk') {
+    } else if (widget.pageType == 'Agenturnetzwerk') {
       futurePageType = 'Agentur';
       futurePageTypeTitle = 'Agenturliste';
-    } else if (pageType == 'Kunde') {
+    } else if (widget.pageType == 'Kunde') {
       futurePageType = 'Konzern';
       futurePageTypeTitle = 'Konzernliste';
     }
@@ -57,7 +67,7 @@ class DetailItem extends StatelessWidget {
           title: Text(futurePageTypeTitle),
           content: SingleChildScrollView(
             child: ListBody(
-              children: detailData.subType
+              children: widget.detailData.subType
                   .map((subTypeItem) => FlatButton(
                         child: Text(subTypeItem['name']),
                         onPressed: () {
@@ -84,8 +94,6 @@ class DetailItem extends StatelessWidget {
       },
     );
   }
-
-  DetailItem(this.detailData, this.pageType);
 
   @override
   Widget build(BuildContext context) {
@@ -120,9 +128,9 @@ class DetailItem extends StatelessWidget {
                             onPressed: () {
                               _showRelatedDialog(context);
                             },
-                            child: (pageType == 'Agenturnetzwerk')
+                            child: (widget.pageType == 'Agenturnetzwerk')
                                 ? Text('Agenturliste')
-                                : (pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                                : (widget.pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
                       ),
                     ],
                   ),
@@ -130,7 +138,7 @@ class DetailItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      '$pageType: ${detailData.name}',
+                      '${widget.pageType}: ${widget.detailData.name}',
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
@@ -146,11 +154,11 @@ class DetailItem extends StatelessWidget {
                         width: 1200,
                         height: 300,
                         child: MonthlyChart.withData(
-                          detailData.goalGesamt,
-                          detailData.istStichtagGesamt,
-                          detailData.kundenForecastGesamt,
-                          detailData.projektForecastGesamt,
-                          onlyIst: true,
+                          widget.detailData.goalGesamt,
+                          widget.detailData.istStichtagGesamt,
+                          widget.detailData.kundenForecastGesamt,
+                          widget.detailData.projektForecastGesamt,
+                          onlyIst: (isSelected[0]) ? true : false,
                         ),
                       ),
                     ],
@@ -162,7 +170,31 @@ class DetailItem extends StatelessWidget {
                       height: 100,
                     ),
                   ),
-                  Container(width: 1200, child: buildBrandTable(context)),
+                  ToggleButtons(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Monatsansicht'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Gesamtansicht'),
+                      ),
+                    ],
+                    onPressed: (int index) {
+                      setState(() {
+                        if (isSelected[index]) {
+                          isSelected = [true, true];
+                          isSelected[index] = false;
+                        } else {
+                          isSelected = [false, false];
+                          isSelected[index] = true;
+                        }
+                      });
+                    },
+                    isSelected: isSelected,
+                  ),
+                  (isSelected[0]) ? Container(width: 1200, child: buildBrandTable(context)) : Container(width: 1200, child: buildBrandGesamtTable(context)),
                 ],
               ),
             ),
@@ -197,9 +229,9 @@ class DetailItem extends StatelessWidget {
                             onPressed: () {
                               _showRelatedDialog(context);
                             },
-                            child: (pageType == 'Agenturnetzwerk')
+                            child: (widget.pageType == 'Agenturnetzwerk')
                                 ? Text('Agenturliste')
-                                : (pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                                : (widget.pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
                       ),
 
                     ],
@@ -207,7 +239,7 @@ class DetailItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      '$pageType: ${detailData.name}',
+                      '${widget.pageType}: ${widget.detailData.name}',
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
@@ -223,10 +255,10 @@ class DetailItem extends StatelessWidget {
                         width: 1200,
                         height: 300,
                         child: MonthlyChart.withData(
-                          detailData.goalGesamt,
-                          detailData.istStichtagGesamt,
-                          detailData.kundenForecastGesamt,
-                          detailData.projektForecastGesamt,
+                          widget.detailData.goalGesamt,
+                          widget.detailData.istStichtagGesamt,
+                          widget.detailData.kundenForecastGesamt,
+                          widget.detailData.projektForecastGesamt,
                           showProjekt: false,
                         ),
                       ),
@@ -257,9 +289,9 @@ class DetailItem extends StatelessWidget {
                                           'Cash-Rabatt: ',
                                         ),
                                         Text(
-                                          (detailData.cashRabatt != null)
+                                          (widget.detailData.cashRabatt != null)
                                               ? formatterPercent.format(
-                                                  detailData.cashRabatt / 100)
+                                                  widget.detailData.cashRabatt / 100)
                                               : 'N/A',
                                         )
                                       ],
@@ -273,9 +305,9 @@ class DetailItem extends StatelessWidget {
                                           'Naturalrabatt: ',
                                         ),
                                         Text(
-                                          (detailData.naturalRabatt != null)
+                                          (widget.detailData.naturalRabatt != null)
                                               ? formatterPercent.format(
-                                                  detailData.naturalRabatt /
+                                                  widget.detailData.naturalRabatt /
                                                       100)
                                               : 'N/A',
                                         )
@@ -290,9 +322,9 @@ class DetailItem extends StatelessWidget {
                                           'Global Rate: ',
                                         ),
                                         Text(
-                                          (detailData.globalRate != null)
+                                          (widget.detailData.globalRate != null)
                                               ? formatterPercent.format(
-                                                  detailData.globalRate / 100)
+                                                  widget.detailData.globalRate / 100)
                                               : 'N/A',
                                         )
                                       ],
@@ -351,16 +383,16 @@ class DetailItem extends StatelessWidget {
                             onPressed: () {
                               _showRelatedDialog(context);
                             },
-                            child: (pageType == 'Agenturnetzwerk')
+                            child: (widget.pageType == 'Agenturnetzwerk')
                                 ? Text('Agenturliste')
-                                : (pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                                : (widget.pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
                       ),
                     ],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      '$pageType: ${detailData.name}',
+                      '${widget.pageType}: ${widget.detailData.name}',
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
@@ -372,8 +404,8 @@ class DetailItem extends StatelessWidget {
                         width: 1200,
                         height: 300,
                         child: MonthlyChartDetail.withData(
-                          detailData.tv,
-                          detailData.online,
+                          widget.detailData.tv,
+                          widget.detailData.online,
                         ),
                       ),
                     ],
@@ -516,7 +548,7 @@ class DetailItem extends StatelessWidget {
         ),
       ],
       rows: [
-        ...detailData.tv
+        ...widget.detailData.tv
             .map((sales) => DataRow(
                   color: (sales['name'] == 'Gesamt')
                       ? MaterialStateProperty.resolveWith(
@@ -595,7 +627,7 @@ class DetailItem extends StatelessWidget {
 //              DataCell(Text('')),
 //              DataCell(Text('')),
 //            ]),
-        ...detailData.online
+        ...widget.detailData.online
             .map((sales) => DataRow(
                   color: (sales['name'] == 'Gesamt')
                       ? MaterialStateProperty.resolveWith(
@@ -684,12 +716,12 @@ class DetailItem extends StatelessWidget {
                   .map((month) => DataCell(Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(formatter.format(detailData.online
+                          Text(formatter.format(widget.detailData.online
                                   .map((e) =>
                                       (e['name'] != 'Gesamt') ? e[month] : 0)
                                   .toList()
                                   .reduce((a, b) => a + b) +
-                              detailData.tv
+                              widget.detailData.tv
                                   .map((e) =>
                                       (e['name'] != 'Gesamt') ? e[month] : 0)
                                   .toList()
@@ -701,7 +733,7 @@ class DetailItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(formatter.format(_month
-                          .map((month) => detailData.online
+                          .map((month) => widget.detailData.online
                               .map(
                                   (e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                               .toList()
@@ -709,7 +741,7 @@ class DetailItem extends StatelessWidget {
                           .toList()
                           .reduce((a, b) => a + b) +
                       _month
-                          .map((month) => detailData.tv
+                          .map((month) => widget.detailData.tv
                               .map(
                                   (e) => (e['name'] != 'Gesamt') ? e[month] : 0)
                               .toList()
@@ -721,17 +753,17 @@ class DetailItem extends StatelessWidget {
               DataCell(Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text((detailData.globalRate != null)
-                      ? formatterPercent.format(detailData.globalRate / 100)
+                  Text((widget.detailData.globalRate != null)
+                      ? formatterPercent.format(widget.detailData.globalRate / 100)
                       : 'N/A'),
                 ],
               )),
               DataCell(Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text((detailData.globalRateLastYear != null)
+                  Text((widget.detailData.globalRateLastYear != null)
                       ? formatterPercent
-                          .format(detailData.globalRateLastYear / 100)
+                          .format(widget.detailData.globalRateLastYear / 100)
                       : 'N/A'),
                 ],
               )),
@@ -847,7 +879,7 @@ class DetailItem extends StatelessWidget {
               .map((month) => DataCell(Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(formatter.format(detailData.goalGesamt[month])),
+                      Text(formatter.format(widget.detailData.goalGesamt[month])),
                     ],
                   )))
               .toList(),
@@ -855,7 +887,7 @@ class DetailItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(formatter.format(_month
-                  .map((month) => detailData.goalGesamt[month])
+                  .map((month) => widget.detailData.goalGesamt[month])
                   .toList()
                   .reduce((a, b) => a + b))),
             ],
@@ -870,7 +902,7 @@ class DetailItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(formatter
-                          .format(detailData.istStichtagGesamt[month])),
+                          .format(widget.detailData.istStichtagGesamt[month])),
                     ],
                   )))
               .toList(),
@@ -878,7 +910,7 @@ class DetailItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(formatter.format(_month
-                  .map((month) => detailData.istStichtagGesamt[month])
+                  .map((month) => widget.detailData.istStichtagGesamt[month])
                   .toList()
                   .reduce((a, b) => a + b))),
             ],
@@ -893,7 +925,7 @@ class DetailItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(formatter
-                          .format(detailData.kundenForecastGesamt[month])),
+                          .format(widget.detailData.kundenForecastGesamt[month])),
                     ],
                   )))
               .toList(),
@@ -901,7 +933,7 @@ class DetailItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(formatter.format(_month
-                  .map((month) => detailData.kundenForecastGesamt[month])
+                  .map((month) => widget.detailData.kundenForecastGesamt[month])
                   .toList()
                   .reduce((a, b) => a + b))),
             ],
@@ -916,8 +948,8 @@ class DetailItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(formatter.format(
-                          detailData.kundenForecastGesamt[month] +
-                              detailData.istStichtagGesamt[month])),
+                          widget.detailData.kundenForecastGesamt[month] +
+                              widget.detailData.istStichtagGesamt[month])),
                     ],
                   )))
               .toList(),
@@ -926,8 +958,8 @@ class DetailItem extends StatelessWidget {
             children: [
               Text(formatter.format(_month
                   .map((month) =>
-                      detailData.kundenForecastGesamt[month] +
-                      detailData.istStichtagGesamt[month])
+                      widget.detailData.kundenForecastGesamt[month] +
+                      widget.detailData.istStichtagGesamt[month])
                   .toList()
                   .reduce((a, b) => a + b))),
             ],
@@ -983,8 +1015,8 @@ class DetailItem extends StatelessWidget {
           ),
         ),
       ],
-      rows: (detailData.projects != null)
-          ? detailData.projects
+      rows: (widget.detailData.projects != null)
+          ? widget.detailData.projects
               .map((project) => DataRow(
                     onSelectChanged: (bool) {
                       Navigator.of(context)
@@ -1150,7 +1182,7 @@ class DetailItem extends StatelessWidget {
           ),
         ],
         rows: [
-          ...detailData.brands
+          ...widget.detailData.brands
               .map((brand) => DataRow(
                     onSelectChanged: (bool) {
                       Navigator.of(context)
@@ -1199,6 +1231,143 @@ class DetailItem extends StatelessWidget {
                   ))
               .toList(),
         ]);
+  }
+
+  DataTable buildBrandGesamtTable(context) {
+    return DataTable(
+      showCheckboxColumn: false,
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Brand',
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'Goal',
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'IST-Stichtag',
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'Kundenforecast',
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'Projektforecast',
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'IST + Forecast',
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Status',
+          ),
+        ),
+      ],
+      rows: (widget.detailData.brands != null)
+          ? widget.detailData.brands
+          .map((brand) => DataRow(
+          color: (brand['name'] == 'Gesamt')
+              ? MaterialStateProperty.resolveWith(
+                  (Set<MaterialState> states) => Colors.grey[300])
+              : null,
+          onSelectChanged: (bool) {
+            Navigator.of(context)
+                .pushNamed(DetailScreen.routeName, arguments: {
+              'pageType': 'Brand',
+              'id': brand['name_slug'].toString(),
+            });
+          },
+          cells: [
+            DataCell(Text(brand['name'])),
+            DataCell(Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(formatter.format(brand['goal'])),
+              ],
+            )),
+            DataCell(Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(formatter.format(brand['ist_stichtag'])),
+              ],
+            )),
+            DataCell(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(formatter.format(brand['kunden_forecast'])),
+                  ],
+                )),
+            DataCell(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(formatter.format(brand['projekt_forecast'])),
+                  ],
+                )),
+            DataCell(Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(formatter.format(brand['ist_stichtag'] +
+                    brand['projekt_forecast'] +
+                    brand['kunden_forecast'])),
+              ],
+            )),
+            DataCell(
+              CircularPercentIndicator(
+                radius: 42.0,
+                percent: ((brand['ist_stichtag'] +
+                    brand['projekt_forecast'] +
+                    brand['kunden_forecast']) /
+                    brand['goal'] >
+                    1)
+                    ? 1.0
+                    : (brand['ist_stichtag'] +
+                    brand['projekt_forecast'] +
+                    brand['kunden_forecast']) /
+                    brand['goal'],
+                center: Text(
+                  formatterPercent.format((brand['ist_stichtag'] +
+                      brand['projekt_forecast'] +
+                      brand['kunden_forecast']) /
+                      brand['goal']),
+                  style: TextStyle(fontSize: 10),
+                ),
+                progressColor: getProgressColor((brand['ist_stichtag'] +
+                        brand['projekt_forecast'] +
+                        brand['kunden_forecast']) /
+                        brand['goal']),
+              ),
+            )
+          ]))
+          .toList()
+          : [],
+    );
   }
 
   Color getProgressColor(double percent) {
