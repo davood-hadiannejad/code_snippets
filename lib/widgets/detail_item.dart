@@ -32,6 +32,7 @@ List<String> _month = [
 class DetailItem extends StatefulWidget {
   final Detail detailData;
   final String pageType;
+
   DetailItem(this.detailData, this.pageType);
 
   @override
@@ -122,19 +123,19 @@ class _DetailItemState extends State<DetailItem> {
                         icon: Icon(Icons.arrow_back_ios),
                       ),
                       Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 80),
+                        padding: const EdgeInsets.symmetric(horizontal: 80),
                         child: RaisedButton(
                             onPressed: () {
                               _showRelatedDialog(context);
                             },
                             child: (widget.pageType == 'Agenturnetzwerk')
                                 ? Text('Agenturliste')
-                                : (widget.pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                                : (widget.pageType == 'Kunde')
+                                    ? Text('Konzern')
+                                    : Text('Kundenliste')),
                       ),
                     ],
                   ),
-
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -194,7 +195,10 @@ class _DetailItemState extends State<DetailItem> {
                     },
                     isSelected: isSelected,
                   ),
-                  (isSelected[0]) ? Container(width: 1200, child: buildBrandTable(context)) : Container(width: 1200, child: buildBrandGesamtTable(context)),
+                  (isSelected[0])
+                      ? Container(width: 1200, child: buildBrandTable(context))
+                      : Container(
+                          width: 1200, child: buildBrandGesamtTable(context)),
                 ],
               ),
             ),
@@ -223,17 +227,17 @@ class _DetailItemState extends State<DetailItem> {
                         icon: Icon(Icons.arrow_back_ios),
                       ),
                       Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 80),
+                        padding: const EdgeInsets.symmetric(horizontal: 80),
                         child: RaisedButton(
                             onPressed: () {
                               _showRelatedDialog(context);
                             },
                             child: (widget.pageType == 'Agenturnetzwerk')
                                 ? Text('Agenturliste')
-                                : (widget.pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                                : (widget.pageType == 'Kunde')
+                                    ? Text('Konzern')
+                                    : Text('Kundenliste')),
                       ),
-
                     ],
                   ),
                   Padding(
@@ -291,7 +295,8 @@ class _DetailItemState extends State<DetailItem> {
                                         Text(
                                           (widget.detailData.cashRabatt != null)
                                               ? formatterPercent.format(
-                                                  widget.detailData.cashRabatt / 100)
+                                                  widget.detailData.cashRabatt /
+                                                      100)
                                               : 'N/A',
                                         )
                                       ],
@@ -305,10 +310,12 @@ class _DetailItemState extends State<DetailItem> {
                                           'Naturalrabatt: ',
                                         ),
                                         Text(
-                                          (widget.detailData.naturalRabatt != null)
-                                              ? formatterPercent.format(
-                                                  widget.detailData.naturalRabatt /
-                                                      100)
+                                          (widget.detailData.naturalRabatt !=
+                                                  null)
+                                              ? formatterPercent.format(widget
+                                                      .detailData
+                                                      .naturalRabatt /
+                                                  100)
                                               : 'N/A',
                                         )
                                       ],
@@ -324,7 +331,8 @@ class _DetailItemState extends State<DetailItem> {
                                         Text(
                                           (widget.detailData.globalRate != null)
                                               ? formatterPercent.format(
-                                                  widget.detailData.globalRate / 100)
+                                                  widget.detailData.globalRate /
+                                                      100)
                                               : 'N/A',
                                         )
                                       ],
@@ -377,15 +385,16 @@ class _DetailItemState extends State<DetailItem> {
                         icon: Icon(Icons.arrow_back_ios),
                       ),
                       Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 80),
+                        padding: const EdgeInsets.symmetric(horizontal: 80),
                         child: RaisedButton(
                             onPressed: () {
                               _showRelatedDialog(context);
                             },
                             child: (widget.pageType == 'Agenturnetzwerk')
                                 ? Text('Agenturliste')
-                                : (widget.pageType == 'Kunde') ? Text('Konzern') : Text('Kundenliste')),
+                                : (widget.pageType == 'Kunde')
+                                    ? Text('Konzern')
+                                    : Text('Kundenliste')),
                       ),
                     ],
                   ),
@@ -710,7 +719,7 @@ class _DetailItemState extends State<DetailItem> {
             color: MaterialStateProperty.resolveWith(
                 (Set<MaterialState> states) => Colors.grey[500]),
             cells: [
-              DataCell(Text('Kunde')),
+              DataCell(Text(widget.detailData.name)),
               DataCell(Text('Gesamt')),
               ..._month
                   .map((month) => DataCell(Row(
@@ -754,7 +763,8 @@ class _DetailItemState extends State<DetailItem> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text((widget.detailData.globalRate != null)
-                      ? formatterPercent.format(widget.detailData.globalRate / 100)
+                      ? formatterPercent
+                          .format(widget.detailData.globalRate / 100)
                       : 'N/A'),
                 ],
               )),
@@ -879,7 +889,8 @@ class _DetailItemState extends State<DetailItem> {
               .map((month) => DataCell(Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(formatter.format(widget.detailData.goalGesamt[month])),
+                      Text(formatter
+                          .format(widget.detailData.goalGesamt[month])),
                     ],
                   )))
               .toList(),
@@ -924,8 +935,8 @@ class _DetailItemState extends State<DetailItem> {
               .map((month) => DataCell(Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(formatter
-                          .format(widget.detailData.kundenForecastGesamt[month])),
+                      Text(formatter.format(
+                          widget.detailData.kundenForecastGesamt[month])),
                     ],
                   )))
               .toList(),
@@ -1218,18 +1229,73 @@ class _DetailItemState extends State<DetailItem> {
                       DataCell(Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(brand['rate'].toString()),
+                          Text((brand['rate'] != null)
+                              ? formatterPercent
+                              .format(brand['rate'] / 100)
+                              : 'N/A'),
                         ],
                       )),
                       DataCell(Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(brand['rate_letztes_jahr'].toString()),
+                          Text((brand['rate_letztes_jahr'] != null)
+                              ? formatterPercent
+                              .format(brand['rate_letztes_jahr'] / 100)
+                              : 'N/A')
                         ],
                       )),
                     ],
                   ))
               .toList(),
+          DataRow(
+              color: MaterialStateProperty.resolveWith(
+                  (Set<MaterialState> states) => Colors.grey[500]),
+              cells: [
+                DataCell(Text(widget.detailData.name)),
+                DataCell(Text('Gesamt')),
+                ..._month
+                    .map((month) => DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(widget.detailData.brands.map(
+                                (brand) => (brand['name'] != 'Gesamt')
+                                    ? brand[month]
+                                    : 0).reduce((a, b) => a + b))),
+                          ],
+                        )))
+                    .toList(),
+                DataCell(Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(formatter.format(_month
+                        .map((month) => widget.detailData.brands
+                            .map((brand) =>
+                                (brand['name'] != 'Gesamt') ? brand[month] : 0)
+                            .toList()
+                            .reduce((a, b) => a + b))
+                        .toList()
+                        .reduce((a, b) => a + b)))
+                  ],
+                )),
+                DataCell(Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text((widget.detailData.globalRate != null)
+                        ? formatterPercent
+                            .format(widget.detailData.globalRate / 100)
+                        : 'N/A'),
+                  ],
+                )),
+                DataCell(Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text((widget.detailData.globalRateLastYear != null)
+                        ? formatterPercent
+                            .format(widget.detailData.globalRateLastYear / 100)
+                        : 'N/A'),
+                  ],
+                )),
+              ]),
         ]);
   }
 
@@ -1290,82 +1356,81 @@ class _DetailItemState extends State<DetailItem> {
       ],
       rows: (widget.detailData.brands != null)
           ? widget.detailData.brands
-          .map((brand) => DataRow(
-          color: (brand['name'] == 'Gesamt')
-              ? MaterialStateProperty.resolveWith(
-                  (Set<MaterialState> states) => Colors.grey[300])
-              : null,
-          onSelectChanged: (bool) {
-            Navigator.of(context)
-                .pushNamed(DetailScreen.routeName, arguments: {
-              'pageType': 'Brand',
-              'id': brand['name_slug'].toString(),
-            });
-          },
-          cells: [
-            DataCell(Text(brand['name'])),
-            DataCell(Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(formatter.format(brand['goal'])),
-              ],
-            )),
-            DataCell(Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(formatter.format(brand['ist_stichtag'])),
-              ],
-            )),
-            DataCell(
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(formatter.format(brand['kunden_forecast'])),
-                  ],
-                )),
-            DataCell(
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(formatter.format(brand['projekt_forecast'])),
-                  ],
-                )),
-            DataCell(Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(formatter.format(brand['ist_stichtag'] +
-                    brand['projekt_forecast'] +
-                    brand['kunden_forecast'])),
-              ],
-            )),
-            DataCell(
-              CircularPercentIndicator(
-                radius: 42.0,
-                percent: ((brand['ist_stichtag'] +
-                    brand['projekt_forecast'] +
-                    brand['kunden_forecast']) /
-                    brand['goal'] >
-                    1)
-                    ? 1.0
-                    : (brand['ist_stichtag'] +
-                    brand['projekt_forecast'] +
-                    brand['kunden_forecast']) /
-                    brand['goal'],
-                center: Text(
-                  formatterPercent.format((brand['ist_stichtag'] +
-                      brand['projekt_forecast'] +
-                      brand['kunden_forecast']) /
-                      brand['goal']),
-                  style: TextStyle(fontSize: 10),
-                ),
-                progressColor: getProgressColor((brand['ist_stichtag'] +
-                        brand['projekt_forecast'] +
-                        brand['kunden_forecast']) /
-                        brand['goal']),
-              ),
-            )
-          ]))
-          .toList()
+              .map((brand) => DataRow(
+                      color: (brand['name'] == 'Gesamt')
+                          ? MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) => Colors.grey[300])
+                          : null,
+                      onSelectChanged: (bool) {
+                        Navigator.of(context)
+                            .pushNamed(DetailScreen.routeName, arguments: {
+                          'pageType': 'Brand',
+                          'id': brand['name_slug'].toString(),
+                        });
+                      },
+                      cells: [
+                        DataCell(Text(brand['name'])),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['goal'])),
+                          ],
+                        )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['ist_stichtag'])),
+                          ],
+                        )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['kunden_forecast'])),
+                          ],
+                        )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['projekt_forecast'])),
+                          ],
+                        )),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formatter.format(brand['ist_stichtag'] +
+                                brand['projekt_forecast'] +
+                                brand['kunden_forecast'])),
+                          ],
+                        )),
+                        DataCell(
+                          CircularPercentIndicator(
+                            radius: 42.0,
+                            percent: ((brand['ist_stichtag'] +
+                                            brand['projekt_forecast'] +
+                                            brand['kunden_forecast']) /
+                                        brand['goal'] >
+                                    1)
+                                ? 1.0
+                                : (brand['ist_stichtag'] +
+                                        brand['projekt_forecast'] +
+                                        brand['kunden_forecast']) /
+                                    brand['goal'],
+                            center: Text(
+                              formatterPercent.format((brand['ist_stichtag'] +
+                                      brand['projekt_forecast'] +
+                                      brand['kunden_forecast']) /
+                                  brand['goal']),
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            progressColor: getProgressColor(
+                                (brand['ist_stichtag'] +
+                                        brand['projekt_forecast'] +
+                                        brand['kunden_forecast']) /
+                                    brand['goal']),
+                          ),
+                        )
+                      ]))
+              .toList()
           : [],
     );
   }
