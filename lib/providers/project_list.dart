@@ -196,8 +196,8 @@ class ProjectList with ChangeNotifier {
         'status': status,
       };
 
-      monthlyMn3.map((key, value) {
-        body[key] = value;
+      monthlyMn3.forEach((key, value) {
+        body[key] = value.toString();
         return;
       });
 
@@ -264,8 +264,8 @@ class ProjectList with ChangeNotifier {
         'status': status,
       };
 
-      monthlyMn3.map((key, value) {
-        body[key] = value;
+      monthlyMn3.forEach((key, value) {
+        body[key] = value.toString();
         return;
       });
 

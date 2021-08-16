@@ -29,6 +29,62 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
   final today = DateTime.now();
   final ScrollController _scrollController = ScrollController();
 
+  List<String> monthItems = [
+    'Jan',
+    'Feb',
+    'Mär',
+    'Apr',
+    'Mai',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Dez'
+  ];
+
+  List<String> monthKeys = [
+    'm1',
+    'm2',
+    'm3',
+    'm4',
+    'm5',
+    'm6',
+    'm7',
+    'm8',
+    'm9',
+    'm10',
+    'm11',
+    'm12'
+  ];
+
+  String _returnFirstMonth(Map<String, num> monthlyMn3) {
+    String firstMonth;
+    String firstMonthKey;
+    for (String key in monthlyMn3.keys) {
+      if (monthlyMn3[key] != 0 && monthlyMn3[key] != null) {
+        firstMonthKey = key;
+        break;
+      }
+    }
+    firstMonth = monthItems[monthKeys.indexOf(firstMonthKey)];
+    return firstMonth;
+  }
+
+  String _returnLastMonth(Map<String, num> monthlyMn3) {
+    String lastMonth;
+    String lastMonthKey;
+    for (String key in monthlyMn3.keys.toList().reversed) {
+      if (monthlyMn3[key] != 0 && monthlyMn3[key] != null) {
+        lastMonthKey = key;
+        break;
+      }
+    }
+    lastMonth = monthItems[monthKeys.indexOf(lastMonthKey)];
+    return lastMonth;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -140,6 +196,14 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
         DataColumn(
           label: Expanded(
             child: Text(
+              'Zeitraum',
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
               'Bewertung',
               textAlign: TextAlign.end,
             ),
@@ -194,6 +258,20 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                       children: [
                         Text(formatter
                             .format(project.mn3 * project.bewertung / 100)),
+                      ],
+                    ),
+                  )),
+                  DataCell(Container(
+                    width: 110,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text((_returnFirstMonth(project.monthlyMn3) ==
+                                _returnLastMonth(project.monthlyMn3))
+                            ? _returnFirstMonth(project.monthlyMn3)
+                            : _returnFirstMonth(project.monthlyMn3) +
+                                ' - ' +
+                                _returnLastMonth(project.monthlyMn3)),
                       ],
                     ),
                   )),

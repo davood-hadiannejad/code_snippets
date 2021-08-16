@@ -559,7 +559,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
           selectedVerkauferEmail,
           {
             for (var key in monthKeys)
-              key: (_mN3ControllerList[monthKeys.indexOf(key)].text != null)
+              key: (_mN3ControllerList[monthKeys.indexOf(key)].text != '')
                   ? num.parse(_mN3ControllerList[monthKeys.indexOf(key)].text)
                   : 0
           },
@@ -581,7 +581,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
           selectedVerkauferEmail,
           {
             for (var key in monthKeys)
-              key: (_mN3ControllerList[monthKeys.indexOf(key)].text != null)
+              key: (_mN3ControllerList[monthKeys.indexOf(key)].text != '')
                   ? num.parse(_mN3ControllerList[monthKeys.indexOf(key)].text)
                   : 0
           },
