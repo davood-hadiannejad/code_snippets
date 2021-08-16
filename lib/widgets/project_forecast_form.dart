@@ -14,7 +14,7 @@ import '../providers/verkaeufer_list.dart';
 import '../providers/year.dart';
 
 final formatter =
-new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
 class ProjectForecastForm extends StatefulWidget {
   final int projectId;
@@ -71,18 +71,120 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     'm12'
   ];
 
-  Map<String, List> saisonalBrandDistribtion = {"WELT": [
-    6.987012533083310,
-    7.672038451552260,
-    8.922618856865520,
-    8.233092982131330,
-    8.154161545162560,
-    6.414037287767950,
-    5.612574470192940,
-    5.795328448903930,
-    9.877956934472290,
-  ],};
-
+  Map<String, List> saisonalBrandDistribtion = {
+    "WELT": [
+      6.987012533083310,
+      7.672038451552260,
+      8.922618856865520,
+      8.233092982131330,
+      8.154161545162560,
+      6.414037287767950,
+      5.612574470192940,
+      5.795328448903930,
+      9.877956934472290,
+      11.584958745332500,
+      11.190557756195600,
+      9.555661988339810,
+    ],
+    "N24 DOKU": [
+      6.550121968472960,
+      6.523625064972980,
+      6.617697066856870,
+      6.436000422305140,
+      6.517546052601910,
+      7.415001220111320,
+      7.312013462359400,
+      6.934576358802770,
+      9.631530938651750,
+      12.271745490846300,
+      14.119233362247400,
+      9.670908591771180,
+    ],
+    "COMEDY": [
+      7.237486455507290,
+      7.452305131595530,
+      8.170728597162840,
+      7.929309103659060,
+      8.120338073281880,
+      6.850253205171080,
+      6.672545082250400,
+      7.354085061848710,
+      9.344068910580940,
+      10.995676696663200,
+      10.068334052364500,
+      9.804869629914600,
+    ],
+    "MTV": [
+      8.374283456048610,
+      8.027004433142850,
+      7.527685239262180,
+      7.358665306993630,
+      7.261617740346590,
+      7.059066029860210,
+      7.943033722945050,
+      8.632659257112080,
+      8.801028621897920,
+      9.266583113399770,
+      10.000714164079500,
+      9.747658914911590,
+    ],
+    "NICKELODEON": [
+      3.431267067396470,
+      4.537136349690110,
+      8.967277393987210,
+      5.825355621825380,
+      5.039650095350030,
+      4.549189829345880,
+      3.914321894515500,
+      4.390458743030820,
+      7.508053449638050,
+      14.466559644893000,
+      23.220560680499600,
+      14.150169229827900,
+    ],
+    "PLUTOTV": [
+      6.987012533083310,
+      7.672038451552260,
+      8.922618856865520,
+      8.233092982131330,
+      8.154161545162560,
+      6.414037287767950,
+      5.612574470192940,
+      5.795328448903930,
+      9.877956934472290,
+      11.584958745332500,
+      11.190557756195600,
+      9.555661988339810,
+    ],
+    "BILD": [
+      6.987012533083310,
+      7.672038451552260,
+      8.922618856865520,
+      8.233092982131330,
+      8.154161545162560,
+      6.414037287767950,
+      5.612574470192940,
+      5.795328448903930,
+      9.877956934472290,
+      11.584958745332500,
+      11.190557756195600,
+      9.555661988339810,
+    ],
+    "default": [
+      6.650599507,
+      7.079455191,
+      8.293034981,
+      7.464087057,
+      7.343090942,
+      6.445088878,
+      6.097091082,
+      6.385394967,
+      9.274078961,
+      11.67934874,
+      12.9972165,
+      10.29151319
+    ]
+  };
 
   List<int> selectedMonth = [];
 
@@ -165,35 +267,18 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   @override
   void didChangeDependencies() {
     selectedVerkauferEmail =
-        Provider
-            .of<VerkaeuferList>(context)
-            .selectedVerkaufer
-            .email;
-    selectedYear = Provider
-        .of<Year>(context)
-        .selectedYear;
+        Provider.of<VerkaeuferList>(context).selectedVerkaufer.email;
+    selectedYear = Provider.of<Year>(context).selectedYear;
     brandDropdownList =
-        Provider
-            .of<BrandList>(context)
-            .items
-            .map((e) => e.name)
-            .toList();
+        Provider.of<BrandList>(context).items.map((e) => e.name).toList();
     customerDropdownList =
-        Provider
-            .of<CustomerList>(context)
-            .items
-            .map((e) => e.name)
-            .toList();
+        Provider.of<CustomerList>(context).items.map((e) => e.name).toList();
     if (widget.projectId == null) {
       customerDropdownList.insert(0, 'Neukunde');
     }
 
     agencyDropdownList =
-        Provider
-            .of<AgencyList>(context)
-            .items
-            .map((e) => e.name)
-            .toList();
+        Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
     agencyDropdownListComplete = [...agencyDropdownList];
     if (widget.projectId != null) {
       Project project = Provider.of<ProjectList>(context, listen: false)
@@ -234,13 +319,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
         .forEach((_mN3Controller) => _mN3Controller.addListener(_addMN3));
     _cashRabattPercentController.addListener(_addcashRabattPercent);
     _naturalRabattPercentController.addListener(_addnaturalRabattPercent);
-    selectedVerkauferEmail = Provider
-        .of<VerkaeuferList>(context, listen: false)
+    selectedVerkauferEmail = Provider.of<VerkaeuferList>(context, listen: false)
         .selectedVerkaufer
         .email;
-    selectedYear = Provider
-        .of<Year>(context, listen: false)
-        .selectedYear;
+    selectedYear = Provider.of<Year>(context, listen: false).selectedYear;
   }
 
   bool enableNeukunde = false;
@@ -267,8 +349,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
     var _gesamtJahresSummeController = TextEditingController();
     showDialog(
         context: context,
-        builder: (ctx) =>
-            AlertDialog(
+        builder: (ctx) => AlertDialog(
               title: Text('Gesamtjahressumme Projektforecast'),
               content: Form(
                 key: _formGesamtJahresKey,
@@ -319,8 +400,10 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                               } else {
                                 selectedMonth.forEach((index) {
                                   _mN3ControllerList[index].text = (num.parse(
-                                      _gesamtJahresSummeController.text) /
-                                      selectedMonth.length).toStringAsFixed(0);
+                                              _gesamtJahresSummeController
+                                                  .text) /
+                                          selectedMonth.length)
+                                      .toStringAsFixed(0);
                                 });
                                 Navigator.of(context).pop();
                               }
@@ -329,22 +412,38 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                           SizedBox(width: 10),
                           RaisedButton(
                             child: const Text('Saisonale Verteilung'),
-                            onPressed: (brandDropdownValue != null) ? () {
-                              if (_gesamtJahresSummeController.text.isEmpty) {
-                                _formGesamtJahresKey.currentState.validate();
-                              } else {
-                                double _gesamtIndex = 0;
-                                selectedMonth.forEach((index) {
-                                  _gesamtIndex += saisonalBrandDistribtion[brandDropdownValue][index];
-                                });
-                                selectedMonth.forEach((index) {
-                                  _mN3ControllerList[index].text = (num.parse(
-                                      _gesamtJahresSummeController.text) * saisonalBrandDistribtion[brandDropdownValue][index] /
-                                      _gesamtIndex).toStringAsFixed(0);
-                                });
-                                Navigator.of(context).pop();
-                              }
-                            } : null,
+                            onPressed: (brandDropdownValue != null)
+                                ? () {
+                                    if (_gesamtJahresSummeController
+                                        .text.isEmpty) {
+                                      _formGesamtJahresKey.currentState
+                                          .validate();
+                                    } else {
+                                      double _gesamtIndex = 0;
+                                      String brand = brandDropdownValue;
+                                      if (!saisonalBrandDistribtion
+                                          .containsKey(brand)) {
+                                        brand = 'default';
+                                      }
+                                      selectedMonth.forEach((index) {
+                                        _gesamtIndex +=
+                                            saisonalBrandDistribtion[brand]
+                                                [index];
+                                      });
+                                      selectedMonth.forEach((index) {
+                                        _mN3ControllerList[index]
+                                            .text = (num.parse(
+                                                    _gesamtJahresSummeController
+                                                        .text) *
+                                                saisonalBrandDistribtion[brand]
+                                                    [index] /
+                                                _gesamtIndex)
+                                            .toStringAsFixed(0);
+                                      });
+                                      Navigator.of(context).pop();
+                                    }
+                                  }
+                                : null,
                           ),
                         ],
                       )
@@ -358,26 +457,24 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
   void _showStatusInfoDialog() {
     showDialog(
       context: context,
-      builder: (ctx) =>
-          AlertDialog(
-            title: Text('Definition Wahrscheinlichkeitsbewertung'),
-            content: Container(
-              height: 440,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20),
-                  Container(
-                    width: 680,
-                    child: Table(
-                      columnWidths: {
-                        0: FixedColumnWidth(200.0),
-                        1: FixedColumnWidth(480.0)
-                      },
-                      defaultVerticalAlignment: TableCellVerticalAlignment
-                          .middle,
-                      border: TableBorder.all(color: Colors.grey, width: 1),
-                      children: [
+      builder: (ctx) => AlertDialog(
+        title: Text('Definition Wahrscheinlichkeitsbewertung'),
+        content: Container(
+          height: 440,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              Container(
+                width: 680,
+                child: Table(
+                  columnWidths: {
+                    0: FixedColumnWidth(200.0),
+                    1: FixedColumnWidth(480.0)
+                  },
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  border: TableBorder.all(color: Colors.grey, width: 1),
+                  children: [
 //                    TableRow(children: [
 //                      TableCell(
 //                          child: Padding(
@@ -397,122 +494,118 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
 //                        ),
 //                      ),
 //                    ]),
-                        TableRow(children: [
-                          TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  '100 % = Umsatz',
-                                ),
-                              )),
-                          TableCell(
+                    TableRow(children: [
+                      TableCell(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '100 % = Umsatz',
+                        ),
+                      )),
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('- Auftrag ist verbindlich bei Visoon'),
+                              Text('- Ggf. Boniprüfung O.K.'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(
+                      children: [
+                        TableCell(
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('- Auftrag ist verbindlich bei Visoon'),
-                                  Text('- Ggf. Boniprüfung O.K.'),
-                                ],
-                              ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '90 %',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('- Auftrag mündlich erteilt'),
+                                Text('- Aktions- bzw. Projektplan definiert'),
+                                Text('- Entscheidungszeitraum: 1 - 2 Wochen'),
+                              ],
                             ),
                           ),
-                        ]),
-                        TableRow(
-                          children: [
-                            TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '90 %',
-                                  ),
-                                )),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('- Auftrag mündlich erteilt'),
-                                    Text(
-                                        '- Aktions- bzw. Projektplan definiert'),
-                                    Text(
-                                        '- Entscheidungszeitraum: 1 - 2 Wochen'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '75 %',
-                                  ),
-                                )),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        '- Anschlusstermin/Telefonat beim Entscheider verlief positiv'),
-                                    Text('- Budget ist für Visoon vorgesehen'),
-                                    Text('- Wettbewerb wurde ggf. abgelehnt'),
-                                    Text(
-                                        '- Entscheidungszeitraum: 2 - 4 Wochen'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '50 %',
-                                  ),
-                                )),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('- Budget vom Kunden ist vorhanden'),
-                                    Text('- Anschlusstermin beim Entscheider'),
-                                    Text('- Wettbewerb ist bekannt'),
-                                    Text(
-                                        '- Entscheidungszeitraum: 4 - 6 Wochen'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 20),
-                ],
+                    TableRow(
+                      children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '75 %',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    '- Anschlusstermin/Telefonat beim Entscheider verlief positiv'),
+                                Text('- Budget ist für Visoon vorgesehen'),
+                                Text('- Wettbewerb wurde ggf. abgelehnt'),
+                                Text('- Entscheidungszeitraum: 2 - 4 Wochen'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '50 %',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('- Budget vom Kunden ist vorhanden'),
+                                Text('- Anschlusstermin beim Entscheider'),
+                                Text('- Wettbewerb ist bekannt'),
+                                Text('- Entscheidungszeitraum: 4 - 6 Wochen'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Verstanden'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
+              SizedBox(height: 20),
             ],
           ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Verstanden'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
     );
   }
 
@@ -626,417 +719,179 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
 
     return SingleChildScrollView(
         child: Form(
-          key: _formKey,
-          child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: 410,
-                    child: TextFormField(
-                      controller: _projectNameController,
-                      decoration: InputDecoration(
-                        hintText: 'Projekt Name',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Bitte Projekt Namen eingeben.';
-                        }
-                        return null;
-                      },
-                    ),
+      key: _formKey,
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 410,
+                child: TextFormField(
+                  controller: _projectNameController,
+                  decoration: InputDecoration(
+                    hintText: 'Projekt Name',
                   ),
-                  Container(
-                    width: 450,
-                    child: SearchableDropdown.single(
-                      items: customerDropdownList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      value: customerDropdownValue,
-                      hint: Container(
-                        child: Text("Bitte Kunde auswählen..."),
-                      ),
-                      searchHint: "Bitte Kunde auswählen...",
-                      onChanged: (String newValue) {
-                        if (this.mounted) {
-                          setState(() {
-                            customerDropdownValue = newValue;
-                            if (newValue == 'Neukunde') {
-                              enableNeukunde = true;
-                            } else {
-                              enableNeukunde = false;
-                              agencyDropdownValue = null;
-                              //List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
-                              //if (customerAgencies.isNotEmpty){
-                              //  agencyDropdownList = customerAgencies;
-                              //} else {
-                              //  agencyDropdownList = agencyDropdownListComplete;
-                              //}
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Bitte Projekt Namen eingeben.';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                width: 450,
+                child: SearchableDropdown.single(
+                  items: customerDropdownList
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  value: customerDropdownValue,
+                  hint: Container(
+                    child: Text("Bitte Kunde auswählen..."),
+                  ),
+                  searchHint: "Bitte Kunde auswählen...",
+                  onChanged: (String newValue) {
+                    if (this.mounted) {
+                      setState(() {
+                        customerDropdownValue = newValue;
+                        if (newValue == 'Neukunde') {
+                          enableNeukunde = true;
+                        } else {
+                          enableNeukunde = false;
+                          agencyDropdownValue = null;
+                          //List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                          //if (customerAgencies.isNotEmpty){
+                          //  agencyDropdownList = customerAgencies;
+                          //} else {
+                          //  agencyDropdownList = agencyDropdownListComplete;
+                          //}
 
-                            }
-                          });
                         }
-                      },
-                      isExpanded: true,
-                    ),
-                    // DropdownButton<String>(
-                    //   value: customerDropdownValue,
-                    //   hint: Text('Bitte Kunde auswählen...'),
-                    //   iconSize: 24,
-                    //   elevation: 16,
-                    //   onChanged: (String newValue) {
-                    //     if (this.mounted) {
-                    //       setState(() {
-                    //         customerDropdownValue = newValue;
-                    //         if (newValue == 'Neukunde') {
-                    //           enableNeukunde = true;
-                    //         } else {
-                    //           enableNeukunde = false;
-                    //           agencyDropdownValue = null;
-                    //           //List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
-                    //           //if (customerAgencies.isNotEmpty){
-                    //           //  agencyDropdownList = customerAgencies;
-                    //           //} else {
-                    //           //  agencyDropdownList = agencyDropdownListComplete;
-                    //           //}
-                    //
-                    //         }
-                    //       });
-                    //     }
-                    //   },
-                    //   items: customerDropdownList.map<DropdownMenuItem<String>>((String value) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: value,
-                    //       child: Text(value),
-                    //     );
-                    //   }).toList(),
-                    // ),
-                  ),
-                  enableNeukunde
-                      ? Container(
-                    width: 450,
-                    child: TextField(
-                      controller: _neukundeController,
-                      enabled: enableNeukunde,
-                      onChanged: (text) {
-                        //Provider.of<ProjectForecast>(context, listen: false)
-                        //    .searchByName(text);
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Neukunden Name',
+                      });
+                    }
+                  },
+                  isExpanded: true,
+                ),
+                // DropdownButton<String>(
+                //   value: customerDropdownValue,
+                //   hint: Text('Bitte Kunde auswählen...'),
+                //   iconSize: 24,
+                //   elevation: 16,
+                //   onChanged: (String newValue) {
+                //     if (this.mounted) {
+                //       setState(() {
+                //         customerDropdownValue = newValue;
+                //         if (newValue == 'Neukunde') {
+                //           enableNeukunde = true;
+                //         } else {
+                //           enableNeukunde = false;
+                //           agencyDropdownValue = null;
+                //           //List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                //           //if (customerAgencies.isNotEmpty){
+                //           //  agencyDropdownList = customerAgencies;
+                //           //} else {
+                //           //  agencyDropdownList = agencyDropdownListComplete;
+                //           //}
+                //
+                //         }
+                //       });
+                //     }
+                //   },
+                //   items: customerDropdownList.map<DropdownMenuItem<String>>((String value) {
+                //     return DropdownMenuItem<String>(
+                //       value: value,
+                //       child: Text(value),
+                //     );
+                //   }).toList(),
+                // ),
+              ),
+              enableNeukunde
+                  ? Container(
+                      width: 450,
+                      child: TextField(
+                        controller: _neukundeController,
+                        enabled: enableNeukunde,
+                        onChanged: (text) {
+                          //Provider.of<ProjectForecast>(context, listen: false)
+                          //    .searchByName(text);
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Neukunden Name',
+                        ),
                       ),
+                    )
+                  : SizedBox(
+                      height: 1,
                     ),
-                  )
-                      : SizedBox(
-                    height: 1,
-                  ),
+              Container(
+                width: 450,
+                child: SearchableDropdown.single(
+                  items: agencyDropdownList
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  value: agencyDropdownValue,
+                  hint: 'Bitte Agentur auswählen...',
+                  searchHint: 'Bitte Agentur auswählen...',
+                  onChanged: (String newValue) {
+                    if (this.mounted) {
+                      setState(() {
+                        agencyDropdownValue = newValue;
+                        //agencyDropdownValue = null;
+                        //agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
+                      });
+                    }
+                  },
+                  isExpanded: true,
+                ),
+                // DropdownButton<String>(
+                //   value: agencyDropdownValue,
+                //   hint: Text('Bitte Agentur auswählen...'),
+                //   iconSize: 24,
+                //   elevation: 16,
+                //   onChanged: (String newValue) {
+                //     if (this.mounted) {
+                //       setState(() {
+                //         agencyDropdownValue = newValue;
+                //       });
+                //     }
+                //   },
+                //   items: agencyDropdownList
+                //       .map<DropdownMenuItem<String>>((String value) {
+                //     return DropdownMenuItem<String>(
+                //       value: value,
+                //       child: Text(value),
+                //     );
+                //   }).toList(),
+                // ),
+              ),
+              Row(
+                children: [
                   Container(
-                    width: 450,
-                    child: SearchableDropdown.single(
-                      items: agencyDropdownList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      value: agencyDropdownValue,
-                      hint: 'Bitte Agentur auswählen...',
-                      searchHint: 'Bitte Agentur auswählen...',
-                      onChanged: (String newValue) {
-                        if (this.mounted) {
-                          setState(() {
-                            agencyDropdownValue = newValue;
-                            //agencyDropdownValue = null;
-                            //agencyDropdownList = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
-                          });
-                        }
-                      },
-                      isExpanded: true,
-                    ),
-                    // DropdownButton<String>(
-                    //   value: agencyDropdownValue,
-                    //   hint: Text('Bitte Agentur auswählen...'),
-                    //   iconSize: 24,
-                    //   elevation: 16,
-                    //   onChanged: (String newValue) {
-                    //     if (this.mounted) {
-                    //       setState(() {
-                    //         agencyDropdownValue = newValue;
-                    //       });
-                    //     }
-                    //   },
-                    //   items: agencyDropdownList
-                    //       .map<DropdownMenuItem<String>>((String value) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: value,
-                    //       child: Text(value),
-                    //     );
-                    //   }).toList(),
-                    // ),
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 100,
-                        child: DropdownButton<String>(
-                          value: mediumDropdownValue,
-                          hint: Text('Medium'),
-                          iconSize: 24,
-                          elevation: 16,
-                          onChanged: (String newValue) {
-                            if (this.mounted) {
-                              setState(() {
-                                mediumDropdownValue = newValue;
-                              });
-                            }
-                          },
-                          items: <String>[
-                            'TV',
-                            'ONLINE',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        width: 330,
-                        child: DropdownButton<String>(
-                          value: brandDropdownValue,
-                          hint: Text('Brand'),
-                          iconSize: 24,
-                          elevation: 16,
-                          onChanged: (String newValue) {
-                            if (this.mounted) {
-                              setState(() {
-                                brandDropdownValue = newValue;
-                              });
-                            }
-                          },
-                          items: brandDropdownList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      (bewertungDropdownValue != null)
-                          ? Container(width: 100, child: Text('Bewertung'))
-                          : SizedBox(
-                        width: 100,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        width: 200,
-                        child: DropdownButton<String>(
-                          value: bewertungDropdownValue,
-                          hint: Text('Bewertung'),
-                          iconSize: 24,
-                          elevation: 16,
-                          onChanged: (String newValue) {
-                            if (this.mounted) {
-                              setState(() {
-                                bewertungDropdownValue = newValue;
-                              });
-                            }
-                          },
-                          items: <String>[
-                            '100',
-                            '90',
-                            '75',
-                            '50',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.info_outline),
-                        onPressed: _showStatusInfoDialog,
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 250,
-                        child: SearchableDropdown.multiple(
-                          items: monthItems
-                              .map<DropdownMenuItem<String>>((String item) {
-                            return DropdownMenuItem<String>(
-                              value: item,
-                              child: Container(width: 155, child: Text(item)),
-                            );
-                          }).toList(),
-                          selectedItems: selectedMonth,
-                          hint: "Aktive Monate",
-                          searchHint: "",
-                          doneButton: "Übernehmen",
-                          closeButton: SizedBox.shrink(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedMonth = value;
-                            });
-                          },
-                          dialogBox: false,
-                          isExpanded: false,
-                          menuConstraints:
-                          BoxConstraints.expand(width: 250, height: 400),
-                        ),
-                      ),
-                      RaisedButton(
-                        onPressed: selectedMonth.isNotEmpty
-                            ? _showGesamjahresDialog
-                            : null,
-                        child: Text('Gesamtjahreswert'),
-                      )
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Text('MN3'),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      selectedMonth.isNotEmpty
-                          ? Column(
-                        children: [
-                          ...selectedMonth.map((index) =>
-                              Container(
-                                width: 200,
-                                child: TextFormField(
-                                  controller: _mN3ControllerList[index],
-                                  decoration: InputDecoration(
-                                    hintText: monthItems[index],
-                                    helperText: (mN3 != null)
-                                        ? monthItems[index]
-                                        : null,
-                                    suffixText: '€',
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                ),
-                              )),
-                        ],
-                      )
-                          : Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Text('Bitte Monate auswählen...'),
-                      )
-                    ],
-                  ),
-                  Container(
-                    width: 250,
-                    child: TextFormField(
-                      controller: _cashRabattPercentController,
-                      decoration: InputDecoration(
-                        hintText: 'Cash-Rabatt',
-                        helperText:
-                        (cashRabattPercent != null) ? 'Cash-Rabatt' : null,
-                        suffixText: '%',
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Bitte Cash-Rabatt angeben.';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: 250,
-                    child: TextFormField(
-                      controller: _naturalRabattPercentController,
-                      decoration: InputDecoration(
-                        hintText: 'Naturalrabatt',
-                        helperText:
-                        (naturalRabattPercent != null) ? 'Naturalrabatt' : null,
-                        suffixText: '%',
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Bitte Naturalrabatt angeben.';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 150,
-                        child: TextFormField(
-                          onTap: _showDatePicker,
-                          controller: _dateController,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            hintText: 'Due Date',
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Bitte Due Date angeben.';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.calendar_today),
-                        onPressed: _showDatePicker,
-                      )
-                    ],
-                  ),
-                  Container(
-                    width: 150,
+                    width: 100,
                     child: DropdownButton<String>(
-                      hint: Text('Projekt Status'),
-                      value: statusDropdownValue,
+                      value: mediumDropdownValue,
+                      hint: Text('Medium'),
                       iconSize: 24,
                       elevation: 16,
                       onChanged: (String newValue) {
                         if (this.mounted) {
                           setState(() {
-                            statusDropdownValue = newValue;
+                            mediumDropdownValue = newValue;
                           });
                         }
                       },
                       items: <String>[
-                        'offen',
-                        'gebucht',
-                        'abgesagt',
+                        'TV',
+                        'ONLINE',
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -1045,208 +900,448 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                       }).toList(),
                     ),
                   ),
+                  SizedBox(
+                    width: 20,
+                  ),
                   Container(
-                    width: 250,
-                    height: 70,
-                    child: TextField(
-                      controller: _commentController,
-                      decoration: InputDecoration(hintText: 'Kommentar'),
-                      minLines: 2,
-                      maxLines: 2,
+                    width: 330,
+                    child: DropdownButton<String>(
+                      value: brandDropdownValue,
+                      hint: Text('Brand'),
+                      iconSize: 24,
+                      elevation: 16,
+                      onChanged: (String newValue) {
+                        if (this.mounted) {
+                          setState(() {
+                            brandDropdownValue = newValue;
+                          });
+                        }
+                      },
+                      items: brandDropdownList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ],
               ),
-              Container(
-                height: 540,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(height: 40),
-                    Container(
-                      width: 270,
-                      child: Table(
-                        columnWidths: {
-                          0: FixedColumnWidth(120.0),
-                          1: FixedColumnWidth(150.0)
-                        },
-                        defaultVerticalAlignment: TableCellVerticalAlignment
-                            .middle,
-                        border: TableBorder.all(color: Colors.grey, width: 1),
-                        children: [
-                          TableRow(children: [
-                            TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('MB 3'),
-                                )),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    (mB3 != null) ? formatter.format(mB3) : ''),
-                              ),
-                            ),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Naturalrabatt',
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  (bewertungDropdownValue != null)
+                      ? Container(width: 100, child: Text('Bewertung'))
+                      : SizedBox(
+                          width: 100,
+                        ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    width: 200,
+                    child: DropdownButton<String>(
+                      value: bewertungDropdownValue,
+                      hint: Text('Bewertung'),
+                      iconSize: 24,
+                      elevation: 16,
+                      onChanged: (String newValue) {
+                        if (this.mounted) {
+                          setState(() {
+                            bewertungDropdownValue = newValue;
+                          });
+                        }
+                      },
+                      items: <String>[
+                        '100',
+                        '90',
+                        '75',
+                        '50',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.info_outline),
+                    onPressed: _showStatusInfoDialog,
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: 250,
+                    child: SearchableDropdown.multiple(
+                      items: monthItems
+                          .map<DropdownMenuItem<String>>((String item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: Container(width: 155, child: Text(item)),
+                        );
+                      }).toList(),
+                      selectedItems: selectedMonth,
+                      hint: "Aktive Monate",
+                      searchHint: "",
+                      doneButton: "Übernehmen",
+                      closeButton: SizedBox.shrink(),
+                      onChanged: (List<int> value) {
+                        setState(() {
+                          value.sort();
+                          selectedMonth = value;
+                          _mN3ControllerList.forEach((_mN3Controller) {
+                            int controllerIndex =
+                                _mN3ControllerList.indexOf(_mN3Controller);
+                            if (!selectedMonth.contains(controllerIndex)) {
+                              _mN3Controller.text = '';
+                            }
+                          });
+                        });
+                      },
+                      dialogBox: false,
+                      isExpanded: false,
+                      menuConstraints:
+                          BoxConstraints.expand(width: 250, height: 400),
+                    ),
+                  ),
+                  RaisedButton(
+                    onPressed: selectedMonth.isNotEmpty
+                        ? _showGesamjahresDialog
+                        : null,
+                    child: Text('Gesamtjahreswert'),
+                  )
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Text('MN3'),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  selectedMonth.isNotEmpty
+                      ? Column(
+                          children: [
+                            ...selectedMonth.map((index) => Container(
+                                  width: 200,
+                                  child: TextFormField(
+                                    controller: _mN3ControllerList[index],
+                                    decoration: InputDecoration(
+                                      hintText: monthItems[index],
+                                      helperText: (mN3 != null)
+                                          ? monthItems[index]
+                                          : null,
+                                      suffixText: '€',
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                   ),
                                 )),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text((naturalRabatt != null)
-                                    ? formatter.format(naturalRabatt)
-                                    : ''),
-                              ),
-                            ),
-                          ]),
-                          TableRow(
-                            children: [
-                              TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'MB 1',
-                                    ),
-                                  )),
-                              TableCell(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text((mB1 != null)
-                                        ? formatter.format(mB1)
-                                        : '')),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Cash-Rabatt',
-                                    ),
-                                  )),
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((cashRabatt != null)
-                                      ? formatter.format(cashRabatt)
-                                      : ''),
-                                ),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'MN 3',
-                                    ),
-                                  )),
-                              TableCell(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                        mN3 != null
-                                            ? formatter.format(mN3)
-                                            : '')),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Global Rate',
-                                    ),
-                                  )),
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((globalRate != null)
-                                      ? globalRate.toStringAsFixed(1) + '%'
-                                      : ''),
-                                ),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'MN 3 bewertet',
-                                    ),
-                                  )),
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((mN3 != null &&
-                                      bewertungDropdownValue != null)
-                                      ? formatter.format(mN3 *
-                                      int.parse(bewertungDropdownValue) /
-                                      100)
-                                      : ''),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    _hasError
-                        ? Text(
-                      'Bitte alle Angaben ausfüllen.',
-                      style: TextStyle(color: Colors.red),
-                    )
-                        : SizedBox(
-                      height: 12,
-                    ),
-                    _networkError
-                        ? Text(
-                      'Bitte Verbindung prüfen.',
-                      style: TextStyle(color: Colors.red),
-                    )
-                        : SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        FlatButton(
-                          child: const Text('Abbrechen'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        RaisedButton(
-                          child: (widget.projectId != null)
-                              ? const Text('Update')
-                              : const Text('Speichern'),
-                          onPressed: _submit,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
-                          textColor: Colors.white,
+                          ],
                         )
-                      ],
-                    )
-                  ],
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Text('Bitte Monate auswählen...'),
+                        )
+                ],
+              ),
+              Container(
+                width: 250,
+                child: TextFormField(
+                  controller: _cashRabattPercentController,
+                  decoration: InputDecoration(
+                    hintText: 'Cash-Rabatt',
+                    helperText:
+                        (cashRabattPercent != null) ? 'Cash-Rabatt' : null,
+                    suffixText: '%',
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Bitte Cash-Rabatt angeben.';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                width: 250,
+                child: TextFormField(
+                  controller: _naturalRabattPercentController,
+                  decoration: InputDecoration(
+                    hintText: 'Naturalrabatt',
+                    helperText:
+                        (naturalRabattPercent != null) ? 'Naturalrabatt' : null,
+                    suffixText: '%',
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Bitte Naturalrabatt angeben.';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: 150,
+                    child: TextFormField(
+                      onTap: _showDatePicker,
+                      controller: _dateController,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        hintText: 'Due Date',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Bitte Due Date angeben.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: _showDatePicker,
+                  )
+                ],
+              ),
+              Container(
+                width: 150,
+                child: DropdownButton<String>(
+                  hint: Text('Projekt Status'),
+                  value: statusDropdownValue,
+                  iconSize: 24,
+                  elevation: 16,
+                  onChanged: (String newValue) {
+                    if (this.mounted) {
+                      setState(() {
+                        statusDropdownValue = newValue;
+                      });
+                    }
+                  },
+                  items: <String>[
+                    'offen',
+                    'gebucht',
+                    'abgesagt',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+              Container(
+                width: 250,
+                height: 70,
+                child: TextField(
+                  controller: _commentController,
+                  decoration: InputDecoration(hintText: 'Kommentar'),
+                  minLines: 2,
+                  maxLines: 2,
                 ),
               ),
             ],
           ),
-        ));
+          Container(
+            height: 540,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(height: 40),
+                Container(
+                  width: 270,
+                  child: Table(
+                    columnWidths: {
+                      0: FixedColumnWidth(120.0),
+                      1: FixedColumnWidth(150.0)
+                    },
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    border: TableBorder.all(color: Colors.grey, width: 1),
+                    children: [
+                      TableRow(children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('MB 3'),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                (mB3 != null) ? formatter.format(mB3) : ''),
+                          ),
+                        ),
+                      ]),
+                      TableRow(children: [
+                        TableCell(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Naturalrabatt',
+                          ),
+                        )),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text((naturalRabatt != null)
+                                ? formatter.format(naturalRabatt)
+                                : ''),
+                          ),
+                        ),
+                      ]),
+                      TableRow(
+                        children: [
+                          TableCell(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'MB 1',
+                            ),
+                          )),
+                          TableCell(
+                            child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text((mB1 != null)
+                                    ? formatter.format(mB1)
+                                    : '')),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Cash-Rabatt',
+                            ),
+                          )),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text((cashRabatt != null)
+                                  ? formatter.format(cashRabatt)
+                                  : ''),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'MN 3',
+                            ),
+                          )),
+                          TableCell(
+                            child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    mN3 != null ? formatter.format(mN3) : '')),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Global Rate',
+                            ),
+                          )),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text((globalRate != null)
+                                  ? globalRate.toStringAsFixed(1) + '%'
+                                  : ''),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'MN 3 bewertet',
+                            ),
+                          )),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text((mN3 != null &&
+                                      bewertungDropdownValue != null)
+                                  ? formatter.format(mN3 *
+                                      int.parse(bewertungDropdownValue) /
+                                      100)
+                                  : ''),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                _hasError
+                    ? Text(
+                        'Bitte alle Angaben ausfüllen.',
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : SizedBox(
+                        height: 12,
+                      ),
+                _networkError
+                    ? Text(
+                        'Bitte Verbindung prüfen.',
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : SizedBox(
+                        height: 12,
+                      ),
+                Row(
+                  children: [
+                    FlatButton(
+                      child: const Text('Abbrechen'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    RaisedButton(
+                      child: (widget.projectId != null)
+                          ? const Text('Update')
+                          : const Text('Speichern'),
+                      onPressed: _submit,
+                      color: Theme.of(context).primaryColor,
+                      textColor: Colors.white,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 }
