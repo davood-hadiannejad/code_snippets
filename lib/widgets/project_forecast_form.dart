@@ -1002,10 +1002,8 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                           });
                         });
                       },
-                      dialogBox: false,
+                      dialogBox: true,
                       isExpanded: false,
-                      menuConstraints:
-                          BoxConstraints.expand(width: 250, height: 400),
                     ),
                   ),
                   RaisedButton(
