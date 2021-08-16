@@ -11,6 +11,7 @@ class Project with ChangeNotifier {
   final String brand;
   final String agency;
   final num mn3;
+  final Map<String, num> monthlyMn3;
   final num cashRabatt;
   final num naturalRabatt;
   final num bewertung;
@@ -27,6 +28,7 @@ class Project with ChangeNotifier {
     @required this.brand,
     @required this.agency,
     @required this.mn3,
+    @required this.monthlyMn3,
     @required this.cashRabatt,
     @required this.naturalRabatt,
     @required this.bewertung,

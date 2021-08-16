@@ -123,6 +123,11 @@ class ProjectList with ChangeNotifier {
             brand: project['brand'],
             agency: project['agentur'],
             mn3: project['mn3'],
+            monthlyMn3: {'m1': project['m1'], 'm2': project['m2'],
+              'm3': project['m3'], 'm4': project['m4'], 'm5': project['m5'],
+              'm6': project['m6'], 'm7': project['m7'], 'm8': project['m8'],
+              'm9': project['m9'], 'm10': project['m10'], 'm11': project['m11'],
+              'm12': project['m12'],},
             cashRabatt: project['cashRabatt'],
             naturalRabatt: project['naturalRabatt'],
             bewertung: project['bewertung'],
@@ -166,7 +171,7 @@ class ProjectList with ChangeNotifier {
     String brand,
     String agency,
     String verkaueferEmail,
-    double mn3,
+    Map<String, double> monthlyMn3,
     double cashRabatt,
     double naturalRabatt,
     int bewertung,
@@ -176,23 +181,29 @@ class ProjectList with ChangeNotifier {
   ) async {
     var url = APIPROTOCOL + APIHOST + '/api/projects/';
     try {
-      final response = await http.post(url, headers: {
-        "Authorization": "Bearer $authToken"
-      }, body: {
+      Map<String, dynamic> body = {
         'name': name,
         'kunde': customer,
         'verkaeufer': verkaueferEmail,
         'medium': medium,
         'brand': brand,
         'agentur': agency,
-        'mn3': mn3.toString(),
         'cashRabatt': cashRabatt.toString(),
         'naturalRabatt': naturalRabatt.toString(),
         'bewertung': bewertung.toString(),
         'comment': comment,
         'dueDate': dueDate,
         'status': status,
+      };
+
+      monthlyMn3.map((key, value) {
+        body[key] = value;
+        return;
       });
+
+      final response = await http.post(url, headers: {
+        "Authorization": "Bearer $authToken"
+      }, body: body);
       final extractedData =
           json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       _items.add(Project(
@@ -202,7 +213,8 @@ class ProjectList with ChangeNotifier {
         medium: medium,
         brand: brand,
         agency: agency,
-        mn3: mn3,
+        monthlyMn3: monthlyMn3,
+        mn3: extractedData['mn3'],
         cashRabatt: cashRabatt,
         naturalRabatt: naturalRabatt,
         bewertung: bewertung,
@@ -225,7 +237,7 @@ class ProjectList with ChangeNotifier {
     String brand,
     String agency,
     String verkaueferEmail,
-    double mn3,
+    Map<String, double> monthlyMn3,
     double cashRabatt,
     double naturalRabatt,
     int bewertung,
@@ -236,9 +248,7 @@ class ProjectList with ChangeNotifier {
   ) async {
     var url = APIPROTOCOL + APIHOST + '/api/projects/${id.toString()}/?jahr=$year';
     try {
-      final response = await http.put(url, headers: {
-        "Authorization": "Bearer $authToken"
-      }, body: {
+      Map<String, dynamic> body = {
         'id': id.toString(),
         'name': name,
         'kunde': customer,
@@ -246,14 +256,22 @@ class ProjectList with ChangeNotifier {
         'medium': medium,
         'brand': brand,
         'agentur': agency,
-        'mn3': mn3.toString(),
         'cashRabatt': cashRabatt.toString(),
         'naturalRabatt': naturalRabatt.toString(),
         'bewertung': bewertung.toString(),
         'comment': comment,
         'dueDate': dueDate,
         'status': status,
+      };
+
+      monthlyMn3.map((key, value) {
+        body[key] = value;
+        return;
       });
+
+      final response = await http.put(url, headers: {
+        "Authorization": "Bearer $authToken"
+      }, body: body);
       final extractedData =
           json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       _items.removeWhere((project) => project.id == id);
@@ -265,7 +283,8 @@ class ProjectList with ChangeNotifier {
         medium: medium,
         brand: brand,
         agency: agency,
-        mn3: mn3,
+        mn3: extractedData['mn3'],
+        monthlyMn3: monthlyMn3,
         cashRabatt: cashRabatt,
         naturalRabatt: naturalRabatt,
         bewertung: bewertung,
