@@ -364,7 +364,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                           controller: _gesamtJahresSummeController,
                           decoration: InputDecoration(
                             hintText: 'Bitte hier eingeben....',
-                            helperText: 'Gesamtjahressumme',
+                            helperText: 'Gesamtjahressumme MN3',
                             suffixText: '€',
                           ),
                           validator: (value) {

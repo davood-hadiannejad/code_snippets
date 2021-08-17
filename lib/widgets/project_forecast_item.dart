@@ -60,7 +60,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
   ];
 
   String _returnFirstMonth(Map<String, num> monthlyMn3) {
-    String firstMonth;
+    String firstMonth = '';
     String firstMonthKey;
     for (String key in monthlyMn3.keys) {
       if (monthlyMn3[key] != 0 && monthlyMn3[key] != null) {
@@ -68,12 +68,14 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
         break;
       }
     }
-    firstMonth = monthItems[monthKeys.indexOf(firstMonthKey)];
+    if (firstMonthKey != null) {
+      firstMonth = monthItems[monthKeys.indexOf(firstMonthKey)];
+    }
     return firstMonth;
   }
 
   String _returnLastMonth(Map<String, num> monthlyMn3) {
-    String lastMonth;
+    String lastMonth = '';
     String lastMonthKey;
     for (String key in monthlyMn3.keys.toList().reversed) {
       if (monthlyMn3[key] != 0 && monthlyMn3[key] != null) {
@@ -81,7 +83,9 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
         break;
       }
     }
-    lastMonth = monthItems[monthKeys.indexOf(lastMonthKey)];
+    if (lastMonthKey != null) {
+      lastMonth = monthItems[monthKeys.indexOf(lastMonthKey)];
+    }
     return lastMonth;
   }
 
@@ -197,7 +201,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           label: Expanded(
             child: Text(
               'Zeitraum',
-              textAlign: TextAlign.end,
+              textAlign: TextAlign.center,
             ),
           ),
         ),
@@ -264,7 +268,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                   DataCell(Container(
                     width: 110,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text((_returnFirstMonth(project.monthlyMn3) ==
                                 _returnLastMonth(project.monthlyMn3))

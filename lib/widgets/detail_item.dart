@@ -29,6 +29,21 @@ List<String> _month = [
   'm12'
 ];
 
+List<String> monthItems = [
+  'Jan',
+  'Feb',
+  'Mär',
+  'Apr',
+  'Mai',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Okt',
+  'Nov',
+  'Dez'
+];
+
 class DetailItem extends StatefulWidget {
   final Detail detailData;
   final String pageType;
@@ -94,6 +109,36 @@ class _DetailItemState extends State<DetailItem> {
         );
       },
     );
+  }
+
+  String _returnFirstMonth(Map<String, dynamic> projects) {
+    String firstMonth = '';
+    String firstMonthKey;
+    for (String key in _month) {
+      if (projects[key] != 0 && projects[key] != null) {
+        firstMonthKey = key;
+        break;
+      }
+    }
+    if (firstMonthKey != null) {
+      firstMonth = monthItems[_month.indexOf(firstMonthKey)];
+    }
+    return firstMonth;
+  }
+
+  String _returnLastMonth(Map<String, dynamic> projects) {
+    String lastMonth = '';
+    String lastMonthKey;
+    for (String key in _month.reversed) {
+      if (projects[key] != 0 && projects[key] != null) {
+        lastMonthKey = key;
+        break;
+      }
+    }
+    if (lastMonthKey != null) {
+      lastMonth = monthItems[_month.indexOf(lastMonthKey)];
+    }
+    return lastMonth;
   }
 
   @override
@@ -1010,6 +1055,14 @@ class _DetailItemState extends State<DetailItem> {
         DataColumn(
           label: Expanded(
             child: Text(
+              'Zeitraum',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
               'Bewertung',
               textAlign: TextAlign.end,
             ),
@@ -1050,6 +1103,20 @@ class _DetailItemState extends State<DetailItem> {
                           children: [
                             Text(formatter.format(
                                 project['mn3'] * project['bewertung'] / 100)),
+                          ],
+                        ),
+                      )),
+                      DataCell(Container(
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text((_returnFirstMonth(project) ==
+                                _returnLastMonth(project))
+                                ? _returnFirstMonth(project)
+                                : _returnFirstMonth(project) +
+                                ' - ' +
+                                _returnLastMonth(project)),
                           ],
                         ),
                       )),
