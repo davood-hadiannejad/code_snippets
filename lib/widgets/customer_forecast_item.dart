@@ -45,6 +45,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   final ScrollController _scrollController = ScrollController();
   Verkaeufer selectedVerkaufer;
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
+  Map<CustomerForecast, List<FocusNode>> _focusNodeList = {};
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
   int maxPages;
   int currentPage;
@@ -464,6 +465,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   ],
                   rows: widget.customerForecastData.items.map((forecast) {
                     _controllerList[forecast] = [];
+                    _focusNodeList[forecast] = [];
                     _controllerSummary[forecast] = TextEditingController(
                         text:
                             formatter.format(forecast.forecast.entries.map((e) {
@@ -523,6 +525,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                       ..._month.asMap().entries.map((entry) {
                         int idx = entry.key;
                         String monthKey = entry.value;
+                        _focusNodeList[forecast].add(FocusNode());
                         _controllerList[forecast].add(TextEditingController(
                             text:
                                 formatter.format(forecast.forecast[monthKey])));
@@ -540,6 +543,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                           ? selectedVerkaufer.isGroup
                                           : true,
                                   controller: _controllerList[forecast][idx],
+                                  focusNode: _focusNodeList[forecast][idx],
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: (currentYear == selectedYear)
@@ -576,6 +580,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                       selectedVerkaufer.email,
                                       forecast.forecast,
                                     );
+                                    if (monthKey != 'm12') {
+                                      FocusScope.of(context).requestFocus(_focusNodeList[forecast][idx + 1]);
+                                    }
                                   },
                                 ),
                                 SizedBox(
