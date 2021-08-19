@@ -56,7 +56,21 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
     maxPages = widget.customerForecastData.maxPages;
     currentPage = widget.customerForecastData.currentPage;
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNodeList.forEach((CustomerForecast forecast, List focusNodeList) {
+        focusNodeList.asMap().forEach((index, focusNode) {
+          focusNode.addListener(() {
+            if (focusNode.hasFocus) {
+              _controllerList[forecast][index].selection = TextSelection(
+                  baseOffset: 0,
+                  extentOffset: _controllerList[forecast][index].text.length);
+            }
+          });
+        });
+      });
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -580,8 +594,10 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                       selectedVerkaufer.email,
                                       forecast.forecast,
                                     );
+                                    _controllerList[forecast][idx].text = formatter.format(forecast.forecast[monthKey]);
                                     if (monthKey != 'm12') {
-                                      FocusScope.of(context).requestFocus(_focusNodeList[forecast][idx + 1]);
+                                      FocusScope.of(context).requestFocus(
+                                          _focusNodeList[forecast][idx + 1]);
                                     }
                                   },
                                 ),
