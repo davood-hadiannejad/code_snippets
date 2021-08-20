@@ -582,7 +582,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   onEditingComplete: () {
                                     FocusScope.of(context).unfocus();
                                     String textInput = _controllerList[forecast][idx].text;
-                                    textInput = textInput.replaceAll('€', '');
+                                    textInput = textInput.replaceAll('€', '').replaceAll('.', '');
                                     forecast.forecast[monthKey] = num.parse(textInput);
                                     Provider.of<CustomerForecastList>(context,
                                             listen: false)
