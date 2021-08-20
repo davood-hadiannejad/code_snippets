@@ -308,7 +308,7 @@ class _DetailItemState extends State<DetailItem> {
                           widget.detailData.istStichtagGesamt,
                           widget.detailData.kundenForecastGesamt,
                           widget.detailData.projektForecastGesamt,
-                          showProjekt: false,
+                          showProjekt: true,
                         ),
                       ),
                     ],
