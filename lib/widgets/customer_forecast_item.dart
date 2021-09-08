@@ -599,6 +599,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                     if (monthKey != 'm12') {
                                       FocusScope.of(context).requestFocus(
                                           _focusNodeList[forecast][idx + 1]);
+                                    } else {
+                                      FocusScope.of(context).requestFocus(
+                                          _focusNodeList[forecast][currentMonth - 1]);
                                     }
                                   },
                                 ),

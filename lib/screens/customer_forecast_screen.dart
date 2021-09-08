@@ -82,7 +82,7 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    width: 1400,
+                    width: 1450,
                     child: Center(child: CircularProgressIndicator()),
                   );
                 } else {
@@ -91,14 +91,14 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
                     // Do error handling stuff
                     print(dataSnapshot.error);
                     return Container(
-                        width: 1400,
+                        width: 1450,
                         child: Center(
                           child: Text(
                               'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
                         ));
                   } else {
                     return Container(
-                      width: 1400,
+                      width: 1450,
                       child: Consumer<CustomerForecastList>(
                         builder: (ctx, customerForecastData, child) => Center(
                           child: CustomerForecastItem(customerForecastData),

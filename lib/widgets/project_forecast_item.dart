@@ -144,7 +144,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                 ),
               ),
               Container(
-                width: 1350,
+                width: 1400,
                 child: buildProjectTable(context),
               ),
               SizedBox(
