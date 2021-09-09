@@ -47,6 +47,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
   Map<CustomerForecast, List<FocusNode>> _focusNodeList = {};
   Map<CustomerForecast, TextEditingController> _controllerSummary = {};
+  Map<CustomerForecast, FocusNode> _focusNodeSummary = {};
   int maxPages;
   int currentPage;
   String dialogDropdownValue = 'Gesamtjahresumme';
@@ -67,6 +68,16 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
             }
           });
         });
+      });
+
+      _focusNodeSummary.forEach((CustomerForecast forecast, FocusNode focusNode) {
+          focusNode.addListener(() {
+            if (focusNode.hasFocus) {
+              _controllerSummary[forecast].selection = TextSelection(
+                  baseOffset: 0,
+                  extentOffset: _controllerSummary[forecast].text.length);
+            }
+          });
       });
     });
   }
@@ -480,6 +491,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   rows: widget.customerForecastData.items.map((forecast) {
                     _controllerList[forecast] = [];
                     _focusNodeList[forecast] = [];
+                    _focusNodeSummary[forecast]  = FocusNode();
                     _controllerSummary[forecast] = TextEditingController(
                         text:
                             formatter.format(forecast.forecast.entries.map((e) {
@@ -678,6 +690,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               TextFormField(
                                 textAlign: TextAlign.end,
                                 controller: _controllerSummary[forecast],
+                                focusNode: _focusNodeSummary[forecast],
                                 readOnly: (selectedYear >= currentYear)
                                     ? selectedVerkaufer.isGroup
                                     : true,
