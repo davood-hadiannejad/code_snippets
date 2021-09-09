@@ -72,7 +72,7 @@ class ProjectForecastScreen extends StatelessWidget {
               builder: (ctx, dataSnapshot) {
                 if (dataSnapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    width: 1250,
+                    width: 1450,
                     child: Center(child: CircularProgressIndicator()),
                   );
                 } else {
@@ -81,14 +81,14 @@ class ProjectForecastScreen extends StatelessWidget {
                     // Do error handling stuff
                     print(dataSnapshot.error);
                     return Container(
-                        width: 1350,
+                        width: 1450,
                         child: Center(
                           child: Text(
                               'Es ist ein Fehler aufgetreten! Bitte überprüfe deine Netzwerkverbidung...'),
                         ));
                   } else {
                     return Container(
-                      width: 1350,
+                      width: 1450,
                       child: Consumer<ProjectList>(
                         builder: (ctx, forecastData, child) => Center(
                           child: ProjectForecastItem(
