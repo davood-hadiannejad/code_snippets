@@ -608,6 +608,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                       forecast.forecast,
                                     );
                                     _controllerList[forecast][idx].text = formatter.format(forecast.forecast[monthKey]);
+                                    _controllerSummary[forecast].text = formatter.format(forecast.forecast.entries.map((e) {
+                                          return e.value;
+                                        }).reduce((a, b) => a + b));
                                     if (monthKey != 'm12') {
                                       FocusScope.of(context).requestFocus(
                                           _focusNodeList[forecast][idx + 1]);
