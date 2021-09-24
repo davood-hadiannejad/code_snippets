@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
+import 'package:data_table_2/data_table_2.dart';
 
 import '../providers/detail.dart';
 import './monthly_chart.dart';
@@ -77,7 +78,7 @@ class MandantBrandItem extends StatelessWidget {
                 width: 1200,
                 child: (pageType == 'Mandant')
                     ? buildMandantTable(context)
-                    : buildCustomerTable(context),
+                    : Container(height: 400, child: buildCustomerTable(context)),
               ),
               Container(
                 width: 1200,
@@ -230,7 +231,7 @@ class MandantBrandItem extends StatelessWidget {
   }
 
   DataTable buildCustomerTable(context) {
-    return DataTable(
+    return DataTable2(
       showCheckboxColumn: false,
       columns: const <DataColumn>[
         DataColumn(
