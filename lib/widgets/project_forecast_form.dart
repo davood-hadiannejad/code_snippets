@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/material.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:search_choices/search_choices.dart';
 
 import '../providers/agency_list.dart';
 import '../providers/project_list.dart';
@@ -742,7 +742,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
               ),
               Container(
                 width: 450,
-                child: SearchableDropdown.single(
+                child: SearchChoices.single(
                   items: customerDropdownList
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
@@ -830,7 +830,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                     ),
               Container(
                 width: 450,
-                child: SearchableDropdown.single(
+                child: SearchChoices.single(
                   items: agencyDropdownList
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
@@ -976,7 +976,7 @@ class _ProjectForecastFormState extends State<ProjectForecastForm> {
                 children: [
                   Container(
                     width: 250,
-                    child: SearchableDropdown.multiple(
+                    child: SearchChoices.multiple(
                       items: monthItems
                           .map<DropdownMenuItem<String>>((String item) {
                         return DropdownMenuItem<String>(

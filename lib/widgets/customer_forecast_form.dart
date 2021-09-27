@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:search_choices/search_choices.dart';
 
 import '../providers/customer_forecast_list.dart';
 import '../providers/agency_list.dart';
@@ -50,7 +50,7 @@ class _CustomerForecastFormState extends State<CustomerForecastForm> {
         children: [
           Container(
             width: 450,
-            child: SearchableDropdown.single(
+            child: SearchChoices.single(
               items: customerDropdownList
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -97,7 +97,7 @@ class _CustomerForecastFormState extends State<CustomerForecastForm> {
           ),
           Container(
             width: 450,
-            child: SearchableDropdown.single(
+            child: SearchChoices.single(
               items: agencyDropdownList
                      .map<DropdownMenuItem<String>>((String value) {
                    return DropdownMenuItem<String>(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:search_choices/search_choices.dart';
 
 import '../providers/aob_list.dart';
 import '../providers/detail.dart';
@@ -88,7 +88,7 @@ class _SelectMenuState extends State<SelectMenu> {
       children: [
         Container(
           width: 300,
-          child: SearchableDropdown.multiple(
+          child: SearchChoices.multiple(
             items: dropdownList.where((element) => element != 'Gesamt').map<DropdownMenuItem<String>>((String item) {
          return DropdownMenuItem<String>(
            value: item,
