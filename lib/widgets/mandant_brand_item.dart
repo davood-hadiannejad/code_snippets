@@ -7,6 +7,7 @@ import 'package:data_table_2/data_table_2.dart';
 import '../providers/detail.dart';
 import './monthly_chart.dart';
 import '../screens/project_forecast_screen.dart';
+import '../screens/customer_forecast_screen.dart';
 import '../screens/detail_screen.dart';
 
 final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
@@ -281,11 +282,13 @@ class MandantBrandItem extends StatelessWidget {
           ? detailData.customers
               .map((customer) => DataRow(
                       onSelectChanged: (bool) {
-                        Navigator.of(context)
-                            .pushNamed(DetailScreen.routeName, arguments: {
-                          'pageType': 'Kunde',
-                          'id': customer['name_slug'].toString(),
-                        });
+                        Navigator.of(context).pushNamed(
+                            CustomerForecastScreen.routeName,
+                            arguments: {
+                              'pageType': 'Kunde',
+                              'id': customer['name_slug'].toString(),
+                              'pageName': customer['name'].toString(),
+                            });
                       },
                       cells: [
                         DataCell(Text(customer['name'])),
