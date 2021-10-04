@@ -55,6 +55,7 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Scaffold(
           drawer: MainDrawer(),
           appBar: AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
             bottom: buildTabBar(args),
             title: Text('Detailansicht'),
             actions: <Widget>[

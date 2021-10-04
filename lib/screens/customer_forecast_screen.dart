@@ -37,6 +37,7 @@ class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
             'Kundenforecast ${(args != null && args.containsKey('pageName')) ? ' -  ' + args['pageName'] : ''}'),
         actions: <Widget>[

@@ -60,6 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
       child: Scaffold(
         drawer: MainDrawer(),
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           bottom: TabBar(
             onTap: (selectedTab) {
               setState(() {

@@ -33,6 +33,7 @@ class ProjectForecastScreen extends StatelessWidget {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Projektforecast ${(pageName != null) ? ' -  ' + pageName : ''}'),
         actions: <Widget>[
           UserSelect(),
