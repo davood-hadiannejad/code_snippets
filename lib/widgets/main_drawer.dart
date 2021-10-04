@@ -12,6 +12,7 @@ class MainDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
             title: Text('Visoon'),
             automaticallyImplyLeading: false,
           ),
