@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
+import 'package:data_table_2/data_table_2.dart';
 
 import '../providers/customer_forecast_list.dart';
 import '../providers/customer_forecast.dart';
@@ -216,7 +217,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
           alwaysVisibleScrollThumb: true,
           controller: _scrollController,
           child: ListView(
-            controller: _scrollController,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -292,7 +292,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
               ),
               Container(
                 width: 1400,
-                child: DataTable(
+                height: 600,
+                child: DataTable2(
+                  scrollController: _scrollController,
                   showBottomBorder: true,
                   dataRowHeight: 170,
                   columnSpacing: 0,
