@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../screens/customer_forecast_screen.dart';
 import '../providers/auth.dart';
 import '../screens/project_forecast_screen.dart';
+import '../screens/commitment_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -40,6 +41,15 @@ class MainDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushNamed(ProjectForecastScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.gavel),
+            title: Text('Commitment'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamed(CommitmentScreen.routeName);
             },
           ),
           Divider(),

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/verkaeufer.dart';
 import '../providers/year.dart';
+import '../screens/commitment_screen.dart';
 import '../screens/customer_forecast_screen.dart';
 import '../screens/project_forecast_screen.dart';
 import '../providers/summary.dart';
@@ -518,7 +519,23 @@ class DashboardItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 40),
+                  FlatButton(
+                    color: Theme.of(context).accentColor,
+                    textColor: Colors.white,
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(CommitmentScreen.routeName, arguments: {
+                        'pageType': activeTab,
+                        'id': summaryItem.id,
+                        'pageName': summaryItem.name,
+                      });
+                    },
+                    child: Text(
+                      'Commitments',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
                 ],
               ),
             ),
