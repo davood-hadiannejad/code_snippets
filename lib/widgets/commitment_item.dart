@@ -26,6 +26,7 @@ class _CommitmentItemState extends State<CommitmentItem> {
   int columnSort;
   bool ascSort = false;
   final today = DateTime.now();
+  int currentMonth = DateTime.now().month;
   final ScrollController _scrollController = ScrollController();
 
   List<String> monthItems = [
@@ -43,21 +44,10 @@ class _CommitmentItemState extends State<CommitmentItem> {
     'Dez'
   ];
 
-  List<String> monthKeys = [
-    'm1',
-    'm2',
-    'm3',
-    'm4',
-    'm5',
-    'm6',
-    'm7',
-    'm8',
-    'm9',
-    'm10',
-    'm11',
-    'm12'
-  ];
-
+  double getCommitmentState(monthStart,monthEnd, currentMonth) {
+    double state = ((currentMonth - monthStart) + 1) / (monthEnd - monthStart + 1);
+    return state;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +78,7 @@ class _CommitmentItemState extends State<CommitmentItem> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Commitment',
+                  'Commitment - ACHTUNG NUR TESTUMGEBUNG',
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
@@ -193,11 +183,11 @@ class _CommitmentItemState extends State<CommitmentItem> {
         //     'Jahr',
         //   ),
         // ),
-        DataColumn(
-          label: Text(
-            'Status',
-          ),
-        ),
+        // DataColumn(
+        //   label: Text(
+        //     'Status',
+        //   ),
+        // ),
         DataColumn(
           label: Text(
             '',
@@ -207,31 +197,81 @@ class _CommitmentItemState extends State<CommitmentItem> {
       rows: widget.commitmentData.items
           .map((commitment) => DataRow(
                 cells: <DataCell>[
-                  DataCell((commitment.comment != null && commitment.comment != '')
-                      ? Tooltip(
-                          message: commitment.comment,
-                          waitDuration: Duration(microseconds: 300),
-                          child: Text(commitment.customer))
-                      : Text(commitment.customer)),
+                  DataCell(
+                      (commitment.comment != null && commitment.comment != '')
+                          ? Tooltip(
+                              message: commitment.comment,
+                              waitDuration: Duration(microseconds: 300),
+                              child: Text(commitment.customer))
+                          : Text(commitment.customer)),
                   DataCell(Text(commitment.agentur)),
-                  DataCell(Text(commitment.medium.toString().replaceAll('[', '').replaceAll(']', ''))),
-                  DataCell(Text(commitment.brand.toString().replaceAll('[', '').replaceAll(']', ''))),
-                  DataCell(Text(commitment.umsatzcluster.toString().replaceAll('[', '').replaceAll(']', ''))),
-                  DataCell((commitment.cashRabatt != null) ? Text(formatterPercent
-                      .format(commitment.cashRabatt / 100)) : Text('-'),),
-                  DataCell((commitment.cashRabattIst != null) ? Text(formatterPercent
-                      .format(commitment.cashRabattIst / 100)) : Text('-'),),
-                  DataCell((commitment.naturalRabatt != null) ? Text(formatterPercent
-                      .format(commitment.naturalRabatt / 100)) : Text('-'),),
-                  DataCell((commitment.naturalRabattIst != null) ? Text(formatterPercent
-                      .format(commitment.naturalRabattIst / 100)) : Text('-'),),
-                  DataCell((commitment.mn3 != null) ? Text(formatter
-                            .format(commitment.mn3)) : Text('-'),),
-                  DataCell((commitment.mn3Ist != null) ? Text(formatter
-                            .format(commitment.mn3Ist)) : Text('-'),),
-                  DataCell(Text(monthItems[commitment.monthStart - 1] + ' - ' + monthItems[commitment.monthEnd - 1])),
+                  DataCell(Text(commitment.medium
+                      .toString()
+                      .replaceAll('[', '')
+                      .replaceAll(']', ''))),
+                  DataCell(Text(commitment.brand
+                      .toString()
+                      .replaceAll('[', '')
+                      .replaceAll(']', ''))),
+                  DataCell(Text(commitment.umsatzcluster
+                      .toString()
+                      .replaceAll('[', '')
+                      .replaceAll(']', ''))),
+                  DataCell(
+                    (commitment.cashRabatt != null)
+                        ? Text(formatterPercent
+                            .format(commitment.cashRabatt / 100))
+                        : Text('-'),
+                  ),
+                  DataCell(
+                    (commitment.cashRabattIst != null)
+                        ? Text(formatterPercent
+                            .format(commitment.cashRabattIst / 100))
+                        : Text('-'),
+                  ),
+                  DataCell(
+                    (commitment.naturalRabatt != null)
+                        ? Text(formatterPercent
+                            .format(commitment.naturalRabatt / 100))
+                        : Text('-'),
+                  ),
+                  DataCell(
+                    (commitment.naturalRabattIst != null)
+                        ? Text(formatterPercent
+                            .format(commitment.naturalRabattIst / 100))
+                        : Text('-'),
+                  ),
+                  DataCell(
+                    (commitment.mn3 != null)
+                        ? Text(formatter.format(commitment.mn3))
+                        : Text('-'),
+                  ),
+                  DataCell(
+                    Row(
+                      children: [
+                        (commitment.mn3Ist != null)
+                            ? Text(formatter.format(commitment.mn3Ist))
+                            : Text('-'),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Center(
+                            child: CircleAvatar(
+                          backgroundColor: ((getCommitmentState(commitment.monthStart, commitment.monthEnd, currentMonth) * commitment.mn3Ist * 0.80) > commitment.mn3)
+                              ? ((getCommitmentState(commitment.monthStart, commitment.monthEnd, currentMonth) * commitment.mn3Ist * 0.99) > commitment.mn3)
+                                  ? Colors.green
+                                  : Colors.yellow
+                              : Colors.red,
+                          radius: 8,
+                        )),
+                      ],
+                    ),
+                  ),
+                  DataCell(Text(monthItems[commitment.monthStart - 1] +
+                      ' - ' +
+                      monthItems[commitment.monthEnd - 1])),
                   // DataCell(Text(commitment.year.toString())),
-                  DataCell(Text(commitment.status)),
+                  //DataCell(Text(commitment.status)),
                   DataCell(IconButton(
                     color: Colors.blue,
                     icon: Icon(Icons.edit),
