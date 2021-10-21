@@ -224,10 +224,23 @@ class _CommitmentItemState extends State<CommitmentItem> {
                         : Text('-'),
                   ),
                   DataCell(
-                    (commitment.cashRabattIst != null)
-                        ? Text(formatterPercent
-                            .format(commitment.cashRabattIst / 100))
-                        : Text('-'),
+                      (commitment.cashRabattIst != null) ? Row(
+                      children: [
+                        Text(formatterPercent.format(commitment.naturalRabattIst / 100)),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Center(
+                            child: CircleAvatar(
+                              backgroundColor: ((commitment.cashRabattIst - commitment.cashRabatt).abs() < 2)
+                                  ? ((commitment.cashRabattIst - commitment.cashRabatt).abs()  < 1)
+                                  ? Colors.green
+                                  : Colors.yellow
+                                  : Colors.red,
+                              radius: 8,
+                            )),
+                      ],
+                    ) : Text('-'),
                   ),
                   DataCell(
                     (commitment.naturalRabatt != null)
@@ -236,10 +249,27 @@ class _CommitmentItemState extends State<CommitmentItem> {
                         : Text('-'),
                   ),
                   DataCell(
-                    (commitment.naturalRabattIst != null)
-                        ? Text(formatterPercent
+                      (commitment.naturalRabattIst != null) ?
+                    Row(
+                      children: [
+                        (commitment.naturalRabattIst != null)
+                            ? Text(formatterPercent
                             .format(commitment.naturalRabattIst / 100))
-                        : Text('-'),
+                            : Text('-'),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Center(
+                            child: CircleAvatar(
+                              backgroundColor: ((commitment.naturalRabattIst - commitment.naturalRabatt).abs() < 2)
+                                  ? ((commitment.naturalRabattIst - commitment.naturalRabatt).abs()  < 1)
+                                  ? Colors.green
+                                  : Colors.yellow
+                                  : Colors.red,
+                              radius: 8,
+                            )),
+                      ],
+                    ) : Text('-'),
                   ),
                   DataCell(
                     (commitment.mn3 != null)

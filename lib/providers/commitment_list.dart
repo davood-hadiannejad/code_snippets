@@ -142,7 +142,7 @@ class CommitmentList with ChangeNotifier {
       }
       if (filterBrandList.isNotEmpty) {
         loadedCommitmentList = loadedCommitmentList
-            .where((commitment) => filterBrandList.contains(commitment.brand))
+            .where((commitment) => filterBrandList.any((item) => commitment.brand.contains(item)))
             .toList();
       }
 

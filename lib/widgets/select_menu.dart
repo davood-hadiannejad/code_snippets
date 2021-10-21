@@ -7,6 +7,7 @@ import '../providers/detail.dart';
 import '../providers/customer_forecast_list.dart';
 import '../providers/brand_list.dart';
 import '../providers/project_list.dart';
+import '../providers/commitment_list.dart';
 import '../providers/verkaeufer.dart';
 
 
@@ -66,6 +67,10 @@ class _SelectMenuState extends State<SelectMenu> {
           .filterByBrandList(filterList);
       Provider.of<AOBList>(context, listen: false)
           .filterByBrandList(filterList);
+    } else if (widget.filterType == 'Brand' &&
+        widget.providerClass == 'commitment') {
+      Provider.of<CommitmentList>(context, listen: false)
+          .filterByBrandList(filterList);
     }
   }
 
@@ -74,7 +79,9 @@ class _SelectMenuState extends State<SelectMenu> {
     if ((widget.filterType == 'Brand' &&
             widget.providerClass == 'customer-forecast') ||
         (widget.filterType == 'Brand' &&
-            widget.providerClass == 'project-forecast')) {
+            widget.providerClass == 'project-forecast') ||
+        (widget.filterType == 'Brand' &&
+            widget.providerClass == 'commitment')) {
       dropdownList =
           Provider.of<BrandList>(context).items.map((e) => e.name).toList();
     }
