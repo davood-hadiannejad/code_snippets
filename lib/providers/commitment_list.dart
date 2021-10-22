@@ -202,6 +202,9 @@ class CommitmentList with ChangeNotifier {
           body: json.encode(body));
       final extractedData =
           json.decode(utf8.decode(response.bodyBytes)) as dynamic;
+      if (extractedData[0] is String) {
+        throw new Exception(extractedData[0]);
+      }
       _items.add(Commitment(
         id: extractedData['id'],
         verkaeufer: extractedData['verkaeufer'],

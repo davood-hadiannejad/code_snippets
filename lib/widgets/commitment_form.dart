@@ -65,12 +65,12 @@ class _CommitmentFormState extends State<CommitmentForm> {
 
   List<String> umsatzclusterList = [
     "Klassisch (TV)",
-    "SoWeFo",
-    "DRTV",
-    "Trade",
-    "ATV",
+    "SoWeFo (TV)",
+    "DRTV (TV)",
+    "Trade (TV)",
+    "ATV (TV)",
     "Klassisch (Online)",
-    "3rd-Party"
+    "3rd-Party (Online)"
   ];
 
   List<String> mediumList = [
@@ -100,6 +100,7 @@ class _CommitmentFormState extends State<CommitmentForm> {
   bool _isLoading = false;
   bool _hasError = false;
   bool _networkError = false;
+  String _errorMessage = '';
 
   @override
   void dispose() {
@@ -169,7 +170,6 @@ class _CommitmentFormState extends State<CommitmentForm> {
     selectedYear = Provider.of<Year>(context, listen: false).selectedYear;
   }
 
-  bool enableNeukunde = false;
 
   _submit() {
     if (!_formKey.currentState.validate()) {
@@ -293,19 +293,7 @@ class _CommitmentFormState extends State<CommitmentForm> {
                     if (this.mounted) {
                       setState(() {
                         customerDropdownValue = newValue;
-                        if (newValue == 'Neukunde') {
-                          enableNeukunde = true;
-                        } else {
-                          enableNeukunde = false;
-                          agencyDropdownValue = null;
-                          //List<String> customerAgencies = Provider.of<CustomerList>(context, listen: false).findByName(customerDropdownValue).agenturen;
-                          //if (customerAgencies.isNotEmpty){
-                          //  agencyDropdownList = customerAgencies;
-                          //} else {
-                          //  agencyDropdownList = agencyDropdownListComplete;
-                          //}
-
-                        }
+                        //agencyDropdownValue = null;
                       });
                     }
                   },
@@ -445,8 +433,7 @@ class _CommitmentFormState extends State<CommitmentForm> {
                   controller: _cashRabattPercentController,
                   decoration: InputDecoration(
                     hintText: 'Cash-Rabatt',
-                    helperText:
-                        (cashRabattPercent != null) ? 'Cash-Rabatt' : null,
+                    helperText: 'Cash-Rabatt',
                     suffixText: '%',
                   ),
                   keyboardType: TextInputType.number,
@@ -465,8 +452,7 @@ class _CommitmentFormState extends State<CommitmentForm> {
                   controller: _naturalRabattPercentController,
                   decoration: InputDecoration(
                     hintText: 'Naturalrabatt',
-                    helperText:
-                        (naturalRabattPercent != null) ? 'Naturalrabatt' : null,
+                    helperText: 'Naturalrabatt',
                     suffixText: '%',
                   ),
                   keyboardType: TextInputType.number,
@@ -485,6 +471,7 @@ class _CommitmentFormState extends State<CommitmentForm> {
                     width: 125,
                     child: DropdownButton<String>(
                       hint: Text('Zeitraum von'),
+                      disabledHint: Text('Zeitraum von'),
                       value: monthStartDropdownValue,
                       iconSize: 24,
                       elevation: 16,
@@ -508,6 +495,7 @@ class _CommitmentFormState extends State<CommitmentForm> {
                     width: 125,
                     child: DropdownButton<String>(
                       hint: Text('bis'),
+                      disabledHint: Text('bis'),
                       value: monthEndDropdownValue,
                       iconSize: 24,
                       elevation: 16,
