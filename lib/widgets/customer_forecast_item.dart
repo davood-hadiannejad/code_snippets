@@ -54,10 +54,19 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   String dialogDropdownValue = 'Gesamtjahresumme';
 
   @override
-  void initState() {
-    maxPages = widget.customerForecastData.maxPages;
-    currentPage = widget.customerForecastData.currentPage;
-    super.initState();
+  void dispose() {
+    _focusNodeSummary.forEach((CustomerForecast forecast, FocusNode focusNode) {
+      focusNode.dispose();
+    });
+    _focusNodeList.forEach((CustomerForecast forecast, List focusNodeList) {
+      focusNodeList.asMap().forEach((index, focusNode) {
+        focusNode.dispose();
+      });
+    });
+    super.dispose();
+  }
+
+  void addCellListener() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNodeList.forEach((CustomerForecast forecast, List focusNodeList) {
         focusNodeList.asMap().forEach((index, focusNode) {
@@ -72,15 +81,23 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
       });
 
       _focusNodeSummary.forEach((CustomerForecast forecast, FocusNode focusNode) {
-          focusNode.addListener(() {
-            if (focusNode.hasFocus) {
-              _controllerSummary[forecast].selection = TextSelection(
-                  baseOffset: 0,
-                  extentOffset: _controllerSummary[forecast].text.length);
-            }
-          });
+        focusNode.addListener(() {
+          if (focusNode.hasFocus) {
+            _controllerSummary[forecast].selection = TextSelection(
+                baseOffset: 0,
+                extentOffset: _controllerSummary[forecast].text.length);
+          }
+        });
       });
     });
+  }
+
+  @override
+  void initState() {
+    maxPages = widget.customerForecastData.maxPages;
+    currentPage = widget.customerForecastData.currentPage;
+    super.initState();
+    addCellListener();
   }
 
 
@@ -571,7 +588,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                           ? selectedVerkaufer.isGroup
                                           : true,
                                   controller: _controllerList[forecast][idx],
-                                  focusNode: _focusNodeList[forecast][idx],
+                                  //focusNode: _focusNodeList[forecast][idx],
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: (currentYear == selectedYear)
@@ -620,6 +637,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                       FocusScope.of(context).requestFocus(
                                           _focusNodeList[forecast][currentMonth - 1]);
                                     }
+                                    addCellListener();
                                   },
                                 ),
                                 SizedBox(
@@ -695,7 +713,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                               TextFormField(
                                 textAlign: TextAlign.end,
                                 controller: _controllerSummary[forecast],
-                                focusNode: _focusNodeSummary[forecast],
+                                //focusNode: _focusNodeSummary[forecast],
                                 readOnly: (selectedYear >= currentYear)
                                     ? selectedVerkaufer.isGroup
                                     : true,

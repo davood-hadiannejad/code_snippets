@@ -60,8 +60,12 @@ class VerkaeuferList with ChangeNotifier {
         url,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData =
-          json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+      var extractedData;
+      try {
+        extractedData = json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+      } catch (e) {
+        return;
+      }
 
       if (extractedData == null) {
         return;
