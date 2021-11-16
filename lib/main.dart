@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -23,11 +25,20 @@ import './screens/commitment_screen.dart';
 import './screens/customer_forecast_screen.dart';
 
 String APIPROTOCOL = 'http://';
-//String APIHOST = 'hammbwdsc02:96';
-String APIHOST = 'salescontrolapi.visoon.de';
+String APIHOST = 'hammbwdsc02:96';
+// String APIHOST = 'salescontrolapi.visoon.de';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() => runApp(VisoonApp());
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
 
 class VisoonApp extends StatelessWidget {
   @override
@@ -106,6 +117,7 @@ class VisoonApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          scrollBehavior: MyCustomScrollBehavior(),
           title: 'Visoon Forecasting',
           theme: ThemeData(
             primaryColor: const Color(0xff1e1e1e),
@@ -129,13 +141,8 @@ class VisoonApp extends StatelessWidget {
             ProjectForecastScreen.routeName: (ctx) => ProjectForecastScreen(),
             CommitmentScreen.routeName: (ctx) => CommitmentScreen(),
           },
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate
-          ],
-          supportedLocales: [
-            const Locale('en'),
-            const Locale('de')
-          ],
+          localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+          supportedLocales: [const Locale('en'), const Locale('de')],
         ),
       ),
     );
