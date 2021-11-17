@@ -51,13 +51,13 @@ class _AobItemState extends State<AobItem> {
       height: 400,
       child: DataTable2(
         headingRowColor:
-            MaterialStateColor.resolveWith((states) => Colors.teal[50]),
+            MaterialStateColor.resolveWith((states) => Colors.black45),
         scrollController: _scrollController,
         columnSpacing: 10,
         horizontalMargin: 30,
         showBottomBorder: true,
         decoration:
-            BoxDecoration(border: Border.all(color: Colors.black12, width: 5)),
+            BoxDecoration(border: Border.all(color: Colors.black45, width: 5)),
         // border: TableBorder.symmetric(
         //     outside: BorderSide(width: 2, color: Colors.black12)),
         columns: <DataColumn>[
