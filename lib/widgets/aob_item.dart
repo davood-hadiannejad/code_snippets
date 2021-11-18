@@ -1,4 +1,8 @@
+import 'dart:ui';
+
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -23,6 +27,7 @@ class AobItem extends StatefulWidget {
 
 class _AobItemState extends State<AobItem> {
   List<AOB> myAobList;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -31,63 +36,102 @@ class _AobItemState extends State<AobItem> {
         Provider.of<VerkaeuferList>(context, listen: false).selectedVerkaufer;
     String selectedYear =
         Provider.of<Year>(context, listen: false).selectedYear;
-    Provider.of<AOBList>(context, listen: false)
-        .fetchAndSetAOBList(verkaeufer: selectedVerkaufer, year: selectedYear, pageType: widget.pageType, id: widget.pageId);
+    Provider.of<AOBList>(context, listen: false).fetchAndSetAOBList(
+        verkaeufer: selectedVerkaufer,
+        year: selectedYear,
+        pageType: widget.pageType,
+        id: widget.pageId);
   }
 
   @override
   Widget build(BuildContext context) {
     myAobList = Provider.of<AOBList>(context).items;
     return Container(
-      width: 1200,
-      child: DataTable(
+      width: 1600,
+      height: 400,
+      child: DataTable2(
+        headingRowColor:
+            MaterialStateColor.resolveWith((states) => Colors.black45),
+        scrollController: _scrollController,
+        columnSpacing: 10,
+        horizontalMargin: 30,
+        showBottomBorder: true,
+        decoration:
+            BoxDecoration(border: Border.all(color: Colors.black45, width: 5)),
+        // border: TableBorder.symmetric(
+        //     outside: BorderSide(width: 2, color: Colors.black12)),
         columns: <DataColumn>[
           DataColumn(
             label: Text(
               'Medium',
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
+            numeric: false,
           ),
           DataColumn(
             label: Text(
               'Brand',
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
+            numeric: false,
           ),
           DataColumn(
-            label: Text(
-              'Agentur',
-            ),
+            label: Text('Agentur',
+                style: TextStyle(
+                    fontStyle: FontStyle.italic, color: Colors.white)),
+            numeric: false,
           ),
           DataColumn(
-            label: Expanded(
+            label: Container(
               child: Text(
                 'Goal (MN3)',
                 textAlign: TextAlign.end,
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
+            numeric: true,
           ),
           DataColumn(
-            label: Expanded(
+            label: Container(
+              width: 100,
               child: Text(
                 'Offene Projekte (MN3 bewertet)',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
+            numeric: true,
           ),
           DataColumn(
-            label: Expanded(
+            label: Container(
+              width: 100,
               child: Text(
                 'Gebuchte Projekte (MN3)',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
+            numeric: true,
           ),
           DataColumn(
-            label: Expanded(
+            label: Container(
               child: Text(
                 'Differenz',
                 textAlign: TextAlign.end,
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
+            numeric: true,
           ),
         ],
         rows: myAobList

@@ -1,3 +1,4 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../providers/project_list.dart';
@@ -98,7 +99,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
         width: double.infinity,
         height: double.infinity,
         child: DraggableScrollbar.rrect(
-          alwaysVisibleScrollThumb: true,
+          // alwaysVisibleScrollThumb: true,
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,
@@ -143,13 +144,10 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              Container(
-                width: 1550,
-                child: buildProjectTable(context),
-              ),
+              buildProjectTable(context),
               SizedBox(
                 height: 20,
-              ),
+              )
             ],
           ),
         ),
@@ -157,168 +155,207 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
     );
   }
 
-  DataTable buildProjectTable(BuildContext context) {
-    return DataTable(
-      sortColumnIndex: columnSort,
-      sortAscending: ascSort,
-      columns: <DataColumn>[
-        DataColumn(
-          label: Text(
-            'Projekt',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Kunde',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Medium',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Brand',
-          ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'MN3 bewertet',
-              textAlign: TextAlign.end,
+  Widget buildProjectTable(BuildContext context) {
+    return Container(
+      width: 1400,
+      height: 400,
+      child: DataTable2(
+        headingRowColor:
+            MaterialStateColor.resolveWith((states) => Colors.black45),
+        scrollController: _scrollController,
+        columnSpacing: 10,
+        horizontalMargin: 30,
+        showBottomBorder: true,
+        decoration:
+            BoxDecoration(border: Border.all(color: Colors.black45, width: 5)),
+        sortColumnIndex: columnSort,
+        sortAscending: ascSort,
+        columns: <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Projekt',
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
+            numeric: false,
           ),
-          onSort: (idx, asc) {
-            setState(() {
-              columnSort = idx;
-              ascSort = asc;
-              widget.forecastData.sortByField('mb3_bewertet', ascending: asc);
-            });
-          },
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Zeitraum',
+          DataColumn(
+            label: Text(
+              'Kunde',
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+            ),
+            numeric: false,
+          ),
+          DataColumn(
+            label: Text(
+              'Medium',
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+            ),
+            numeric: false,
+          ),
+          DataColumn(
+            label: Text(
+              'Brand',
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+            ),
+            numeric: false,
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'MN3 bewertet',
+                textAlign: TextAlign.end,
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+              ),
+            ),
+            onSort: (idx, asc) {
+              setState(() {
+                columnSort = idx;
+                ascSort = asc;
+                widget.forecastData.sortByField('mb3_bewertet', ascending: asc);
+              });
+            },
+            numeric: true,
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Text('Zeitraum',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, color: Colors.white)),
+            ),
+            numeric: false,
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                'Bewertung',
+                textAlign: TextAlign.center,
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+              ),
+            ),
+            onSort: (idx, asc) {
+              setState(() {
+                columnSort = idx;
+                ascSort = asc;
+                widget.forecastData.sortByField('bewertung', ascending: asc);
+              });
+            },
+            numeric: true,
+          ),
+          DataColumn(
+            label: Text(
+              'Due Date',
               textAlign: TextAlign.center,
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+            ),
+            onSort: (idx, asc) {
+              setState(() {
+                columnSort = idx;
+                ascSort = asc;
+                widget.forecastData.sortByField('dueDate', ascending: asc);
+              });
+            },
+            numeric: false,
+          ),
+          DataColumn(
+            label: Text(
+              'Status',
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+            ),
+            numeric: false,
+          ),
+          DataColumn(
+            label: Text(
+              '',
             ),
           ),
-        ),
-        DataColumn(
-          label: Expanded(
-            child: Text(
-              'Bewertung',
-              textAlign: TextAlign.end,
-            ),
-          ),
-          onSort: (idx, asc) {
-            setState(() {
-              columnSort = idx;
-              ascSort = asc;
-              widget.forecastData.sortByField('bewertung', ascending: asc);
-            });
-          },
-        ),
-        DataColumn(
-          label: Text(
-            'Due Date',
-          ),
-          onSort: (idx, asc) {
-            setState(() {
-              columnSort = idx;
-              ascSort = asc;
-              widget.forecastData.sortByField('dueDate', ascending: asc);
-            });
-          },
-        ),
-        DataColumn(
-          label: Text(
-            'Status',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            '',
-          ),
-        ),
-      ],
-      rows: widget.forecastData.items
-          .map((project) => DataRow(
-                cells: <DataCell>[
-                  DataCell((project.comment != null && project.comment != '')
-                      ? Tooltip(
-                          message: project.comment,
-                          waitDuration: Duration(microseconds: 300),
-                          child: Text(project.name))
-                      : Text(project.name)),
-                  DataCell(Text(project.customer)),
-                  DataCell(Text(project.medium)),
-                  DataCell(Text(project.brand)),
-                  DataCell(Container(
-                    width: 110,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(formatter
-                            .format(project.mn3 * project.bewertung / 100)),
-                      ],
-                    ),
-                  )),
-                  DataCell(Container(
-                    width: 110,
-                    child: Row(
+        ],
+        rows: widget.forecastData.items
+            .map((project) => DataRow(
+                  cells: <DataCell>[
+                    DataCell((project.comment != null && project.comment != '')
+                        ? Tooltip(
+                            message: project.comment,
+                            waitDuration: Duration(microseconds: 300),
+                            child: Text(project.name))
+                        : Text(project.name)),
+                    DataCell(Text(project.customer)),
+                    DataCell(Text(project.medium)),
+                    DataCell(Text(project.brand)),
+                    DataCell(Container(
+                      width: 110,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(formatter
+                              .format(project.mn3 * project.bewertung / 100)),
+                        ],
+                      ),
+                    )),
+                    DataCell(Container(
+                      width: 110,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text((_returnFirstMonth(project.monthlyMn3) ==
+                                  _returnLastMonth(project.monthlyMn3))
+                              ? _returnFirstMonth(project.monthlyMn3)
+                              : _returnFirstMonth(project.monthlyMn3) +
+                                  ' - ' +
+                                  _returnLastMonth(project.monthlyMn3)),
+                        ],
+                      ),
+                    )),
+                    DataCell(Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text((_returnFirstMonth(project.monthlyMn3) ==
-                                _returnLastMonth(project.monthlyMn3))
-                            ? _returnFirstMonth(project.monthlyMn3)
-                            : _returnFirstMonth(project.monthlyMn3) +
-                                ' - ' +
-                                _returnLastMonth(project.monthlyMn3)),
+                        Text(project.bewertung.toString() + '%'),
                       ],
-                    ),
-                  )),
-                  DataCell(Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(project.bewertung.toString() + '%'),
-                    ],
-                  )),
-                  DataCell(Row(
-                    children: [
-                      Text(project.dueDate),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Center(
-                          child: CircleAvatar(
-                        backgroundColor: (today
-                                    .difference(DateTime.parse(project.dueDate))
-                                    .inDays <
-                                0)
-                            ? (today
-                                        .difference(
-                                            DateTime.parse(project.dueDate))
-                                        .inDays <
-                                    -7)
-                                ? Colors.green
-                                : Colors.yellow
-                            : Colors.red,
-                        radius: 12,
-                      )),
-                    ],
-                  )),
-                  DataCell(Text(project.status)),
-                  DataCell(IconButton(
-                    color: Colors.blue,
-                    icon: Icon(Icons.edit),
-                    onPressed: () =>
-                        projectForecastDialog(context, projectId: project.id),
-                  )),
-                ],
-              ))
-          .toList(),
+                    )),
+                    DataCell(Row(
+                      children: [
+                        Text(project.dueDate),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Center(
+                            child: CircleAvatar(
+                          backgroundColor: (today
+                                      .difference(
+                                          DateTime.parse(project.dueDate))
+                                      .inDays <
+                                  0)
+                              ? (today
+                                          .difference(
+                                              DateTime.parse(project.dueDate))
+                                          .inDays <
+                                      -7)
+                                  ? Colors.green
+                                  : Colors.yellow
+                              : Colors.red,
+                          radius: 12,
+                        )),
+                      ],
+                    )),
+                    DataCell(Text(project.status)),
+                    DataCell(IconButton(
+                      color: Colors.blue,
+                      icon: Icon(Icons.edit),
+                      onPressed: () =>
+                          projectForecastDialog(context, projectId: project.id),
+                    )),
+                  ],
+                ))
+            .toList(),
+      ),
     );
   }
 }

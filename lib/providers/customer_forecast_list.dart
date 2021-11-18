@@ -56,6 +56,7 @@ class CustomerForecastList with ChangeNotifier {
     sortField = field;
     sortAscending = ascending;
     sortColumnIndex = idx;
+    print("object");
     notifyListeners();
   }
 
@@ -77,8 +78,13 @@ class CustomerForecastList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetCustomerForecastList (
-      {bool init = false, Verkaeufer verkaeufer,bool refresh = false, String pageType, String id, String year}) async {
+  Future<void> fetchAndSetCustomerForecastList(
+      {bool init = false,
+      Verkaeufer verkaeufer,
+      bool refresh = false,
+      String pageType,
+      String id,
+      String year}) async {
     Map<String, String> uriQuery = {};
     List<CustomerForecast> loadedCustomerForecastList = [];
     if (verkaeufer != null && verkaeufer.email != null) {
@@ -160,52 +166,41 @@ class CustomerForecastList with ChangeNotifier {
       if (sortField == 'gesamt') {
         if (sortAscending) {
           loadedCustomerForecastList.sort((a, b) {
-            num aDelta =
-                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
-            num bDelta =
-                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
-            return aDelta.compareTo(bDelta);
+            num aForecast =
+                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b);
+            num bForecast =
+                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b);
+            return aForecast.compareTo(bForecast);
           });
         } else {
           loadedCustomerForecastList.sort((a, b) {
-            num aDelta =
-                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    a.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    a.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
-            num bDelta =
-                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b) +
-                    b.ist.entries.map((e) => e.value).reduce((a, b) => a + b) -
-                    b.goal.entries.map((e) => e.value).reduce((a, b) => a + b);
-            return bDelta.compareTo(aDelta);
+            num aForecast =
+                a.forecast.entries.map((e) => e.value).reduce((a, b) => a + b);
+            num bForecast =
+                b.forecast.entries.map((e) => e.value).reduce((a, b) => a + b);
+            return bForecast.compareTo(aForecast);
           });
         }
       } else if (sortField == 'kunde') {
         if (sortAscending) {
-          loadedCustomerForecastList.sort((a, b) => a.customer.compareTo(b.customer));
+          loadedCustomerForecastList
+              .sort((a, b) => a.customer.compareTo(b.customer));
         } else {
-          loadedCustomerForecastList.sort((a, b) => b.customer.compareTo(a.customer));
+          loadedCustomerForecastList
+              .sort((a, b) => b.customer.compareTo(a.customer));
         }
-
       } else {
         if (sortAscending) {
           loadedCustomerForecastList.sort((a, b) {
-            num aDelta =
-                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
-            num bDelta =
-                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
-            return aDelta.compareTo(bDelta);
+            num aForecast = a.forecast[sortField];
+            num bForecast = b.forecast[sortField];
+            return bForecast.compareTo(aForecast);
           });
         } else {
           loadedCustomerForecastList.sort((a, b) {
-            num aDelta =
-                a.forecast[sortField] + a.ist[sortField] - a.goal[sortField];
-            num bDelta =
-                b.forecast[sortField] + b.ist[sortField] - b.goal[sortField];
-            return bDelta.compareTo(aDelta);
+            num aForecast = a.forecast[sortField];
+            num bForecast = b.forecast[sortField];
+            return aForecast.compareTo(bForecast);
           });
         }
       }
