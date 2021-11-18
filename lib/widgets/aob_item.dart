@@ -64,21 +64,23 @@ class _AobItemState extends State<AobItem> {
           DataColumn(
             label: Text(
               'Medium',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
             label: Text(
               'Brand',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
-            label: Text(
-              'Agentur',
-            ),
+            label: Text('Agentur',
+                style: TextStyle(
+                    fontStyle: FontStyle.italic, color: Colors.white)),
             numeric: false,
           ),
           DataColumn(
@@ -86,7 +88,8 @@ class _AobItemState extends State<AobItem> {
               child: Text(
                 'Goal (MN3)',
                 textAlign: TextAlign.end,
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             numeric: true,
@@ -99,7 +102,8 @@ class _AobItemState extends State<AobItem> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             numeric: true,
@@ -112,7 +116,8 @@ class _AobItemState extends State<AobItem> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             numeric: true,
@@ -122,7 +127,8 @@ class _AobItemState extends State<AobItem> {
               child: Text(
                 'Differenz',
                 textAlign: TextAlign.end,
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             numeric: true,

@@ -174,28 +174,32 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           DataColumn(
             label: Text(
               'Projekt',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
             label: Text(
               'Kunde',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
             label: Text(
               'Medium',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
             label: Text(
               'Brand',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
@@ -204,7 +208,8 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
               child: Text(
                 'MN3 bewertet',
                 textAlign: TextAlign.end,
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             onSort: (idx, asc) {
@@ -218,10 +223,10 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           ),
           DataColumn(
             label: Expanded(
-              child: Text(
-                'Zeitraum',
-                textAlign: TextAlign.center,
-              ),
+              child: Text('Zeitraum',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, color: Colors.white)),
             ),
             numeric: false,
           ),
@@ -229,8 +234,9 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
             label: Expanded(
               child: Text(
                 'Bewertung',
-                textAlign: TextAlign.end,
-                style: TextStyle(fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+                style:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             onSort: (idx, asc) {
@@ -245,8 +251,9 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           DataColumn(
             label: Text(
               'Due Date',
-              textAlign: TextAlign.end,
-              style: TextStyle(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             onSort: (idx, asc) {
               setState(() {
@@ -260,7 +267,8 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           DataColumn(
             label: Text(
               'Status',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
@@ -307,7 +315,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
                       ),
                     )),
                     DataCell(Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(project.bewertung.toString() + '%'),
                       ],
