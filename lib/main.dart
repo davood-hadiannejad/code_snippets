@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import './providers/year.dart';
 import './providers/agency_list.dart';
+import './providers/konzern_list.dart';
 import './providers/aob_list.dart';
 import './providers/brand_list.dart';
 import './providers/customer_list.dart';
@@ -109,6 +110,12 @@ class VisoonApp extends StatelessWidget {
           update: (ctx, auth, previousAgencyList) => AgencyList(
             auth.token,
             previousAgencyList == null ? [] : previousAgencyList.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, KonzernList>(
+          update: (ctx, auth, previousKonzernList) => KonzernList(
+            auth.token,
+            previousKonzernList == null ? [] : previousKonzernList.items,
           ),
         ),
         ChangeNotifierProxyProvider<Auth, Year>(

@@ -97,7 +97,6 @@ class _CommitmentItemState extends State<CommitmentItem> {
   }
 
   DataTable buildCommitmentTable(BuildContext context) {
-    print(widget.commitmentData.items);
     return DataTable(
       sortColumnIndex: columnSort,
       sortAscending: ascSort,
@@ -227,18 +226,22 @@ class _CommitmentItemState extends State<CommitmentItem> {
                   DataCell(
                       (commitment.cashRabattIst != null) ? Row(
                       children: [
-                        Text(formatterPercent.format(commitment.naturalRabattIst / 100)),
+                        Text(formatterPercent.format(commitment.cashRabattIst / 100)),
                         SizedBox(
                           width: 5,
                         ),
                         Center(
-                            child: CircleAvatar(
-                              backgroundColor: ((commitment.cashRabattIst - commitment.cashRabatt).abs() < 2)
-                                  ? ((commitment.cashRabattIst - commitment.cashRabatt).abs()  < 1)
-                                  ? Colors.green
-                                  : Colors.yellow
-                                  : Colors.red,
-                              radius: 8,
+                            child: Tooltip(
+                              message: 'Delta: ' + (commitment.cashRabattIst - commitment.cashRabatt).abs().toStringAsFixed(1) + '%',
+                              waitDuration: Duration(microseconds: 300),
+                              child: CircleAvatar(
+                                backgroundColor: ((commitment.cashRabattIst - commitment.cashRabatt).abs() < 2)
+                                    ? ((commitment.cashRabattIst - commitment.cashRabatt).abs()  < 1)
+                                    ? Colors.green
+                                    : Colors.yellow
+                                    : Colors.red,
+                                radius: 8,
+                              ),
                             )),
                       ],
                     ) : Text('-'),
@@ -261,13 +264,17 @@ class _CommitmentItemState extends State<CommitmentItem> {
                           width: 5,
                         ),
                         Center(
-                            child: CircleAvatar(
-                              backgroundColor: ((commitment.naturalRabattIst - commitment.naturalRabatt).abs() < 2)
-                                  ? ((commitment.naturalRabattIst - commitment.naturalRabatt).abs()  < 1)
-                                  ? Colors.green
-                                  : Colors.yellow
-                                  : Colors.red,
-                              radius: 8,
+                            child: Tooltip(
+                              message: 'Delta: ' + (commitment.naturalRabattIst - commitment.naturalRabatt).abs().toStringAsFixed(1) + '%',
+                              waitDuration: Duration(microseconds: 300),
+                              child: CircleAvatar(
+                                backgroundColor: ((commitment.naturalRabattIst - commitment.naturalRabatt).abs() < 2)
+                                    ? ((commitment.naturalRabattIst - commitment.naturalRabatt).abs()  < 1)
+                                    ? Colors.green
+                                    : Colors.yellow
+                                    : Colors.red,
+                                radius: 8,
+                              ),
                             )),
                       ],
                     ) : Text('-'),
@@ -288,14 +295,17 @@ class _CommitmentItemState extends State<CommitmentItem> {
                           width: 5,
                         ),
                         Center(
-                            child: CircleAvatar(
-                          backgroundColor: ((getCommitmentState(commitment.monthStart, commitment.monthEnd, currentMonth) * commitment.mn3Ist * 0.80) > commitment.mn3)
-                              ? ((getCommitmentState(commitment.monthStart, commitment.monthEnd, currentMonth) * commitment.mn3Ist * 0.99) > commitment.mn3)
-                                  ? Colors.green
-                                  : Colors.yellow
-                              : Colors.red,
+                            child: Tooltip(
+                              message: 'Erwartet: ' + formatter.format(getCommitmentState(commitment.monthStart, commitment.monthEnd, currentMonth) * commitment.mn3),
+                              child: CircleAvatar(
+                          backgroundColor: ((getCommitmentState(commitment.monthStart, commitment.monthEnd, currentMonth) * commitment.mn3 * 0.80) < commitment.mn3Ist)
+                                ? ((getCommitmentState(commitment.monthStart, commitment.monthEnd, currentMonth) * commitment.mn3 * 0.99) < commitment.mn3Ist)
+                                    ? Colors.green
+                                    : Colors.yellow
+                                : Colors.red,
                           radius: 8,
-                        )),
+                        ),
+                            )),
                       ],
                     ) : Text('-'),
                   ),

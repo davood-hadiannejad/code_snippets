@@ -151,7 +151,8 @@ class CommitmentList with ChangeNotifier {
       }
       if (filterBrandList.isNotEmpty) {
         loadedCommitmentList = loadedCommitmentList
-            .where((commitment) => filterBrandList.any((item) => commitment.brand.contains(item)))
+            .where((commitment) =>
+                filterBrandList.any((item) => commitment.brand.contains(item)))
             .toList();
       }
 
@@ -169,6 +170,7 @@ class CommitmentList with ChangeNotifier {
 
   Future<void> addCommitment(
     String customer,
+    String konzern,
     List<dynamic> medium,
     List<dynamic> brand,
     String agency,
@@ -182,11 +184,11 @@ class CommitmentList with ChangeNotifier {
     int monthEnd,
     String status,
     String year,
+    String kundeOrKonzern,
   ) async {
     var url = APIPROTOCOL + APIHOST + '/api/commitments/';
     try {
       Map<String, dynamic> body = {
-        'kunde': customer,
         'verkaeufer': verkaueferEmail,
         'medium': medium,
         'brand': brand,
@@ -201,6 +203,12 @@ class CommitmentList with ChangeNotifier {
         'status': status,
         'year': year,
       };
+
+      if (kundeOrKonzern == 'Kunde') {
+        body['kunde'] = customer;
+      } else {
+        body['konzern'] = konzern;
+      }
 
       final response = await http.post(url,
           headers: {
@@ -242,6 +250,7 @@ class CommitmentList with ChangeNotifier {
   Future<void> updateCommitment(
     int id,
     String customer,
+    String konzern,
     List<dynamic> medium,
     List<dynamic> brand,
     String agency,
@@ -255,12 +264,12 @@ class CommitmentList with ChangeNotifier {
     int monthEnd,
     String status,
     String year,
+    String kundeOrKonzern,
   ) async {
     var url = APIPROTOCOL + APIHOST + '/api/commitments/${id.toString()}/';
     try {
       Map<String, dynamic> body = {
         'id': id,
-        'kunde': customer,
         'verkaeufer': verkaueferEmail,
         'medium': medium,
         'brand': brand,
@@ -275,6 +284,13 @@ class CommitmentList with ChangeNotifier {
         'status': status,
         'year': year,
       };
+
+      if (kundeOrKonzern == 'Kunde') {
+        body['kunde'] = customer;
+      } else {
+        body['konzern'] = konzern;
+      }
+
 
       final response = await http.put(url,
           headers: {
