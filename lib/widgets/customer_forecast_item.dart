@@ -80,7 +80,8 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         });
       });
 
-      _focusNodeSummary.forEach((CustomerForecast forecast, FocusNode focusNode) {
+      _focusNodeSummary
+          .forEach((CustomerForecast forecast, FocusNode focusNode) {
         focusNode.addListener(() {
           if (focusNode.hasFocus) {
             _controllerSummary[forecast].selection = TextSelection(
@@ -99,7 +100,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
     super.initState();
     addCellListener();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -510,7 +510,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                   rows: widget.customerForecastData.items.map((forecast) {
                     _controllerList[forecast] = [];
                     _focusNodeList[forecast] = [];
-                    _focusNodeSummary[forecast]  = FocusNode();
+                    _focusNodeSummary[forecast] = FocusNode();
                     _controllerSummary[forecast] = TextEditingController(
                         text:
                             formatter.format(forecast.forecast.entries.map((e) {
@@ -612,9 +612,13 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                   maxLines: 1,
                                   onEditingComplete: () {
                                     FocusScope.of(context).unfocus();
-                                    String textInput = _controllerList[forecast][idx].text;
-                                    textInput = textInput.replaceAll('€', '').replaceAll('.', '');
-                                    forecast.forecast[monthKey] = num.parse(textInput);
+                                    String textInput =
+                                        _controllerList[forecast][idx].text;
+                                    textInput = textInput
+                                        .replaceAll('€', '')
+                                        .replaceAll('.', '');
+                                    forecast.forecast[monthKey] =
+                                        num.parse(textInput);
                                     Provider.of<CustomerForecastList>(context,
                                             listen: false)
                                         .addCustomerForecast(
@@ -626,16 +630,21 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                                       selectedVerkaufer.email,
                                       forecast.forecast,
                                     );
-                                    _controllerList[forecast][idx].text = formatter.format(forecast.forecast[monthKey]);
-                                    _controllerSummary[forecast].text = formatter.format(forecast.forecast.entries.map((e) {
-                                          return e.value;
-                                        }).reduce((a, b) => a + b));
+                                    _controllerList[forecast][idx].text =
+                                        formatter.format(
+                                            forecast.forecast[monthKey]);
+                                    _controllerSummary[forecast].text =
+                                        formatter.format(
+                                            forecast.forecast.entries.map((e) {
+                                      return e.value;
+                                    }).reduce((a, b) => a + b));
                                     if (monthKey != 'm12') {
                                       FocusScope.of(context).requestFocus(
                                           _focusNodeList[forecast][idx + 1]);
                                     } else {
                                       FocusScope.of(context).requestFocus(
-                                          _focusNodeList[forecast][currentMonth - 1]);
+                                          _focusNodeList[forecast]
+                                              [currentMonth - 1]);
                                     }
                                     addCellListener();
                                   },

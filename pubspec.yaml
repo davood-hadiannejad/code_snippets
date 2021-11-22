@@ -45,7 +45,8 @@ dependencies:
   draggable_scrollbar: ^0.0.4
   latinize: '>=0.0.1 <1.0.0'
   search_choices: ^2.0.14
-  data_table_2: 2.1.1
+  syncfusion_flutter_datagrid: ^18.4.30-beta
+  data_table_2: ^2.2.0
 
 dev_dependencies:
   flutter_test:

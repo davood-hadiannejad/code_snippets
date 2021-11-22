@@ -28,7 +28,7 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
   int columnSort;
   bool ascSort = false;
   final today = DateTime.now();
-  final ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
 
   List<String> monthItems = [
     'Jan',
@@ -160,46 +160,37 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
       width: 1400,
       height: 400,
       child: DataTable2(
-        headingRowColor:
-            MaterialStateColor.resolveWith((states) => Colors.black45),
         scrollController: _scrollController,
         columnSpacing: 10,
         horizontalMargin: 30,
         showBottomBorder: true,
-        decoration:
-            BoxDecoration(border: Border.all(color: Colors.black45, width: 5)),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black45, width: 5),
+        ),
         sortColumnIndex: columnSort,
         sortAscending: ascSort,
         columns: <DataColumn>[
           DataColumn(
             label: Text(
               'Projekt',
-              style:
-                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
             label: Text(
               'Kunde',
-              style:
-                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
             label: Text(
               'Medium',
-              style:
-                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
           DataColumn(
             label: Text(
               'Brand',
-              style:
-                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
@@ -208,8 +199,6 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
               child: Text(
                 'MN3 bewertet',
                 textAlign: TextAlign.end,
-                style:
-                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             onSort: (idx, asc) {
@@ -223,10 +212,10 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           ),
           DataColumn(
             label: Expanded(
-              child: Text('Zeitraum',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic, color: Colors.white)),
+              child: Text(
+                'Zeitraum',
+                textAlign: TextAlign.center,
+              ),
             ),
             numeric: false,
           ),
@@ -235,8 +224,6 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
               child: Text(
                 'Bewertung',
                 textAlign: TextAlign.center,
-                style:
-                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
               ),
             ),
             onSort: (idx, asc) {
@@ -252,8 +239,6 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
             label: Text(
               'Due Date',
               textAlign: TextAlign.center,
-              style:
-                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             onSort: (idx, asc) {
               setState(() {
@@ -267,8 +252,6 @@ class _ProjectForecastItemState extends State<ProjectForecastItem> {
           DataColumn(
             label: Text(
               'Status',
-              style:
-                  TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
             ),
             numeric: false,
           ),
