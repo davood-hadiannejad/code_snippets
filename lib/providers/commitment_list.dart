@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:latinize/latinize.dart';
 
 import '../main.dart';
 import './verkaeufer.dart';
@@ -113,6 +114,7 @@ class CommitmentList with ChangeNotifier {
             id: commitment['id'],
             verkaeufer: commitment['verkaeufer'],
             customer: commitment['kunde'],
+            konzern: commitment['konzern'],
             medium: commitment['medium'],
             brand: commitment['brand'],
             umsatzcluster: commitment['umsatzcluster'],
@@ -131,6 +133,13 @@ class CommitmentList with ChangeNotifier {
           ),
         );
       });
+
+      loadedCommitmentList.sort((a, b) {
+        String aName = (a.customer != null) ? a.customer : a.konzern;
+        String bName = (b.customer != null) ? b.customer : b.konzern;
+        return latinize(aName).compareTo(latinize(bName));
+      });
+
       _items = loadedCommitmentList;
 
       if (searchString != '') {
@@ -142,7 +151,8 @@ class CommitmentList with ChangeNotifier {
       }
       if (filterBrandList.isNotEmpty) {
         loadedCommitmentList = loadedCommitmentList
-            .where((commitment) => filterBrandList.any((item) => commitment.brand.contains(item)))
+            .where((commitment) =>
+                filterBrandList.any((item) => commitment.brand.contains(item)))
             .toList();
       }
 
@@ -160,6 +170,7 @@ class CommitmentList with ChangeNotifier {
 
   Future<void> addCommitment(
     String customer,
+    String konzern,
     List<dynamic> medium,
     List<dynamic> brand,
     String agency,
@@ -173,11 +184,11 @@ class CommitmentList with ChangeNotifier {
     int monthEnd,
     String status,
     String year,
+    String kundeOrKonzern,
   ) async {
     var url = APIPROTOCOL + APIHOST + '/api/commitments/';
     try {
       Map<String, dynamic> body = {
-        'kunde': customer,
         'verkaeufer': verkaueferEmail,
         'medium': medium,
         'brand': brand,
@@ -192,6 +203,12 @@ class CommitmentList with ChangeNotifier {
         'status': status,
         'year': year,
       };
+
+      if (kundeOrKonzern == 'Kunde') {
+        body['kunde'] = customer;
+      } else {
+        body['konzern'] = konzern;
+      }
 
       final response = await http.post(url,
           headers: {
@@ -209,6 +226,7 @@ class CommitmentList with ChangeNotifier {
         id: extractedData['id'],
         verkaeufer: extractedData['verkaeufer'],
         customer: extractedData['kunde'],
+        konzern: extractedData['konzern'],
         medium: extractedData['medium'],
         brand: extractedData['brand'],
         umsatzcluster: extractedData['umsatzcluster'],
@@ -232,6 +250,7 @@ class CommitmentList with ChangeNotifier {
   Future<void> updateCommitment(
     int id,
     String customer,
+    String konzern,
     List<dynamic> medium,
     List<dynamic> brand,
     String agency,
@@ -245,12 +264,12 @@ class CommitmentList with ChangeNotifier {
     int monthEnd,
     String status,
     String year,
+    String kundeOrKonzern,
   ) async {
     var url = APIPROTOCOL + APIHOST + '/api/commitments/${id.toString()}/';
     try {
       Map<String, dynamic> body = {
         'id': id,
-        'kunde': customer,
         'verkaeufer': verkaueferEmail,
         'medium': medium,
         'brand': brand,
@@ -265,6 +284,13 @@ class CommitmentList with ChangeNotifier {
         'status': status,
         'year': year,
       };
+
+      if (kundeOrKonzern == 'Kunde') {
+        body['kunde'] = customer;
+      } else {
+        body['konzern'] = konzern;
+      }
+
 
       final response = await http.put(url,
           headers: {
@@ -281,6 +307,7 @@ class CommitmentList with ChangeNotifier {
         id: extractedData['id'],
         verkaeufer: extractedData['verkaeufer'],
         customer: extractedData['kunde'],
+        konzern: extractedData['konzern'],
         medium: extractedData['medium'],
         brand: extractedData['brand'],
         umsatzcluster: extractedData['umsatzcluster'],

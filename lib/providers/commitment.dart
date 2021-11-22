@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 class Commitment with ChangeNotifier {
   final int id;
   final String customer;
+  final String konzern;
   final String verkaeufer;
   final List<dynamic> medium;
   final List<dynamic> brand;
@@ -26,7 +27,8 @@ class Commitment with ChangeNotifier {
 
   Commitment({
     @required this.id,
-    @required this.customer,
+    this.customer,
+    this.konzern,
     @required this.verkaeufer,
     @required this.medium,
     @required this.brand,
@@ -35,7 +37,7 @@ class Commitment with ChangeNotifier {
     @required this.year,
     @required this.monthStart,
     @required this.monthEnd,
-    @required this.mn3,
+    this.mn3,
     @required this.cashRabatt,
     @required this.naturalRabatt,
     this.mn3Ist,
