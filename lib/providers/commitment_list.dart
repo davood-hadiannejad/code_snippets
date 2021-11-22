@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:latinize/latinize.dart';
 
 import '../main.dart';
 import './verkaeufer.dart';
@@ -113,6 +114,7 @@ class CommitmentList with ChangeNotifier {
             id: commitment['id'],
             verkaeufer: commitment['verkaeufer'],
             customer: commitment['kunde'],
+            konzern: commitment['konzern'],
             medium: commitment['medium'],
             brand: commitment['brand'],
             umsatzcluster: commitment['umsatzcluster'],
@@ -131,6 +133,13 @@ class CommitmentList with ChangeNotifier {
           ),
         );
       });
+
+      loadedCommitmentList.sort((a, b) {
+        String aName = (a.customer != null) ? a.customer : a.konzern;
+        String bName = (b.customer != null) ? b.customer : b.konzern;
+        return latinize(aName).compareTo(latinize(bName));
+      });
+
       _items = loadedCommitmentList;
 
       if (searchString != '') {
@@ -209,6 +218,7 @@ class CommitmentList with ChangeNotifier {
         id: extractedData['id'],
         verkaeufer: extractedData['verkaeufer'],
         customer: extractedData['kunde'],
+        konzern: extractedData['konzern'],
         medium: extractedData['medium'],
         brand: extractedData['brand'],
         umsatzcluster: extractedData['umsatzcluster'],
@@ -281,6 +291,7 @@ class CommitmentList with ChangeNotifier {
         id: extractedData['id'],
         verkaeufer: extractedData['verkaeufer'],
         customer: extractedData['kunde'],
+        konzern: extractedData['konzern'],
         medium: extractedData['medium'],
         brand: extractedData['brand'],
         umsatzcluster: extractedData['umsatzcluster'],

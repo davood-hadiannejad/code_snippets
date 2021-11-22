@@ -97,13 +97,14 @@ class _CommitmentItemState extends State<CommitmentItem> {
   }
 
   DataTable buildCommitmentTable(BuildContext context) {
+    print(widget.commitmentData.items);
     return DataTable(
       sortColumnIndex: columnSort,
       sortAscending: ascSort,
       columns: <DataColumn>[
         DataColumn(
           label: Text(
-            'Kunde',
+            'Kunde / Konzern',
           ),
         ),
         DataColumn(
@@ -202,8 +203,8 @@ class _CommitmentItemState extends State<CommitmentItem> {
                           ? Tooltip(
                               message: commitment.comment,
                               waitDuration: Duration(microseconds: 300),
-                              child: Text(commitment.customer))
-                          : Text(commitment.customer)),
+                              child: Text((commitment.customer != null) ? commitment.customer : commitment.konzern + ' (Konzern)'))
+                          : Text((commitment.customer != null) ? commitment.customer : commitment.konzern + ' (Konzern)')),
                   DataCell(Text(commitment.agentur)),
                   DataCell(Text(commitment.medium
                       .toString()
@@ -277,6 +278,7 @@ class _CommitmentItemState extends State<CommitmentItem> {
                         : Text('-'),
                   ),
                   DataCell(
+                    (commitment.mn3 != null) ?
                     Row(
                       children: [
                         (commitment.mn3Ist != null)
@@ -295,7 +297,7 @@ class _CommitmentItemState extends State<CommitmentItem> {
                           radius: 8,
                         )),
                       ],
-                    ),
+                    ) : Text('-'),
                   ),
                   DataCell(Text(monthItems[commitment.monthStart - 1] +
                       ' - ' +
