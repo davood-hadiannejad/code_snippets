@@ -143,11 +143,18 @@ class CommitmentList with ChangeNotifier {
       _items = loadedCommitmentList;
 
       if (searchString != '') {
-        loadedCommitmentList = loadedCommitmentList
-            .where((commitment) => commitment.customer
+        loadedCommitmentList = loadedCommitmentList.where((commitment) {
+          if (commitment.customer != null) {
+            return commitment.customer
                 .toLowerCase()
-                .startsWith(searchString.toLowerCase()))
-            .toList();
+                .startsWith(searchString.toLowerCase());
+          } else {
+            return commitment.konzern
+                .toLowerCase()
+                .startsWith(searchString.toLowerCase());
+          }
+
+        }).toList();
       }
       if (filterBrandList.isNotEmpty) {
         loadedCommitmentList = loadedCommitmentList
@@ -209,7 +216,7 @@ class CommitmentList with ChangeNotifier {
       } else {
         body['konzern'] = konzern;
       }
-
+      print(body);
       final response = await http.post(url,
           headers: {
             "content-type": "application/json",
@@ -290,7 +297,6 @@ class CommitmentList with ChangeNotifier {
       } else {
         body['konzern'] = konzern;
       }
-
 
       final response = await http.put(url,
           headers: {
