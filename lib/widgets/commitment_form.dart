@@ -140,9 +140,17 @@ class _CommitmentFormState extends State<CommitmentForm> {
 
       _commentController.text = commitment.comment;
 
-      customerDropdownValue = commitment.customer.toString();
+
       agencyDropdownValue = commitment.agentur.toString();
-      konzernDropdownValue = commitment.konzern.toString();
+
+      if (commitment.customer == null) {
+        print(konzernDropdownValue);
+        kundeOrKonzernDropdownValue = 'Konzern';
+        konzernDropdownValue = commitment.konzern.toString();
+      } else {
+        customerDropdownValue = commitment.customer.toString();
+        kundeOrKonzernDropdownValue = 'Kunde';
+      }
       brandValues = commitment.brand;
       mediumValues = commitment.medium;
 
