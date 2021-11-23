@@ -14,6 +14,7 @@ class CommitmentList with ChangeNotifier {
   String statusFilter = 'offen';
   String searchString = '';
   List<String> filterBrandList = [];
+  String errorString = '';
 
   final String authToken;
 
@@ -53,6 +54,11 @@ class CommitmentList with ChangeNotifier {
     }
 
     return [..._activeItems];
+  }
+
+  void clearError() {
+    errorString = '';
+    notifyListeners();
   }
 
   Commitment findById(int id) {
@@ -250,7 +256,8 @@ class CommitmentList with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      throw error;
+      errorString = error.toString();
+      notifyListeners();
     }
   }
 
@@ -309,6 +316,9 @@ class CommitmentList with ChangeNotifier {
           json.decode(utf8.decode(response.bodyBytes)) as dynamic;
       _items.removeWhere((commitment) => commitment.id == id);
       print(url);
+      if (extractedData[0] is String) {
+        throw new Exception(extractedData[0]);
+      }
       _items.add(Commitment(
         id: extractedData['id'],
         verkaeufer: extractedData['verkaeufer'],
@@ -330,7 +340,8 @@ class CommitmentList with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      throw error;
+      errorString = error.toString();
+      notifyListeners();
     }
   }
 }

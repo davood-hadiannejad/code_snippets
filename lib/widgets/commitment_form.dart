@@ -144,7 +144,6 @@ class _CommitmentFormState extends State<CommitmentForm> {
       agencyDropdownValue = commitment.agentur.toString();
 
       if (commitment.customer == null) {
-        print(konzernDropdownValue);
         kundeOrKonzernDropdownValue = 'Konzern';
         konzernDropdownValue = commitment.konzern.toString();
       } else {

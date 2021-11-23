@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:intl/intl.dart';
 import '../providers/commitment_list.dart';
@@ -52,7 +53,39 @@ class _CommitmentItemState extends State<CommitmentItem> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) {
+          if (widget.commitmentData.errorString != '') {
+            _showErrorDialog(widget.commitmentData.errorString.replaceAll('Exception', 'Fehler'));
+          }
+    });
+  }
+
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Achtung...'),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Provider.of<CommitmentList>(context, listen: false).clearError();
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Card(
       margin: EdgeInsets.all(12.0),
       child: Container(
