@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:search_choices/search_choices.dart';
 
 import '../providers/agency_list.dart';
+import '../providers/mandant_list.dart';
+import '../providers/mandant.dart';
 import '../providers/konzern_list.dart';
 import '../providers/commitment_list.dart';
 import '../providers/commitment.dart';
@@ -37,18 +39,21 @@ class _CommitmentFormState extends State<CommitmentForm> {
 
   String statusDropdownValue;
   String kundeOrKonzernDropdownValue = 'Kunde';
+  String brandOrMandantDropdownValue = 'Brands';
   String monthStartDropdownValue;
   String monthEndDropdownValue;
 
   List<String> brandDropdownList = [];
   List<String> customerDropdownList = [];
   List<String> agencyDropdownList = [];
+  List<String> mandantDropdownList = [];
   List<String> konzernDropdownList = [];
   List<String> agencyDropdownListComplete = [];
 
   List<int> selectedItemsMedium = [];
   List<int> selectedItemsUmsatzcluster = [];
   List<int> selectedItemsBrand = [];
+  List<int> selectedItemsMandant = [];
 
   String selectedVerkauferEmail;
   String selectedYear;
@@ -126,6 +131,8 @@ class _CommitmentFormState extends State<CommitmentForm> {
 
     agencyDropdownList =
         Provider.of<AgencyList>(context).items.map((e) => e.name).toList();
+    mandantDropdownList =
+        Provider.of<MandantList>(context).items.map((e) => e.name).toList();
     konzernDropdownList =
         Provider.of<KonzernList>(context).items.map((e) => e.name).toList();
     agencyDropdownListComplete = [...agencyDropdownList];
@@ -139,7 +146,6 @@ class _CommitmentFormState extends State<CommitmentForm> {
       _cashRabattPercentController.text = commitment.cashRabatt.toString();
 
       _commentController.text = commitment.comment;
-
 
       agencyDropdownValue = commitment.agentur.toString();
 
@@ -177,6 +183,7 @@ class _CommitmentFormState extends State<CommitmentForm> {
     Provider.of<BrandList>(context, listen: false).fetchAndSetBrandList();
     Provider.of<CustomerList>(context, listen: false).fetchAndSetCustomerList();
     Provider.of<AgencyList>(context, listen: false).fetchAndSetAgencyList();
+    Provider.of<MandantList>(context, listen: false).fetchAndSetMandantList();
     Provider.of<KonzernList>(context, listen: false).fetchAndSetKonzernList();
 
     selectedVerkauferEmail = Provider.of<VerkaeuferList>(context, listen: false)
@@ -184,7 +191,6 @@ class _CommitmentFormState extends State<CommitmentForm> {
         .email;
     selectedYear = Provider.of<Year>(context, listen: false).selectedYear;
   }
-
 
   _submit() {
     if (!_formKey.currentState.validate()) {
@@ -195,9 +201,8 @@ class _CommitmentFormState extends State<CommitmentForm> {
       return;
     }
 
-    if (((customerDropdownValue == null ||
-        customerDropdownValue == '')  && (konzernDropdownValue == null ||
-        konzernDropdownValue == '')) ||
+    if (((customerDropdownValue == null || customerDropdownValue == '') &&
+            (konzernDropdownValue == null || konzernDropdownValue == '')) ||
         mediumValues == null ||
         brandValues == null ||
         agencyDropdownValue == null ||
@@ -297,81 +302,86 @@ class _CommitmentFormState extends State<CommitmentForm> {
               Row(
                 children: [
                   Container(
-                  width: 100,
-                  height: 50,
-                  child: DropdownButton<String>(
-                    value: kundeOrKonzernDropdownValue,
-                    iconSize: 24,
-                    elevation: 16,
-                    onChanged: (String newValue) {
-                      if (this.mounted) {
-                        setState(() {
-                          kundeOrKonzernDropdownValue = newValue;
-                        });
-                      }
-                    },
-                    items: <String>[
-                      'Kunde',
-                      'Konzern',
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                  (kundeOrKonzernDropdownValue == 'Kunde') ? Container(
-                    width: 350,
-                    child: SearchChoices.single(
-                      items: customerDropdownList
-                          .map<DropdownMenuItem<String>>((String value) {
+                    width: 100,
+                    height: 50,
+                    child: DropdownButton<String>(
+                      value: kundeOrKonzernDropdownValue,
+                      iconSize: 24,
+                      elevation: 16,
+                      onChanged: (String newValue) {
+                        if (this.mounted) {
+                          setState(() {
+                            kundeOrKonzernDropdownValue = newValue;
+                          });
+                        }
+                      },
+                      items: <String>[
+                        'Kunde',
+                        'Konzern',
+                      ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
                         );
                       }).toList(),
-                      value: customerDropdownValue,
-                      hint: Container(
-                        child: Text("Bitte Kunde auswählen..."),
-                      ),
-                      searchHint: "Bitte Kunde auswählen...",
-                      onChanged: (String newValue) {
-                        if (this.mounted) {
-                          setState(() {
-                            customerDropdownValue = newValue;
-                            //agencyDropdownValue = null;
-                          });
-                        }
-                      },
-                      isExpanded: true,
-                    ),
-                  ) : Container(
-                    width: 350,
-                    child: SearchChoices.single(
-                      items: konzernDropdownList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      value: konzernDropdownValue,
-                      hint: Container(
-                        child: Text("Bitte Konzern auswählen..."),
-                      ),
-                      searchHint: "Bitte Konzern auswählen...",
-                      onChanged: (String newValue) {
-                        if (this.mounted) {
-                          setState(() {
-                            konzernDropdownValue = newValue;
-                            //agencyDropdownValue = null;
-                          });
-                        }
-                      },
-                      isExpanded: true,
                     ),
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  (kundeOrKonzernDropdownValue == 'Kunde')
+                      ? Container(
+                          width: 340,
+                          child: SearchChoices.single(
+                            items: customerDropdownList
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            value: customerDropdownValue,
+                            hint: Container(
+                              child: Text("Bitte Kunde auswählen..."),
+                            ),
+                            searchHint: "Bitte Kunde auswählen...",
+                            onChanged: (String newValue) {
+                              if (this.mounted) {
+                                setState(() {
+                                  customerDropdownValue = newValue;
+                                  //agencyDropdownValue = null;
+                                });
+                              }
+                            },
+                            isExpanded: true,
+                          ),
+                        )
+                      : Container(
+                          width: 350,
+                          child: SearchChoices.single(
+                            items: konzernDropdownList
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            value: konzernDropdownValue,
+                            hint: Container(
+                              child: Text("Bitte Konzern auswählen..."),
+                            ),
+                            searchHint: "Bitte Konzern auswählen...",
+                            onChanged: (String newValue) {
+                              if (this.mounted) {
+                                setState(() {
+                                  konzernDropdownValue = newValue;
+                                  //agencyDropdownValue = null;
+                                });
+                              }
+                            },
+                            isExpanded: true,
+                          ),
+                        ),
                 ],
               ),
               Container(
@@ -427,10 +437,71 @@ class _CommitmentFormState extends State<CommitmentForm> {
                     ),
                   ),
                   SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
                   Container(
-                    width: 330,
+                    width: 290,
+                    child: SearchChoices.multiple(
+                      items: umsatzclusterList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      hint: 'Umsatzcluster',
+                      searchHint: 'Bitte Umsatzcluster auswählen...',
+                      selectedItems: selectedItemsUmsatzcluster,
+                      onChanged: (List<int> newValues) {
+                        if (this.mounted) {
+                          setState(() {
+                            selectedItemsUmsatzcluster = newValues;
+                            umsatzclusterValues = newValues
+                                .map((e) => umsatzclusterList[e])
+                                .toList();
+                          });
+                        }
+                      },
+                      isExpanded: true,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: 120,
+                    height: 50,
+                    child: DropdownButton<String>(
+                      value: brandOrMandantDropdownValue,
+                      iconSize: 24,
+                      elevation: 16,
+                      onChanged: (String newValue) {
+                        if (this.mounted) {
+                          setState(() {
+                            brandOrMandantDropdownValue = newValue;
+                            brandValues = [];
+                            selectedItemsBrand = [];
+                            selectedItemsMandant = [];
+                          });
+                        }
+                      },
+                      items: <String>[
+                        'Brands',
+                        'Mandanten',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  (brandOrMandantDropdownValue == 'Brands') ? Container(
+                    width: 320,
                     child: SearchChoices.multiple(
                       items: brandDropdownList
                           .map<DropdownMenuItem<String>>((String value) {
@@ -454,33 +525,39 @@ class _CommitmentFormState extends State<CommitmentForm> {
                       },
                       isExpanded: true,
                     ),
+                  ) : Container(
+                    width: 320,
+                    child: SearchChoices.multiple(
+                      items: mandantDropdownList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      hint: 'Mandant',
+                      searchHint: 'Bitte Mandant auswählen...',
+                      selectedItems: selectedItemsMandant,
+                      onChanged: (List<int> newValues) {
+                        if (this.mounted) {
+                          setState(() {
+                            selectedItemsMandant = newValues;
+                            print(selectedItemsMandant.toString());
+                            List<dynamic> selectedBrands = [];
+                            newValues.map((e) => mandantDropdownList[e]).toList().forEach((mandant) {
+                                Mandant selectedMandat = Provider.of<MandantList>(context, listen: false).findByName(mandant);
+                                selectedBrands.addAll(selectedMandat.brands);
+                            });
+                            // make distinct
+                            brandValues = selectedBrands.toSet().toList();
+                            print(brandValues.toString());
+                          });
+                        }
+                      },
+                      isExpanded: true,
+                    ),
                   ),
                 ],
-              ),
-              Container(
-                width: 250,
-                child: SearchChoices.multiple(
-                  items: umsatzclusterList
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  hint: 'Umsatzcluster',
-                  searchHint: 'Bitte Umsatzcluster auswählen...',
-                  selectedItems: selectedItemsUmsatzcluster,
-                  onChanged: (List<int> newValues) {
-                    if (this.mounted) {
-                      setState(() {
-                        selectedItemsUmsatzcluster = newValues;
-                        umsatzclusterValues =
-                            newValues.map((e) => umsatzclusterList[e]).toList();
-                      });
-                    }
-                  },
-                  isExpanded: true,
-                ),
               ),
               Container(
                 width: 250,
