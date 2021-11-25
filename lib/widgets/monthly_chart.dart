@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-final formatter = new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
+final formatter =
+    new NumberFormat.simpleCurrency(locale: 'eu', decimalDigits: 0);
 
 class MonthlyChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -13,7 +14,8 @@ class MonthlyChart extends StatelessWidget {
   factory MonthlyChart.withData(goalData, istData, kundenData, projektData,
       {showProjekt: true, onlyIst: false}) {
     return new MonthlyChart(
-      createData(goalData, istData, kundenData, projektData, showProjekt, onlyIst),
+      createData(
+          goalData, istData, kundenData, projektData, showProjekt, onlyIst),
       // Disable animations for image tests.
       animate: true,
     );
@@ -22,7 +24,7 @@ class MonthlyChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final simpleCurrencyFormatter =
-    new charts.BasicNumericTickFormatterSpec.fromNumberFormat(formatter);
+        new charts.BasicNumericTickFormatterSpec.fromNumberFormat(formatter);
 
     return new charts.BarChart(
       seriesList,
@@ -58,8 +60,8 @@ class MonthlyChart extends StatelessWidget {
   }
 
   /// Create series list with multiple series
-  static List<charts.Series<OrdinalSales, String>> createData(
-      goalData, istData, kundenData, projektData, bool showProjekt, bool onlyIst) {
+  static List<charts.Series<OrdinalSales, String>> createData(goalData, istData,
+      kundenData, projektData, bool showProjekt, bool onlyIst) {
     final zielData = [
       new OrdinalSales('Januar', goalData['m1']),
       new OrdinalSales('Februar', goalData['m2']),
@@ -120,14 +122,15 @@ class MonthlyChart extends StatelessWidget {
       new OrdinalSales('Dezember', istData['m12']),
     ];
 
-    List<charts.Series<OrdinalSales, String>>  chartList = [
+    List<charts.Series<OrdinalSales, String>> chartList = [
       new charts.Series<OrdinalSales, String>(
         id: 'Goal',
         seriesCategory: 'A',
         domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: zielData,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 1)),
+        colorFn: (_, __) =>
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(226, 6, 68, 1)),
       ),
       new charts.Series<OrdinalSales, String>(
         id: 'Kundenforecast',
@@ -144,20 +147,23 @@ class MonthlyChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.month,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: stichtagDataB,
-        colorFn: (_, __) => charts.ColorUtil.fromDartColor(Color.fromRGBO(90, 90, 90, 1)),
+        colorFn: (_, __) =>
+            charts.ColorUtil.fromDartColor(Color.fromRGBO(90, 90, 90, 1)),
       ),
     ];
 
     if (showProjekt) {
-      chartList.insert(1, new charts.Series<OrdinalSales, String>(
-        id: 'Projektforecast',
-        seriesCategory: 'B',
-        domainFn: (OrdinalSales sales, _) => sales.month,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: projektforecastDataB,
-        colorFn: (_, __) =>
-            charts.ColorUtil.fromDartColor(Color.fromRGBO(98, 206, 255, 1)),
-      ));
+      chartList.insert(
+          1,
+          new charts.Series<OrdinalSales, String>(
+            id: 'Projektforecast',
+            seriesCategory: 'B',
+            domainFn: (OrdinalSales sales, _) => sales.month,
+            measureFn: (OrdinalSales sales, _) => sales.sales,
+            data: projektforecastDataB,
+            colorFn: (_, __) =>
+                charts.ColorUtil.fromDartColor(Color.fromRGBO(98, 206, 255, 1)),
+          ));
     }
 
     if (onlyIst) {

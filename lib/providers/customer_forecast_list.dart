@@ -17,7 +17,7 @@ class CustomerForecastList with ChangeNotifier {
   CustomerForecast _addToActiveItems;
   int currentPage = 1;
   int maxPages;
-  int maxItemsOnPage = 10;
+  int maxItemsOnPage = 2;
   String searchString = '';
   String filterKind = '';
   String sortField = 'kunde';
