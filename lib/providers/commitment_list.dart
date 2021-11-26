@@ -82,10 +82,10 @@ class CommitmentList with ChangeNotifier {
 
   Future<void> fetchAndSetCommitmentList({
     bool init = false,
-    Verkaeufer verkaeufer,
-    String year,
-    String pageType,
-    String id,
+    Verkaeufer? verkaeufer,
+    String? year,
+    String? pageType,
+    String? id,
   }) async {
     Map<String, String> uriQuery = {};
 
@@ -159,7 +159,6 @@ class CommitmentList with ChangeNotifier {
                 .toLowerCase()
                 .startsWith(searchString.toLowerCase());
           }
-
         }).toList();
       }
       if (filterBrandList.isNotEmpty) {

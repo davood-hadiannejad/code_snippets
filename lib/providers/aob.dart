@@ -12,11 +12,11 @@ class AOB with ChangeNotifier {
   final num gebucht;
 
   AOB({
-    @required this.medium,
-    @required this.brand,
-    @required this.agency,
-    @required this.gebucht,
-    @required this.offen,
-    @required this.goal,
+    required this.medium,
+    required this.brand,
+    required this.agency,
+    required this.gebucht,
+    required this.offen,
+    required this.goal,
   });
 }

@@ -8,7 +8,7 @@ class Brand with ChangeNotifier {
   final String slug;
 
   Brand({
-    @required this.name,
-    @required this.slug,
+    required this.name,
+    required this.slug,
   });
 }

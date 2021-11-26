@@ -20,8 +20,8 @@ class CustomerForecastScreen extends StatefulWidget {
 }
 
 class _CustomerForecastScreenState extends State<CustomerForecastScreen> {
-  Verkaeufer selectedVerkaufer;
-  String selectedYear;
+  late Verkaeufer selectedVerkaufer;
+  late String selectedYear;
 
   @override
   void initState() {

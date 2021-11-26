@@ -7,7 +7,8 @@ import '../main.dart';
 
 import './aob.dart';
 
-String dummyData = '[{"medium": "TV", "brand": "Nick", "goal": 600000, "offen": 500000, "gebucht": 5000}, {"medium": "TV", "brand": "MTV", "goal": 800000, "offen": 500000, "gebucht": 10000}]';
+String dummyData =
+    '[{"medium": "TV", "brand": "Nick", "goal": 600000, "offen": 500000, "gebucht": 5000}, {"medium": "TV", "brand": "MTV", "goal": 800000, "offen": 500000, "gebucht": 10000}]';
 
 class AOBList with ChangeNotifier {
   List<AOB> _items = [];
@@ -26,7 +27,13 @@ class AOBList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAndSetAOBList({bool init = false, Verkaeufer verkaeufer, String year, String pageType, String id,}) async {
+  Future<void> fetchAndSetAOBList({
+    bool init = false,
+    required Verkaeufer verkaeufer,
+    String? year,
+    String? pageType,
+    String? id,
+  }) async {
     Map<String, String> uriQuery = {};
 
     if (verkaeufer != null && verkaeufer.email != null) {
@@ -48,7 +55,8 @@ class AOBList with ChangeNotifier {
         uri,
         headers: {"Authorization": "Bearer $authToken"},
       );
-      final extractedData = json.decode(utf8.decode(response.bodyBytes) ) as List<dynamic>;
+      final extractedData =
+          json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
       if (extractedData == null) {
         return;
       }

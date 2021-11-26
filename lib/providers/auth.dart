@@ -9,15 +9,15 @@ import '../main.dart';
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  String _token;
-  DateTime _expiryDate;
-  Timer _authTimer;
+  late String _token;
+  late DateTime _expiryDate;
+  late Timer _authTimer;
 
   bool get isAuth {
     return token != null;
   }
 
-  String get token {
+  String? get token {
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&
         _token != null) {
@@ -26,11 +26,8 @@ class Auth with ChangeNotifier {
     return null;
   }
 
-
-  Future<void> _authenticate(
-      String email, String password) async {
-    final url =
-        APIPROTOCOL + APIHOST + '/api/token/';
+  Future<void> _authenticate(String email, String password) async {
+    final url = APIPROTOCOL + APIHOST + '/api/token/';
     try {
       final response = await http.post(
         url,
@@ -48,7 +45,8 @@ class Auth with ChangeNotifier {
       }
       _token = responseData['access'];
       final parsedJwt = Jwt.Jwt.parseJwt(_token);
-      _expiryDate = DateTime.fromMillisecondsSinceEpoch(parsedJwt['exp'] * 1000);
+      _expiryDate =
+          DateTime.fromMillisecondsSinceEpoch(parsedJwt['exp'] * 1000);
       _autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
@@ -78,8 +76,9 @@ class Auth with ChangeNotifier {
     if (!prefs.containsKey('userData')) {
       return false;
     }
-    final extractedUserData = json.decode(prefs.getString('userData')) as Map<String, Object>;
-    final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
+    final extractedUserData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+    final expiryDate = DateTime.parse(extractedUserData!['expiryDate']!);
 
     if (expiryDate.isBefore(DateTime.now())) {
       return false;

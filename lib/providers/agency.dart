@@ -5,7 +5,7 @@ class Agency with ChangeNotifier {
   final String slug;
 
   Agency({
-    @required this.name,
-    @required this.slug,
+    required this.name,
+    required this.slug,
   });
 }
