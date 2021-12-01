@@ -38,7 +38,7 @@ class CustomerForecastList with ChangeNotifier {
     _addToActiveItems = null;
     currentPage = 1;
     maxPages = null;
-    maxItemsOnPage = 10;
+    maxItemsOnPage = 2;
     searchString = '';
     filterKind = '';
     sortField = 'kunde';
