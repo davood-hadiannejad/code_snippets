@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import '../providers/commitment_list.dart';
 import './commitment_dialog.dart';
@@ -69,7 +70,7 @@ class _CommitmentItemState extends State<CommitmentItem> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text('Achtung...'),
-        content: Text(message),
+        content: Html(data: message),
         actions: <Widget>[
           FlatButton(
             child: Text('Okay'),

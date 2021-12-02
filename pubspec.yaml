@@ -47,6 +47,7 @@ dependencies:
   search_choices: ^2.0.14
   syncfusion_flutter_datagrid: ^18.4.30-beta
   data_table_2: ^2.2.0
+  flutter_html: ^0.8.2
 
 dev_dependencies:
   flutter_test:
