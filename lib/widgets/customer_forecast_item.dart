@@ -760,14 +760,24 @@ class Data extends DataTableSource {
 
   Future<void> _showGesamtDialog(
       num gesamtSumme, CustomerForecast forecast) async {
-    List<String> activeMonth = _month.sublist(currentMonth);
-    int countActiveMonth = activeMonth.length;
-    num sumLastYear = activeMonth
-        .map((monthKey) {
-          return forecast.istLastYear[monthKey];
-        })
-        .toList()
-        .reduce((a, b) => a + b);
+    num sumLastYear;
+    int countActiveMonth;
+    List<String> activeMonth;
+
+    if (currentMonth == 12) {
+      activeMonth = ['m12'];
+      sumLastYear = forecast.istLastYear['m12'];
+      countActiveMonth = 1;
+    } else {
+      activeMonth = _month.sublist(currentMonth);
+      countActiveMonth = activeMonth.length;
+      sumLastYear = activeMonth
+          .map((monthKey) {
+            return forecast.istLastYear[monthKey];
+          })
+          .toList()
+          .reduce((a, b) => a + b);
+    }
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
