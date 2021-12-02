@@ -466,7 +466,7 @@ class Data extends DataTableSource {
                             ? selectedVerkaufer.isGroup
                             : true,
                     controller: _controllerList[forecast][idx],
-                    //focusNode: _focusNodeList[forecast][idx],
+                    focusNode: _focusNodeList[forecast][idx],
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: (currentYear == selectedYear)
