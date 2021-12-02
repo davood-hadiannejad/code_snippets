@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
-import 'package:data_table_2/data_table_2.dart';
 import '../providers/customer_forecast_list.dart';
 import '../providers/customer_forecast.dart';
 import '../providers/verkaeufer_list.dart';
@@ -44,12 +43,9 @@ int currentMonth = DateTime.now().month;
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
   final ScrollController _scrollController = ScrollController();
   Verkaeufer selectedVerkaufer;
-  Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
+
   Map<CustomerForecast, List<FocusNode>> _focusNodeList = {};
-  Map<CustomerForecast, TextEditingController> _controllerSummary = {};
   Map<CustomerForecast, FocusNode> _focusNodeSummary = {};
-  int maxPages;
-  int currentPage;
   DataTableSource _data;
 
   @override
@@ -67,9 +63,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
 
   @override
   void initState() {
-    maxPages = widget.customerForecastData.maxPages;
-    currentPage = widget.customerForecastData.currentPage;
-
     super.initState();
     // addCellListener();
   }
@@ -78,8 +71,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
     int selectedYear = num.parse(Provider.of<Year>(context).selectedYear);
-    int currentYear = DateTime.now().year;
-    int lastYear = selectedYear - 1;
+
     _data = Data(
         customerForecast: widget.customerForecastData,
         selectedYear: selectedYear,

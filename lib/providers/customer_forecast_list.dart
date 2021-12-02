@@ -15,9 +15,7 @@ class CustomerForecastList with ChangeNotifier {
   List<CustomerForecast> _items = [];
   List<CustomerForecast> _activeItems = [];
   CustomerForecast _addToActiveItems;
-  int currentPage = 1;
-  int maxPages;
-  int maxItemsOnPage = 10;
+
   String searchString = '';
   String filterKind = '';
   String sortField = 'kunde';
@@ -36,9 +34,6 @@ class CustomerForecastList with ChangeNotifier {
     _items = [];
     _activeItems = [];
     _addToActiveItems = null;
-    currentPage = 1;
-    maxPages = null;
-    maxItemsOnPage = 2;
     searchString = '';
     filterKind = '';
     sortField = 'kunde';
@@ -48,7 +43,6 @@ class CustomerForecastList with ChangeNotifier {
   }
 
   Future<void> changePage(int pageNumber) async {
-    currentPage = pageNumber;
     notifyListeners();
   }
 
@@ -61,19 +55,16 @@ class CustomerForecastList with ChangeNotifier {
   }
 
   Future<void> searchByName(String currentSearchString) async {
-    currentPage = 1;
     searchString = currentSearchString;
     notifyListeners();
   }
 
   Future<void> filterByMedium(String currentFilterKind) async {
-    currentPage = 1;
     filterKind = currentFilterKind;
     notifyListeners();
   }
 
   Future<void> filterByBrandList(List<String> currentFilterBrandList) async {
-    currentPage = 1;
     filterBrandList = currentFilterBrandList;
     notifyListeners();
   }
@@ -206,15 +197,7 @@ class CustomerForecastList with ChangeNotifier {
       }
     }
 
-    maxPages = (loadedCustomerForecastList.length / maxItemsOnPage).ceil();
-    int minItemsPage = currentPage * maxItemsOnPage - maxItemsOnPage;
-    int maxItemsPage = currentPage * maxItemsOnPage;
-    if (maxItemsPage >= loadedCustomerForecastList.length - 1) {
-      _activeItems = loadedCustomerForecastList.sublist(minItemsPage);
-    } else {
-      _activeItems =
-          loadedCustomerForecastList.sublist(minItemsPage, maxItemsPage);
-    }
+    _activeItems = loadedCustomerForecastList;
 
     if (_addToActiveItems != null) {
       _activeItems.insert(0, _addToActiveItems);
