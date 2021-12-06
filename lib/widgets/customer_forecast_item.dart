@@ -478,7 +478,7 @@ class Data extends DataTableSource {
                             ? selectedVerkaufer.isGroup
                             : true,
                     controller: _controllerList[forecast][idx],
-                    focusNode: _focusNodeList[forecast][idx],
+                    // focusNode: _focusNodeList[forecast][idx],
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: (currentYear == selectedYear)
@@ -526,6 +526,7 @@ class Data extends DataTableSource {
                         FocusScope.of(context).requestFocus(
                             _focusNodeList[forecast][currentMonth - 1]);
                       }
+
                       addCellListener();
                     },
                   ),
@@ -622,7 +623,7 @@ class Data extends DataTableSource {
                             num.parse(_controllerSummary[forecast].text),
                             forecast)
                         .then(
-                            (value) => {addCellListener(), print("finished")});
+                            (value) => {notifyListeners(), print("finished")});
                   },
                   maxLines: 1,
                 ),
@@ -673,19 +674,20 @@ class Data extends DataTableSource {
                   color: Colors.grey[300],
                 ),
                 Container(
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          formatter.format(
-                            forecast.istLastYear.entries
-                                .map((e) => e.value)
-                                .reduce((a, b) => a + b),
-                          ),
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        formatter.format(
+                          forecast.istLastYear.entries
+                              .map((e) => e.value)
+                              .reduce((a, b) => a + b),
                         ),
-                      ],
-                    )),
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
                   alignment: Alignment.center,
                   width: double.infinity,
@@ -694,25 +696,26 @@ class Data extends DataTableSource {
                   color: Colors.grey[300],
                 ),
                 Container(
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          formatter.format(
-                            forecast.forecast.entries
-                                    .map((e) => e.value)
-                                    .reduce((a, b) => a + b) +
-                                forecast.ist.entries
-                                    .map((e) => e.value)
-                                    .reduce((a, b) => a + b) -
-                                forecast.goal.entries
-                                    .map((e) => e.value)
-                                    .reduce((a, b) => a + b),
-                          ),
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        formatter.format(
+                          forecast.forecast.entries
+                                  .map((e) => e.value)
+                                  .reduce((a, b) => a + b) +
+                              forecast.ist.entries
+                                  .map((e) => e.value)
+                                  .reduce((a, b) => a + b) -
+                              forecast.goal.entries
+                                  .map((e) => e.value)
+                                  .reduce((a, b) => a + b),
                         ),
-                      ],
-                    )),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 4),
               ],
             ),
@@ -798,6 +801,7 @@ class Data extends DataTableSource {
       forecast.forecast,
     );
     Navigator.of(context).pop();
+    print("updateforecast");
     return forecast;
     // setState(() {
 
