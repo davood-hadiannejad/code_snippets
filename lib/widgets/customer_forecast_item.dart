@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -46,50 +48,235 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
 
   Map<CustomerForecast, List<FocusNode>> _focusNodeList = {};
   Map<CustomerForecast, FocusNode> _focusNodeSummary = {};
+  Map<CustomerForecast, TextEditingController> _controllerSummary = {};
+  Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
+
+  FocusNode myFocusNode;
+
+  String dialogDropdownValue = 'Gesamtjahresumme';
 
   DataTableSource _data;
-
-  @override
-  void dispose() {
-    _focusNodeSummary.forEach((CustomerForecast forecast, FocusNode focusNode) {
-      focusNode.dispose();
-    });
-    _focusNodeList.forEach((CustomerForecast forecast, List focusNodeList) {
-      focusNodeList.asMap().forEach((index, focusNode) {
-        focusNode.dispose();
-      });
-    });
-    super.dispose();
-  }
-
   @override
   void initState() {
     super.initState();
     // addCellListener();
   }
 
+  @override
+  void dispose() {
+    _focusNodeSummary.forEach((CustomerForecast forecast, FocusNode focusNode) {
+      focusNode.removeListener(() {});
+      focusNode.dispose();
+    });
+    _focusNodeList.forEach((CustomerForecast forecast, List focusNodeList) {
+      focusNodeList.asMap().forEach((index, _focusNode) {
+        _focusNode.dispose();
+      });
+    });
+
+    super.dispose();
+  }
+
+  void addCellListener() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        _focusNodeList.forEach(
+          (CustomerForecast forecast, List focusNodeList) {
+            focusNodeList.asMap().forEach(
+              (index, focusNode) {
+                focusNode.addListener(
+                  () {
+                    if (focusNode.hasFocus) {
+                      print("focusNodeList clicked");
+
+                      _controllerList[forecast][index].selection =
+                          TextSelection(
+                              baseOffset: 0,
+                              extentOffset:
+                                  _controllerList[forecast][index].text.length);
+                    }
+                  },
+                );
+              },
+            );
+          },
+        );
+        _focusNodeSummary.forEach(
+          (CustomerForecast forecast, FocusNode focusNode) {
+            focusNode.addListener(
+              () {
+                if (focusNode.hasFocus) {
+                  print("focusNodeSummary");
+
+                  _controllerSummary[forecast].selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: _controllerSummary[forecast].text.length);
+                }
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
-  //   print("'''''''''''''''''''''changed'''''''''''''''''''''");
-  //   selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
-  //   int selectedYear = num.parse(Provider.of<Year>(context).selectedYear);
-  //   _data = Data(
-  //       customerForecast: widget.customerForecastData,
-  //       selectedYear: selectedYear,
-  //       selectedVerkaufer: selectedVerkaufer,
-  //       context: context);
+  //   print("changed");
   // }
 
   @override
   Widget build(BuildContext context) {
     selectedVerkaufer = Provider.of<VerkaeuferList>(context).selectedVerkaufer;
     int selectedYear = num.parse(Provider.of<Year>(context).selectedYear);
+
+    void updateForecast(
+        forecast, gesamtSumme, activeMonth, countActiveMonth, sumLastYear,
+        {updateKind = 'gleich'}) {
+      if (dialogDropdownValue == 'Gesamtjahresumme') {
+        // gesamtForecast - istGesamt
+        gesamtSumme = gesamtSumme -
+            forecast.ist.entries.map((e) => e.value).reduce((a, b) => a + b);
+      }
+
+      if (updateKind == 'gleich') {
+        activeMonth.forEach(
+          (monthKey) {
+            forecast.forecast[monthKey] = (gesamtSumme / countActiveMonth);
+          },
+        );
+      } else {
+        activeMonth.forEach(
+          (monthKey) {
+            num montlyAmount =
+                (gesamtSumme * forecast.istLastYear[monthKey] / sumLastYear);
+            forecast.forecast[monthKey] = montlyAmount;
+          },
+        );
+      }
+
+      Provider.of<CustomerForecastList>(context, listen: false)
+          .addCustomerForecast(
+        forecast.customer,
+        forecast.medium,
+        forecast.brand,
+        forecast.agentur,
+        selectedYear,
+        selectedVerkaufer.email,
+        forecast.forecast,
+      );
+      Navigator.of(context).pop();
+
+      setState(() {
+        forecast = forecast;
+      });
+    }
+
+    Future<void> showGesamtDialog(
+        num gesamtSumme, CustomerForecast forecast) async {
+      num sumLastYear;
+      int countActiveMonth;
+      List<String> activeMonth;
+
+      if (currentMonth == 12) {
+        activeMonth = ['m12'];
+        sumLastYear = forecast.istLastYear['m12'];
+        countActiveMonth = 1;
+      } else {
+        activeMonth = _month.sublist(currentMonth);
+        countActiveMonth = activeMonth.length;
+        sumLastYear = activeMonth
+            .map((monthKey) {
+              return forecast.istLastYear[monthKey];
+            })
+            .toList()
+            .reduce((a, b) => a + b);
+      }
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return AlertDialog(
+                title: Text('Wie soll die Gesamtsumme verteilt werden?'),
+                content: Row(
+                  children: [
+                    Text(formatter.format(gesamtSumme) + ' verteilen als '),
+                    Container(
+                      width: 158,
+                      height: 50,
+                      child: DropdownButton<dynamic>(
+                        value: dialogDropdownValue,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text('Restjahressumme'),
+                            value: 'Restjahressumme',
+                          ),
+                          DropdownMenuItem(
+                            child: Text('Gesamtjahresumme'),
+                            value: 'Gesamtjahresumme',
+                          ),
+                        ],
+                        onChanged: (dynamic newValue) {
+                          if (this.mounted) {
+                            setState(
+                              () {
+                                dialogDropdownValue = newValue;
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Gleichverteilt'),
+                    onPressed: () async {
+                      updateForecast(forecast, gesamtSumme, activeMonth,
+                          countActiveMonth, sumLastYear,
+                          updateKind: 'gleich');
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Wie Vorjahr'),
+                    onPressed: (sumLastYear > 0)
+                        ? () {
+                            updateForecast(forecast, gesamtSumme, activeMonth,
+                                countActiveMonth, sumLastYear,
+                                updateKind: 'vorjahr');
+                          }
+                        : null,
+                  ),
+                  TextButton(
+                    child: Text('Abbrechen'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+    }
+
     _data = Data(
         customerForecast: widget.customerForecastData,
         selectedYear: selectedYear,
         selectedVerkaufer: selectedVerkaufer,
+        // focusNodeList: _focusNodeList,
+        focusNodeSummary: _focusNodeSummary,
+        controllerSummary: _controllerSummary,
+        controllerList: _controllerList,
+        showGesamtDialog: showGesamtDialog,
+        onClickAction: addCellListener,
         context: context);
+
     return Card(
       margin: EdgeInsets.all(12.0),
       child: Container(
@@ -350,19 +537,29 @@ class Data extends DataTableSource {
   final int selectedYear;
   final Verkaeufer selectedVerkaufer;
   final BuildContext context;
+  Map<CustomerForecast, List<FocusNode>> focusNodeList = {};
+  Map<CustomerForecast, FocusNode> focusNodeSummary = {};
+  Map<CustomerForecast, TextEditingController> controllerSummary = {};
+  Map<CustomerForecast, List<TextEditingController>> controllerList = {};
+  final Function showGesamtDialog;
+  final Function onClickAction;
+
   Data(
       {@required this.customerForecast,
       @required this.selectedYear,
-      this.selectedVerkaufer,
+      @required this.selectedVerkaufer,
+      // @required this.focusNodeList,
+      @required this.focusNodeSummary,
+      @required this.controllerSummary,
+      @required this.controllerList,
+      @required this.showGesamtDialog,
+      @required this.onClickAction,
       @required this.context});
 
-  Map<CustomerForecast, List<TextEditingController>> _controllerList = {};
-  Map<CustomerForecast, List<FocusNode>> _focusNodeList = {};
-  Map<CustomerForecast, TextEditingController> _controllerSummary = {};
-  Map<CustomerForecast, FocusNode> _focusNodeSummary = {};
   int currentYear = DateTime.now().year;
 
-  String dialogDropdownValue = 'Gesamtjahresumme';
+  List<FocusNode> _focusNodes =
+      List<FocusNode>.generate(12, (int index) => FocusNode());
 
   @override
   bool get isRowCountApproximate => false;
@@ -374,11 +571,14 @@ class Data extends DataTableSource {
   bool get mounted => null;
 
   DataRow getRow(int index) {
+    print("index");
+    print(index);
     final forecast = customerForecast.items[index];
-    _controllerList[forecast] = [];
-    _focusNodeList[forecast] = [];
-    _focusNodeSummary[forecast] = FocusNode();
-    _controllerSummary[forecast] = TextEditingController(
+    print(forecast);
+    controllerList[forecast] = [];
+    focusNodeList[forecast] = [];
+    focusNodeSummary[forecast] = FocusNode();
+    controllerSummary[forecast] = TextEditingController(
       text: formatter.format(
         forecast.forecast.entries.map((e) {
           return e.value;
@@ -458,18 +658,46 @@ class Data extends DataTableSource {
         ..._month.asMap().entries.map((entry) {
           int idx = entry.key;
           String monthKey = entry.value;
-          _focusNodeList[forecast].add(FocusNode());
-          _controllerList[forecast].add(
-            TextEditingController(
-              text: formatter.format(forecast.forecast[monthKey]),
-            ),
-          );
+          focusNodeList[forecast].add(FocusNode());
+          controllerList[forecast].add(TextEditingController(
+            text: formatter.format(forecast.forecast[monthKey]),
+          ));
           return DataCell(
             Container(
               height: 170,
               child: Column(
                 children: [
                   TextFormField(
+                    onTap: () {
+                      print("clicked");
+                      // print(focusNodeList[forecast][1]);
+                      // focusNodeList.forEach(
+                      //   (CustomerForecast forecast, List _focusNodeList) {
+                      //     _focusNodeList.asMap().forEach(
+                      //       (index, focusNode) {
+                      //         focusNode.addListener(
+                      //           () {
+                      //             if ((index != idx) && (focusNode.hasFocus)) {
+                      //               print(idx);
+                      //               print("has focus");
+                      //               print(index);
+                      //               focusNodeList[forecast][idx].unfocus();
+                      //               // FocusScope.of(context).unfocus();
+                      //             }
+                      //           },
+                      //         );
+                      //       },
+                      //     );
+                      //   },
+                      // );
+                      // onClickAction();
+
+                      focusNodeList[forecast].forEach((element) {
+                        if (element.hasFocus) {
+                          print(element);
+                        }
+                      });
+                    },
                     textAlign: TextAlign.end,
                     readOnly: (currentYear == selectedYear)
                         ? !(idx + 1 >= currentMonth &&
@@ -477,8 +705,10 @@ class Data extends DataTableSource {
                         : (selectedYear > currentYear)
                             ? selectedVerkaufer.isGroup
                             : true,
-                    controller: _controllerList[forecast][idx],
-                    // focusNode: _focusNodeList[forecast][idx],
+                    controller: controllerList[forecast][idx],
+                    // focusNode: focusNodeList[forecast][idx],
+
+                    focusNode: _focusNodes[idx],
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: (currentYear == selectedYear)
@@ -498,8 +728,7 @@ class Data extends DataTableSource {
                     style: TextStyle(fontSize: 14),
                     maxLines: 1,
                     onEditingComplete: () {
-                      FocusScope.of(context).unfocus();
-                      String textInput = _controllerList[forecast][idx].text;
+                      String textInput = controllerList[forecast][idx].text;
                       textInput =
                           textInput.replaceAll('€', '').replaceAll('.', '');
                       forecast.forecast[monthKey] = num.parse(textInput);
@@ -513,21 +742,29 @@ class Data extends DataTableSource {
                         selectedVerkaufer.email,
                         forecast.forecast,
                       );
-                      _controllerList[forecast][idx].text =
+                      controllerList[forecast][idx].text =
                           formatter.format(forecast.forecast[monthKey]);
-                      _controllerSummary[forecast].text =
+                      controllerSummary[forecast].text =
                           formatter.format(forecast.forecast.entries.map((e) {
                         return e.value;
                       }).reduce((a, b) => a + b));
-                      if (monthKey != 'm12') {
-                        FocusScope.of(context)
-                            .requestFocus(_focusNodeList[forecast][idx + 1]);
-                      } else {
-                        FocusScope.of(context).requestFocus(
-                            _focusNodeList[forecast][currentMonth - 1]);
+
+                      // if (monthKey != 'm12') {
+                      //   focusNodeList[forecast][idx + 1].nextFocus();
+                      // } else {
+                      //   focusNodeList[forecast][currentMonth - 1].nextFocus();
+                      // }
+
+                      print("edit complitet");
+                      print(forecast);
+                      // new TextEditingController().clear();
+                      if (index < 12) {
+                        _focusNodes[idx + 1].requestFocus();
                       }
 
-                      addCellListener();
+                      // onClickAction();
+                      notifyListeners();
+                      // FocusScope.of(context).unfocus();
                     },
                   ),
                   SizedBox(
@@ -598,8 +835,8 @@ class Data extends DataTableSource {
               children: [
                 TextFormField(
                   textAlign: TextAlign.end,
-                  controller: _controllerSummary[forecast],
-                  focusNode: _focusNodeSummary[forecast],
+                  controller: controllerSummary[forecast],
+                  focusNode: focusNodeSummary[forecast],
                   readOnly: (selectedYear >= currentYear)
                       ? selectedVerkaufer.isGroup
                       : true,
@@ -618,12 +855,9 @@ class Data extends DataTableSource {
                   style: TextStyle(fontSize: 14),
                   onEditingComplete: () {
                     FocusScope.of(context).unfocus();
-                    print("pressed");
-                    _showGesamtDialog(
-                            num.parse(_controllerSummary[forecast].text),
-                            forecast)
-                        .then(
-                            (value) => {notifyListeners(), print("finished")});
+                    showGesamtDialog(
+                        num.parse(controllerSummary[forecast].text), forecast);
+                    // addCellListener();
                   },
                   maxLines: 1,
                 ),
@@ -722,188 +956,6 @@ class Data extends DataTableSource {
           ),
         ),
       ],
-    );
-  }
-
-  void addCellListener() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        _focusNodeList.forEach(
-          (CustomerForecast forecast, List focusNodeList) {
-            focusNodeList.asMap().forEach(
-              (index, focusNode) {
-                focusNode.addListener(
-                  () {
-                    if (focusNode.hasFocus) {
-                      _controllerList[forecast][index].selection =
-                          TextSelection(
-                              baseOffset: 0,
-                              extentOffset:
-                                  _controllerList[forecast][index].text.length);
-                    }
-                  },
-                );
-              },
-            );
-          },
-        );
-        _focusNodeSummary.forEach(
-          (CustomerForecast forecast, FocusNode focusNode) {
-            focusNode.addListener(
-              () {
-                if (focusNode.hasFocus) {
-                  _controllerSummary[forecast].selection = TextSelection(
-                      baseOffset: 0,
-                      extentOffset: _controllerSummary[forecast].text.length);
-                }
-              },
-            );
-          },
-        );
-        notifyListeners();
-      },
-    );
-  }
-
-  CustomerForecast updateForecast(
-      forecast, gesamtSumme, activeMonth, countActiveMonth, sumLastYear,
-      {updateKind = 'gleich'}) {
-    if (dialogDropdownValue == 'Gesamtjahresumme') {
-      // gesamtForecast - istGesamt
-      gesamtSumme = gesamtSumme -
-          forecast.ist.entries.map((e) => e.value).reduce((a, b) => a + b);
-    }
-
-    if (updateKind == 'gleich') {
-      activeMonth.forEach(
-        (monthKey) {
-          forecast.forecast[monthKey] = (gesamtSumme / countActiveMonth);
-        },
-      );
-    } else {
-      activeMonth.forEach(
-        (monthKey) {
-          num montlyAmount =
-              (gesamtSumme * forecast.istLastYear[monthKey] / sumLastYear);
-          forecast.forecast[monthKey] = montlyAmount;
-        },
-      );
-    }
-
-    Provider.of<CustomerForecastList>(context, listen: false)
-        .addCustomerForecast(
-      forecast.customer,
-      forecast.medium,
-      forecast.brand,
-      forecast.agentur,
-      selectedYear,
-      selectedVerkaufer.email,
-      forecast.forecast,
-    );
-    Navigator.of(context).pop();
-    print("updateforecast");
-    return forecast;
-    // setState(() {
-
-    // forecast = forecast;
-    // });
-  }
-
-  Future<void> _showGesamtDialog(
-      num gesamtSumme, CustomerForecast forecast) async {
-    num sumLastYear;
-    int countActiveMonth;
-    List<String> activeMonth;
-
-    if (currentMonth == 12) {
-      activeMonth = ['m12'];
-      sumLastYear = forecast.istLastYear['m12'];
-      countActiveMonth = 1;
-    } else {
-      activeMonth = _month.sublist(currentMonth);
-      countActiveMonth = activeMonth.length;
-      sumLastYear = activeMonth
-          .map((monthKey) {
-            return forecast.istLastYear[monthKey];
-          })
-          .toList()
-          .reduce((a, b) => a + b);
-    }
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              title: Text('Wie soll die Gesamtsumme verteilt werden?'),
-              content: Row(
-                children: [
-                  Text(formatter.format(gesamtSumme) + ' verteilen als '),
-                  Container(
-                    width: 158,
-                    height: 50,
-                    child: DropdownButton<dynamic>(
-                      value: dialogDropdownValue,
-                      items: [
-                        DropdownMenuItem(
-                          child: Text('Restjahressumme'),
-                          value: 'Restjahressumme',
-                        ),
-                        DropdownMenuItem(
-                          child: Text('Gesamtjahresumme'),
-                          value: 'Gesamtjahresumme',
-                        ),
-                      ],
-                      onChanged: (dynamic newValue) {
-                        if (this.mounted) {
-                          setState(
-                            () {
-                              dialogDropdownValue = newValue;
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Gleichverteilt'),
-                  onPressed: () async {
-                    forecast = updateForecast(forecast, gesamtSumme,
-                        activeMonth, countActiveMonth, sumLastYear,
-                        updateKind: 'gleich');
-                    setState(() {
-                      forecast = forecast;
-                    });
-                  },
-                ),
-                TextButton(
-                  child: Text('Wie Vorjahr'),
-                  onPressed: (sumLastYear > 0)
-                      ? () {
-                          var forcast = updateForecast(forecast, gesamtSumme,
-                              activeMonth, countActiveMonth, sumLastYear,
-                              updateKind: 'vorjahr');
-                          setState(() {
-                            forecast = forcast;
-                          });
-                        }
-                      : null,
-                ),
-                TextButton(
-                  child: Text('Abbrechen'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
     );
   }
 }
