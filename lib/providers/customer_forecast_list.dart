@@ -299,6 +299,7 @@ class CustomerForecastList with ChangeNotifier {
     try {
       final response = await http.post(url, headers: headers, body: msg);
       final extractedData = json.decode(response.body) as dynamic;
+
       // notifyListeners();
     } catch (error) {
       throw error;

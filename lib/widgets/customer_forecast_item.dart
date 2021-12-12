@@ -59,7 +59,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
   @override
   void initState() {
     super.initState();
-    // addCellListener();
+    addCellListener();
   }
 
   @override
@@ -73,7 +73,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         _focusNode.dispose();
       });
     });
-
     super.dispose();
   }
 
@@ -87,8 +86,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                 focusNode.addListener(
                   () {
                     if (focusNode.hasFocus) {
-                      print("focusNodeList clicked");
-
                       _controllerList[forecast][index].selection =
                           TextSelection(
                               baseOffset: 0,
@@ -106,8 +103,6 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
             focusNode.addListener(
               () {
                 if (focusNode.hasFocus) {
-                  print("focusNodeSummary");
-
                   _controllerSummary[forecast].selection = TextSelection(
                       baseOffset: 0,
                       extentOffset: _controllerSummary[forecast].text.length);
@@ -118,6 +113,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         );
       },
     );
+    // setState(() {
+    //   print("setStat");
+    // });
   }
 
   // @override
@@ -269,7 +267,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         customerForecast: widget.customerForecastData,
         selectedYear: selectedYear,
         selectedVerkaufer: selectedVerkaufer,
-        // focusNodeList: _focusNodeList,
+        focusNodeList: _focusNodeList,
         focusNodeSummary: _focusNodeSummary,
         controllerSummary: _controllerSummary,
         controllerList: _controllerList,
@@ -313,15 +311,15 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
-                  TextButton.icon(
-                    onPressed: () {
-                      Provider.of<CustomerForecastList>(context, listen: false)
-                          .fetchAndSetCustomerForecastList(
-                              verkaeufer: selectedVerkaufer, refresh: true);
-                    },
-                    icon: Icon(Icons.refresh),
-                    label: Text('Refresh'),
-                  ),
+                  // TextButton.icon(
+                  //   onPressed: () {
+                  //     Provider.of<CustomerForecastList>(context, listen: false)
+                  //         .fetchAndSetCustomerForecastList(
+                  //             verkaeufer: selectedVerkaufer, refresh: true);
+                  //   },
+                  //   icon: Icon(Icons.refresh),
+                  //   label: Text('Refresh'),
+                  // ),
                 ],
               ),
               Container(
@@ -548,7 +546,7 @@ class Data extends DataTableSource {
       {@required this.customerForecast,
       @required this.selectedYear,
       @required this.selectedVerkaufer,
-      // @required this.focusNodeList,
+      @required this.focusNodeList,
       @required this.focusNodeSummary,
       @required this.controllerSummary,
       @required this.controllerList,
@@ -558,8 +556,7 @@ class Data extends DataTableSource {
 
   int currentYear = DateTime.now().year;
 
-  List<FocusNode> _focusNodes =
-      List<FocusNode>.generate(12, (int index) => FocusNode());
+  List<int> lastIndex = [];
 
   @override
   bool get isRowCountApproximate => false;
@@ -568,13 +565,9 @@ class Data extends DataTableSource {
   @override
   int get selectedRowCount => 0;
 
-  bool get mounted => null;
-
   DataRow getRow(int index) {
-    print("index");
-    print(index);
     final forecast = customerForecast.items[index];
-    print(forecast);
+    lastIndex.add(index);
     controllerList[forecast] = [];
     focusNodeList[forecast] = [];
     focusNodeSummary[forecast] = FocusNode();
@@ -669,35 +662,11 @@ class Data extends DataTableSource {
                 children: [
                   TextFormField(
                     onTap: () {
-                      print("clicked");
-                      // print(focusNodeList[forecast][1]);
-                      // focusNodeList.forEach(
-                      //   (CustomerForecast forecast, List _focusNodeList) {
-                      //     _focusNodeList.asMap().forEach(
-                      //       (index, focusNode) {
-                      //         focusNode.addListener(
-                      //           () {
-                      //             if ((index != idx) && (focusNode.hasFocus)) {
-                      //               print(idx);
-                      //               print("has focus");
-                      //               print(index);
-                      //               focusNodeList[forecast][idx].unfocus();
-                      //               // FocusScope.of(context).unfocus();
-                      //             }
-                      //           },
-                      //         );
-                      //       },
-                      //     );
-                      //   },
-                      // );
-                      // onClickAction();
-
-                      focusNodeList[forecast].forEach((element) {
-                        if (element.hasFocus) {
-                          print(element);
-                        }
-                      });
+                      onClickAction();
+                      focusNodeList[customerForecast.items[index]][idx]
+                          .requestFocus();
                     },
+                    autovalidateMode: AutovalidateMode.always,
                     textAlign: TextAlign.end,
                     readOnly: (currentYear == selectedYear)
                         ? !(idx + 1 >= currentMonth &&
@@ -706,9 +675,7 @@ class Data extends DataTableSource {
                             ? selectedVerkaufer.isGroup
                             : true,
                     controller: controllerList[forecast][idx],
-                    // focusNode: focusNodeList[forecast][idx],
-
-                    focusNode: _focusNodes[idx],
+                    focusNode: focusNodeList[forecast][idx],
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: (currentYear == selectedYear)
@@ -729,6 +696,7 @@ class Data extends DataTableSource {
                     maxLines: 1,
                     onEditingComplete: () {
                       String textInput = controllerList[forecast][idx].text;
+
                       textInput =
                           textInput.replaceAll('€', '').replaceAll('.', '');
                       forecast.forecast[monthKey] = num.parse(textInput);
@@ -749,24 +717,23 @@ class Data extends DataTableSource {
                         return e.value;
                       }).reduce((a, b) => a + b));
 
-                      // if (monthKey != 'm12') {
-                      //   focusNodeList[forecast][idx + 1].nextFocus();
-                      // } else {
-                      //   focusNodeList[forecast][currentMonth - 1].nextFocus();
-                      // }
-
-                      print("edit complitet");
-                      print(forecast);
-                      // new TextEditingController().clear();
-                      if (index < 12) {
-                        _focusNodes[idx + 1].requestFocus();
+                      if (monthKey != 'm12') {
+                        focusNodeList[forecast][idx + 1].requestFocus();
+                      } else if (monthKey == 'm12' && index < lastIndex.last) {
+                        focusNodeList[customerForecast.items[index + 1]]
+                                [idx - 11]
+                            .requestFocus();
+                      } else {
+                        focusNodeList[customerForecast
+                                .items[lastIndex.length - 3]][idx - 11]
+                            .requestFocus();
                       }
+                      // notifyListeners();
 
-                      // onClickAction();
-                      notifyListeners();
-                      // FocusScope.of(context).unfocus();
+                      onClickAction();
                     },
                   ),
+                  // ),
                   SizedBox(
                     height: 8,
                   ),
