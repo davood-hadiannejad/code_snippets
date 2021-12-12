@@ -272,7 +272,7 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         controllerSummary: _controllerSummary,
         controllerList: _controllerList,
         showGesamtDialog: showGesamtDialog,
-        onClickAction: addCellListener,
+        addCellListener: addCellListener,
         context: context);
 
     return Card(
@@ -540,7 +540,7 @@ class Data extends DataTableSource {
   Map<CustomerForecast, TextEditingController> controllerSummary = {};
   Map<CustomerForecast, List<TextEditingController>> controllerList = {};
   final Function showGesamtDialog;
-  final Function onClickAction;
+  final Function addCellListener;
 
   Data(
       {@required this.customerForecast,
@@ -551,7 +551,7 @@ class Data extends DataTableSource {
       @required this.controllerSummary,
       @required this.controllerList,
       @required this.showGesamtDialog,
-      @required this.onClickAction,
+      @required this.addCellListener,
       @required this.context});
 
   int currentYear = DateTime.now().year;
@@ -662,7 +662,7 @@ class Data extends DataTableSource {
                 children: [
                   TextFormField(
                     onTap: () {
-                      onClickAction();
+                      addCellListener();
                       focusNodeList[customerForecast.items[index]][idx]
                           .requestFocus();
                     },
@@ -730,7 +730,7 @@ class Data extends DataTableSource {
                       }
                       // notifyListeners();
 
-                      onClickAction();
+                      addCellListener();
                     },
                   ),
                   // ),
@@ -821,10 +821,10 @@ class Data extends DataTableSource {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   style: TextStyle(fontSize: 14),
                   onEditingComplete: () {
-                    FocusScope.of(context).unfocus();
                     showGesamtDialog(
                         num.parse(controllerSummary[forecast].text), forecast);
-                    // addCellListener();
+
+                    addCellListener();
                   },
                   maxLines: 1,
                 ),
