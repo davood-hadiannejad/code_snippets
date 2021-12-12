@@ -311,15 +311,16 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
-                  // TextButton.icon(
-                  //   onPressed: () {
-                  //     Provider.of<CustomerForecastList>(context, listen: false)
-                  //         .fetchAndSetCustomerForecastList(
-                  //             verkaeufer: selectedVerkaufer, refresh: true);
-                  //   },
-                  //   icon: Icon(Icons.refresh),
-                  //   label: Text('Refresh'),
-                  // ),
+                  TextButton.icon(
+                    onPressed: () {
+                      // Provider.of<CustomerForecastList>(context, listen: false)
+                      //     .fetchAndSetCustomerForecastList(
+                      //         verkaeufer: selectedVerkaufer, refresh: true);
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.refresh),
+                    label: Text('Refresh'),
+                  ),
                 ],
               ),
               Container(
