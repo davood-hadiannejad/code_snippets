@@ -1,10 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import '../providers/customer_forecast_list.dart';
 import '../providers/customer_forecast.dart';
 import '../providers/verkaeufer_list.dart';
@@ -41,9 +39,9 @@ List<String> _month = [
 ];
 
 int currentMonth = DateTime.now().month;
+int currentYear = DateTime.now().year;
 
 class _CustomerForecastItemState extends State<CustomerForecastItem> {
-  final ScrollController _scrollController = ScrollController();
   Verkaeufer selectedVerkaufer;
 
   Map<CustomerForecast, List<FocusNode>> _focusNodeList = {};
@@ -176,6 +174,9 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
       num sumLastYear;
       int countActiveMonth;
       List<String> activeMonth;
+      if (currentYear != selectedYear) {
+        currentMonth = 0;
+      }
 
       if (currentMonth == 12) {
         activeMonth = ['m12'];
@@ -282,249 +283,245 @@ class _CustomerForecastItemState extends State<CustomerForecastItem> {
         width: double.infinity,
         height: double.infinity,
         alignment: Alignment.center,
-        child: DraggableScrollbar.rrect(
-          alwaysVisibleScrollThumb: true,
-          controller: _scrollController,
-          child: ListView(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      widget.customerForecastData.resetItems();
-                    },
-                    label: Text('Zurück'),
-                    icon: Icon(Icons.arrow_back_ios),
-                  ),
-                ],
-              ),
-              SizedBox(height: 25),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Kundenforecast',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      // Provider.of<CustomerForecastList>(context, listen: false)
-                      //     .fetchAndSetCustomerForecastList(
-                      //         verkaeufer: selectedVerkaufer, refresh: true);
-                      setState(() {});
-                    },
-                    icon: Icon(Icons.refresh),
-                    label: Text('Refresh'),
-                  ),
-                ],
-              ),
-              Container(
-                child: PaginatedDataTable(
-                  columnSpacing: 5,
-                  dataRowHeight: 170,
-                  rowsPerPage: 3,
-                  sortColumnIndex: widget.customerForecastData.sortColumnIndex,
-                  sortAscending: widget.customerForecastData.sortAscending,
-                  columns: [
-                    DataColumn(
-                      label: Center(
-                        child: Text(
-                          'Kunde',
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('kunde', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Center(
-                        child: Text(
-                          'Medium',
-                        ),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Center(
-                        child: Text(
-                          'Brand',
-                        ),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Center(
-                        child: Text(
-                          'Metrik',
-                        ),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Januar',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m1', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Februar',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m2', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'März',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m3', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'April',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m4', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Mai',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m5', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Juni',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m6', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Juli',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m7', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'August',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m8', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'September',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m9', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Oktober',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m10', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'November',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m11', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Dezember',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('m12', idx, ascending: asc);
-                      },
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                        child: Text(
-                          'Summe Jahr',
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                      onSort: (idx, asc) {
-                        widget.customerForecastData
-                            .sortByField('gesamt', idx, ascending: asc);
-                      },
-                    ),
-                  ],
-                  source: _data,
+        child: ListView(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    widget.customerForecastData.resetItems();
+                  },
+                  label: Text('Zurück'),
+                  icon: Icon(Icons.arrow_back_ios),
                 ),
+              ],
+            ),
+            SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Kundenforecast',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    // Provider.of<CustomerForecastList>(context, listen: false)
+                    //     .fetchAndSetCustomerForecastList(
+                    //         verkaeufer: selectedVerkaufer, refresh: true);
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.refresh),
+                  label: Text('Refresh'),
+                ),
+              ],
+            ),
+            Container(
+              child: PaginatedDataTable(
+                columnSpacing: 5,
+                dataRowHeight: 170,
+                rowsPerPage: 3,
+                sortColumnIndex: widget.customerForecastData.sortColumnIndex,
+                sortAscending: widget.customerForecastData.sortAscending,
+                columns: [
+                  DataColumn(
+                    label: Center(
+                      child: Text(
+                        'Kunde',
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('kunde', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Center(
+                      child: Text(
+                        'Medium',
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Center(
+                      child: Text(
+                        'Brand',
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Center(
+                      child: Text(
+                        'Metrik',
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Januar',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m1', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Februar',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m2', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'März',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m3', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'April',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m4', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Mai',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m5', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Juni',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m6', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Juli',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m7', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'August',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m8', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'September',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m9', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Oktober',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m10', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'November',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m11', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Dezember',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('m12', idx, ascending: asc);
+                    },
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Summe Jahr',
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    onSort: (idx, asc) {
+                      widget.customerForecastData
+                          .sortByField('gesamt', idx, ascending: asc);
+                    },
+                  ),
+                ],
+                source: _data,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -554,8 +551,6 @@ class Data extends DataTableSource {
       @required this.showGesamtDialog,
       @required this.addCellListener,
       @required this.context});
-
-  int currentYear = DateTime.now().year;
 
   List<int> lastIndex = [];
 
